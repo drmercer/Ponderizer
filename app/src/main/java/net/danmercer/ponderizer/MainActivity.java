@@ -5,11 +5,12 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageButton;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -45,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.scripturesList);
         SimpleAdapter adapter = getListAdapter();
 
-
         // - attach adapter to ListView
         listView.setAdapter(adapter);
     }
@@ -64,34 +64,35 @@ public class MainActivity extends AppCompatActivity {
         // - fill an adapter with the list data
         List<HashMap<String, Object>> list = new ArrayList<>();
         for (final String s : scriptureRefs) { // For each scripture reference...
-            final View.OnClickListener l = new View.OnClickListener() { // Create an OnClickListener for the "more" button
-                @Override
-                public void onClick(View v) {
-                    v.showContextMenu();
-                }
-            };
             // Create a map containing the scripture reference and its click listener
             list.add(new HashMap<String, Object>() {{
                 put(KEY_SCRIPTURE_REFERENCE, s);
-                put(KEY_CLICK_LISTENER, l);
             }});
         }
-        SimpleAdapter adapter = new SimpleAdapter(
+        SimpleAdapter adapter = new ScriptureListAdapter(
                 this, // Context
                 list, // list of scripture references used to populate the ListView
                 R.layout.list_item, // layout used for each item in ListView
-                new String[]{KEY_SCRIPTURE_REFERENCE, KEY_CLICK_LISTENER}, // keys to look for in the maps in list
-                new int[]{R.id.listitem_text, R.id.listitem_morebutton}); // ids of views to fill with values
+                new String[]{KEY_SCRIPTURE_REFERENCE, KEY_SCRIPTURE_REFERENCE}, // keys to look for in the maps in list
+                new int[]{R.id.listitem_text, R.id.listitem}); // ids of views to fill with values
 
-        // Need to set a ViewBinder so that the "more" buttons will do something. This ViewBinder
-        // attaches the OnClickListeners (found in the maps in list) to the ImageButtons in the
-        // list_item layout
+        // Need to set a ViewBinder so that the list items will do something. This ViewBinder
+        // attaches the OnClickListeners (found in the maps in list) to the list entries
         adapter.setViewBinder(new SimpleAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Object data, String textRepresentation) {
-                if (view instanceof ImageButton && data instanceof View.OnClickListener) {
-                    view.setOnClickListener((View.OnClickListener) data);
+                if (view.getId() == R.id.listitem) {
+                    view.setTag(data);
+                    Log.d("MainActivity.getAdapter", "setTag on view " + view.toString() + " to " + data.toString());
                     view.setOnCreateContextMenuListener(MainActivity.this);
+                    view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d("OnItemClickListen", "onItemClick called! " + MainActivity.this.getResources().getResourceName(v.getId()));
+                            v.showContextMenu();
+                        }
+                    });
+                    return true; // Tells the SimpleAdapter that this view is all taken care of.
                 }
                 return false;
             }
@@ -99,32 +100,42 @@ public class MainActivity extends AppCompatActivity {
         return adapter;
     }
 
-    // This is called when the "more" button on a list item is clicked
+    // This is called when a list item is clicked
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        if (v.getId() == R.id.listitem_morebutton) {
-            getMenuInflater().inflate(R.menu.scripture_context, menu);
-        }
-    }
+        if (v.getId() == R.id.listitem) {
+            final String scripture = (String) v.getTag();
+            getMenuInflater().inflate(R.menu.scripture_context, menu); // Inflate menu from res.
 
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.context_view_scripture:
-                // TODO: go to scripture view
-                toast("<Would go to scripture view>");
-                return true;
-            case R.id.context_memorize_scripture:
-                // TODO: go to memorize view
-                toast("<Would go to memorize view>");
-                return true;
-            case R.id.context_view_notes:
-                // TODO: go to notes view
-                toast("<Would go to notes view>");
-                return true;
+            // Create menu click listener
+            MenuItem.OnMenuItemClickListener l = new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()){
+                        case R.id.context_view_scripture:
+                            // TODO: go to scripture view
+                            toast("Would go to scripture view: " + scripture);
+                            return true;
+                        case R.id.context_memorize_scripture:
+                            // TODO: go to memorize view
+                            toast("Would go to memorize view " + scripture);
+                            return true;
+                        case R.id.context_view_notes:
+                            // TODO: go to notes view
+                            toast("Would go to notes view " + scripture);
+                            return true;
+                    }
+                    return false;
+                }
+            };
+
+            // Attach listener to all items on the menu
+            int size = menu.size();
+            for (int i = 0; i < size; i++) {
+                menu.getItem(i).setOnMenuItemClickListener(l);
+            }
         }
-        return super.onContextItemSelected(item);
     }
 
     @Override
