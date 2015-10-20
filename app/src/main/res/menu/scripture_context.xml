@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:id="@+id/context_view_scripture"
+    android:title="@string/view_scripture"/>
+<item android:id="@+id/context_memorize_scripture"
+    android:title="@string/memorize_scripture"/>
+<item android:id="@+id/context_view_notes"
+    android:title="@string/view_notes"/>
+</menu>

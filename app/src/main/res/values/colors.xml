@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Action bar color; 500 shade -->
+    <color name="colorPrimary">#795548</color>
+
+    <!-- Status bar color; 700 shade -->
+    <color name="colorPrimaryDark">#5D4037</color>
+
+    <!-- Accent color; -->
+    <color name="colorAccent">#FFEB3B</color>
+</resources>

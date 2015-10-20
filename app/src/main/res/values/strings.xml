@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Ponderizer</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Scripture context menu strings-->
+    <string name="view_scripture">View Scripture</string>
+    <string name="memorize_scripture">Memorize</string>
+    <string name="view_notes">View Notes</string>
+</resources>
