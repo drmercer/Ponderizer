@@ -1,5 +1,6 @@
 package net.danmercer.ponderizer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -38,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                toast("FAB clicked");
+                Intent i = new Intent(MainActivity.this.getApplicationContext(), AddScriptureReferenceActivity.class);
+                startActivity(i);
             }
         });
 
