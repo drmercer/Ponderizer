@@ -19,10 +19,21 @@
             </intent-filter>
         </activity>
 
+        <!-- Look up scriptures by reference-->
         <activity
             android:name=".AddScriptureReferenceActivity"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
 
+        <!-- "Share" text from other apps (i.e. Gospel Library) and add as scripture -->
+        <activity android:name=".AddScriptureTextActivity"
+            android:label="Add Scripture to Ponderize"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
