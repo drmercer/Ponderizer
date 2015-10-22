@@ -96,10 +96,6 @@ public class Scripture {
 
     @Override
     public String toString() {
-        return "Scripture{" + reference + "}";
-    }
-
-    public String getReference() {
         return reference;
     }
 }

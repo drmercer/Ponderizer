@@ -12,6 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -40,42 +42,40 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this.getApplicationContext(), AddScriptureReferenceActivity.class);
-                startActivity(i);
+                launchAddScripture();
             }
         });
 
         // Fill scriptures View
-        // Create mock scripture references if necessary
         File dir = getDir(CATEGORY_PRESENT, MODE_PRIVATE);
-        if (dir.listFiles().length == 0) {
-            Scripture mock1 = new Scripture("1 Nephi 2:15", "15 And my father dwelt in a tent.");
-            mock1.writeToFile(dir);
-            Scripture mock2 = new Scripture("Jacob 6:12", "12 O be wise; what can I say more?");
-            mock2.writeToFile(dir);
-        }
-        LinkedList<Scripture> scriptureList = Scripture.loadScriptures(dir);
+        final LinkedList<Scripture> scriptureList = Scripture.loadScriptures(dir);
         if (!scriptureList.isEmpty()) {
-            ListView listView = (ListView) findViewById(R.id.scripturesList);
-            // - get scripture references
-            ListAdapter adapter = getListAdapter(scriptureList);
-
-            // - attach adapter to ListView
-            listView.setAdapter(adapter);
+            ListView lv = (ListView) findViewById(R.id.scripturesList);
+            lv.setAdapter(new ArrayAdapter<Scripture>(this, R.layout.list_item, R.id.listitem_text, scriptureList));
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    String scripture = scriptureList.get(position).toString();
+                    Toast.makeText(MainActivity.this, scripture, Toast.LENGTH_SHORT).show();
+                    // TODO: start scripture view activity
+                }
+            });
+        } else {
+            //TODO: set up empty list
+            ListView lv = (ListView) findViewById(R.id.scripturesList);
+            lv.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item, R.id.listitem_text, new String[]{"Tap to add a scripture"}));
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    launchAddScripture();
+                }
+            });
         }
     }
 
-    @NonNull
-    private ListAdapter getListAdapter(LinkedList<Scripture> scriptureList) { // TODO: inline?
-        // Construct adapter
-        ListAdapter adapter = new ScriptureListAdapter(
-                this, // Activity
-                scriptureList, // List of scriptures used to populate the ListView.
-                R.layout.list_item, // Layout used for each item in the ListView.
-                R.id.listitem, // Root view of that layout.
-                R.id.listitem_text); // Text view in that layout, to put scripture reference in.
-
-        return adapter;
+    private void launchAddScripture() {
+        Intent i = new Intent(MainActivity.this.getApplicationContext(), AddScriptureReferenceActivity.class);
+        startActivity(i);
     }
 
     @Override
