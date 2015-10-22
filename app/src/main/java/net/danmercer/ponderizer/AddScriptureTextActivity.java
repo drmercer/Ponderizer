@@ -4,11 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class AddScriptureTextActivity extends AppCompatActivity {
+
+    private EditText titleTextView;
+    private EditText bodyTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,8 +23,8 @@ public class AddScriptureTextActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Get text fields
-        EditText title = (EditText) findViewById(R.id.scripture_title);
-        EditText body = (EditText) findViewById(R.id.scripture_text);
+        titleTextView = (EditText) findViewById(R.id.scripture_title);
+        bodyTextView = (EditText) findViewById(R.id.scripture_text);
 
         // Get the text that was shared with us from the start intent
         Intent startIntent = getIntent();
@@ -28,11 +33,11 @@ public class AddScriptureTextActivity extends AppCompatActivity {
             bodyString = startIntent.getStringExtra(Intent.EXTRA_TITLE);
         } else {
             String titleString = startIntent.getStringExtra(Intent.EXTRA_TITLE);
-            if (title != null) {
-                title.setText(titleString);
+            if (titleTextView != null) {
+                titleTextView.setText(titleString);
             }
         }
-        body.setText(cleanupText(bodyString));
+        bodyTextView.setText(cleanupText(bodyString));
     }
 
     /**
@@ -64,7 +69,26 @@ public class AddScriptureTextActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_done) {
-            // TODO: record scripture in device memory
+            Log.d("AddScriptureText", "Done button pressed");
+            // Construct a new Scripture object using the text provided by the user.
+            String reference = titleTextView.getText().toString();
+            String body = bodyTextView.getText().toString();
+
+            // Make sure the user entered something in both fields.
+            if (reference.isEmpty()) {
+                Toast.makeText(this,
+                        "Please enter a scripture reference for the title",
+                        Toast.LENGTH_LONG).show();
+                return false;
+            }
+            if (body.isEmpty()) {
+                Toast.makeText(this,
+                        "Please enter a scripture passage",
+                        Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+            new Scripture(reference, body).writeToFile(getDir(MainActivity.CATEGORY_PRESENT, MODE_PRIVATE));
             setResult(RESULT_OK);
             finish();
             return true;

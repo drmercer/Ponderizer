@@ -26,6 +26,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:clickable="false"
+        android:alpha="0.54"
         android:background="@drawable/ic_keyboard_arrow_right_black_24dp"/>
 
 </RelativeLayout>

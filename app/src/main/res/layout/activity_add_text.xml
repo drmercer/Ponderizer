@@ -18,10 +18,4 @@
     <include layout="@layout/content_add_text" />
     <!-- TODO: change back to content_main, and use onelist as fragment layout-->
 
-    <android.support.design.widget.FloatingActionButton android:id="@+id/fab"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end" android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_input_add" />
-    <!-- TODO: change ic_input_add to a better drawable-->
-
 </android.support.design.widget.CoordinatorLayout>
