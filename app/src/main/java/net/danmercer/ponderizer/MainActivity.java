@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void launchAddScripture() {
-        Intent i = new Intent(MainActivity.this.getApplicationContext(), AddScriptureReferenceActivity.class);
+        Intent i = new Intent(MainActivity.this.getApplicationContext(), AddScriptureInstructions.class);
         startActivity(i);
     }
 
