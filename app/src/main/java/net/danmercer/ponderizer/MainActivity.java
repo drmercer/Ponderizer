@@ -8,14 +8,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ContextMenu;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
+import android.view.View;
+import android.widget.Adapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -23,8 +25,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String KEY_SCRIPTURE_REFERENCE = "S_REF";
-    private static final String KEY_CLICK_LISTENER = "CLICK_LISTENER";
+    public static final String CATEGORY_PRESENT = "present";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,99 +46,36 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Fill scriptures View
-        ListView listView = (ListView) findViewById(R.id.scripturesList);
-        SimpleAdapter adapter = getListAdapter();
+        // Create mock scripture references if necessary
+        File dir = getDir(CATEGORY_PRESENT, MODE_PRIVATE);
+        if (dir.listFiles().length == 0) {
+            Scripture mock1 = new Scripture("1 Nephi 2:15", "15 And my father dwelt in a tent.");
+            mock1.writeToFile(dir);
+            Scripture mock2 = new Scripture("Jacob 6:12", "12 O be wise; what can I say more?");
+            mock2.writeToFile(dir);
+        }
+        LinkedList<Scripture> scriptureList = Scripture.loadScriptures(dir);
+        if (!scriptureList.isEmpty()) {
+            ListView listView = (ListView) findViewById(R.id.scripturesList);
+            // - get scripture references
+            ListAdapter adapter = getListAdapter(scriptureList);
 
-        // - attach adapter to ListView
-        listView.setAdapter(adapter);
-    }
-
-    private void toast(String text) {
-        Toast.makeText(MainActivity.this, text, Toast.LENGTH_LONG).show();
+            // - attach adapter to ListView
+            listView.setAdapter(adapter);
+        }
     }
 
     @NonNull
-    private SimpleAdapter getListAdapter() {
-        // - create mock list of references
-        LinkedList<String> scriptureRefs = new LinkedList<>();
-        scriptureRefs.add("James 1:5");
-        scriptureRefs.add("1 John 3:18");
+    private ListAdapter getListAdapter(LinkedList<Scripture> scriptureList) { // TODO: inline?
+        // Construct adapter
+        ListAdapter adapter = new ScriptureListAdapter(
+                this, // Activity
+                scriptureList, // List of scriptures used to populate the ListView.
+                R.layout.list_item, // Layout used for each item in the ListView.
+                R.id.listitem, // Root view of that layout.
+                R.id.listitem_text); // Text view in that layout, to put scripture reference in.
 
-        // - fill an adapter with the list data
-        List<HashMap<String, Object>> list = new ArrayList<>();
-        for (final String s : scriptureRefs) { // For each scripture reference...
-            // Create a map containing the scripture reference and its click listener
-            list.add(new HashMap<String, Object>() {{
-                put(KEY_SCRIPTURE_REFERENCE, s);
-            }});
-        }
-        SimpleAdapter adapter = new ScriptureListAdapter(
-                this, // Context
-                list, // list of scripture references used to populate the ListView
-                R.layout.list_item, // layout used for each item in ListView
-                new String[]{KEY_SCRIPTURE_REFERENCE, KEY_SCRIPTURE_REFERENCE}, // keys to look for in the maps in list
-                new int[]{R.id.listitem_text, R.id.listitem}); // ids of views to fill with values
-
-        // Need to set a ViewBinder so that the list items will do something. This ViewBinder
-        // attaches the OnClickListeners (found in the maps in list) to the list entries
-        adapter.setViewBinder(new SimpleAdapter.ViewBinder() {
-            @Override
-            public boolean setViewValue(View view, Object data, String textRepresentation) {
-                if (view.getId() == R.id.listitem) {
-                    view.setTag(data);
-                    Log.d("MainActivity.getAdapter", "setTag on view " + view.toString() + " to " + data.toString());
-                    view.setOnCreateContextMenuListener(MainActivity.this);
-                    view.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Log.d("OnItemClickListen", "onItemClick called! " + MainActivity.this.getResources().getResourceName(v.getId()));
-                            v.showContextMenu();
-                        }
-                    });
-                    return true; // Tells the SimpleAdapter that this view is all taken care of.
-                }
-                return false;
-            }
-        });
         return adapter;
-    }
-
-    // This is called when a list item is clicked
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        if (v.getId() == R.id.listitem) {
-            final String scripture = (String) v.getTag();
-            getMenuInflater().inflate(R.menu.scripture_context, menu); // Inflate menu from res.
-
-            // Create menu click listener
-            MenuItem.OnMenuItemClickListener l = new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()){
-                        case R.id.context_view_scripture:
-                            // TODO: go to scripture view
-                            toast("Would go to scripture view: " + scripture);
-                            return true;
-                        case R.id.context_memorize_scripture:
-                            // TODO: go to memorize view
-                            toast("Would go to memorize view " + scripture);
-                            return true;
-                        case R.id.context_view_notes:
-                            // TODO: go to notes view
-                            toast("Would go to notes view " + scripture);
-                            return true;
-                    }
-                    return false;
-                }
-            };
-
-            // Attach listener to all items on the menu
-            int size = menu.size();
-            for (int i = 0; i < size; i++) {
-                menu.getItem(i).setOnMenuItemClickListener(l);
-            }
-        }
     }
 
     @Override
@@ -156,11 +94,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_settings) {
             // TODO: Open Settings
-            toast("<would open settings>");
+            Toast.makeText(this, "<would open settings>", Toast.LENGTH_LONG);
             return true;
         } else if (id == R.id.action_test) {
             // TODO: START TEST ACTIVITY
-            toast("<would open test activity>");
+            Toast.makeText(this, "<would open test activity>", Toast.LENGTH_LONG);
             return true;
         }
 
