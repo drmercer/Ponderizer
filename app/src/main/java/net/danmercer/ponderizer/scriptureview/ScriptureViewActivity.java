@@ -1,22 +1,61 @@
-package net.danmercer.ponderizer;
+package net.danmercer.ponderizer.scriptureview;
 
 import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import net.danmercer.ponderizer.R;
+import net.danmercer.ponderizer.Scripture;
 
 import java.io.File;
 
 public class ScriptureViewActivity extends AppCompatActivity {
+    public static final int NUM_OF_TABS = 2;
+    public static final int IDX_SCRIPTURE_TAB = 0;
+    public static final int IDX_NOTES_TAB = 1;
 
+    public class ScriptureViewAdapter extends FragmentPagerAdapter {
+        public ScriptureViewAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case IDX_SCRIPTURE_TAB:
+                    return ScriptureTextFragment.createNew(scripture);
+                case IDX_NOTES_TAB:
+                    return NotesViewFragment.createNew(scripture);
+                default:
+                    Log.e("ScriptureViewAdapter", "Unsupported page index: " + position);
+                    return null;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return NUM_OF_TABS;
+        }
+    }
+
+    // The result code that this activity ends with iff the scripture has been deleted. This tells
+    // the MainActivity (which starts this one) that it should refresh its scripture list
     public static final int RESULT_SCRIPTURE_DELETED = 2;
     // The scripture being shown in this activity
-    private Scripture scripture;
+    Scripture scripture;
+
+    private ViewPager pager;
+    private ScriptureViewAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +80,10 @@ public class ScriptureViewActivity extends AppCompatActivity {
             setTitle(reference);
         }
 
-        // Display the scripture text in the activity.
-        TextView textView = (TextView) findViewById(R.id.scripture_text);
-        textView.setText(scripture.getBody());
+        // Set up the page fragments (scripture view and notes)
+        adapter = new ScriptureViewAdapter(getSupportFragmentManager());
+        pager = (ViewPager) findViewById(R.id.pager);
+        pager.setAdapter(adapter);
 
         // Set the result to RESULT_OK by default.
         setResult(RESULT_OK);
@@ -61,7 +101,7 @@ public class ScriptureViewActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_delete:
                 // Delete this scripture
-                File presentDir = getDir(MainActivity.CATEGORY_PRESENT, MODE_PRIVATE);
+                File presentDir = getDir(Scripture.CATEGORY_PRESENT, MODE_PRIVATE);
                 File[] list = presentDir.listFiles();
                 for (File f : list) {
                     if (scripture.filename.equals(f.getName())) {

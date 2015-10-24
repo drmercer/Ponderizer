@@ -13,12 +13,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import net.danmercer.ponderizer.scriptureview.ScriptureViewActivity;
+
 import java.io.File;
 import java.util.LinkedList;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String CATEGORY_PRESENT = "present";
     public static final int REQUEST_VIEW_SCRIPTURE = 1;
 
     @Override
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Fills or refreshes the list of Scriptures
     private void refreshScriptureList() {
-        File dir = getDir(CATEGORY_PRESENT, MODE_PRIVATE);
+        File dir = getDir(Scripture.CATEGORY_PRESENT, MODE_PRIVATE);
         final LinkedList<Scripture> scriptureList = Scripture.loadScriptures(dir);
         if (!scriptureList.isEmpty()) {
             ListView lv = (ListView) findViewById(R.id.scripturesList);

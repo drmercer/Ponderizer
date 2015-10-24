@@ -25,6 +25,13 @@ public class Scripture implements Parcelable {
     // Used when putting a Scripture into an intent as a parcelable extra
     public static final String EXTRA_NAME = Scripture.class.getName();
 
+    // The name of the directory for the notes files
+    public static final String NOTES_DIR = "notes";
+
+    // The name of the directory where this scripture is stored. Will be important once I implement
+    // multiple lists.
+    public static final String CATEGORY_PRESENT = "present";
+
     /**
      * CREATOR used by the Android OS to reconstruct a Scripture object that has been stored in a
      * Parcel
@@ -42,7 +49,6 @@ public class Scripture implements Parcelable {
             return new Scripture[size];
         }
     };
-
 
     public final String reference;
     public final String filename;
@@ -148,5 +154,9 @@ public class Scripture implements Parcelable {
     /** Returns the text of the scripture */
     public String getBody() {
         return body;
+    }
+
+    public String getFilename() {
+        return filename; // TODO: return the notes filename
     }
 }
