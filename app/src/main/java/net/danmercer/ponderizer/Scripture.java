@@ -1,5 +1,8 @@
 package net.danmercer.ponderizer;
 
+import android.content.Intent;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
@@ -17,10 +20,33 @@ import java.util.LinkedList;
 /**
  * Created by Dan on 10/22/2015.
  */
-public class Scripture {
-    private final String reference;
-    private final String filename;
-    private final String body;
+public class Scripture implements Parcelable {
+
+    // Used when putting a Scripture into an intent as a parcelable extra
+    public static final String EXTRA_NAME = Scripture.class.getName();
+
+    /**
+     * CREATOR used by the Android OS to reconstruct a Scripture object that has been stored in a
+     * Parcel
+     */
+    public static final Parcelable.Creator<Scripture> CREATOR = new Creator<Scripture>() {
+        @Override
+        public Scripture createFromParcel(Parcel source) {
+            String reference = source.readString();
+            String body = source.readString();
+            return new Scripture(reference, body);
+        }
+
+        @Override
+        public Scripture[] newArray(int size) {
+            return new Scripture[size];
+        }
+    };
+
+
+    public final String reference;
+    public final String filename;
+    public final String body;
 
     public static LinkedList<Scripture> loadScriptures(@NonNull File dir) {
         File[] files = dir.listFiles();
@@ -54,7 +80,7 @@ public class Scripture {
         return scriptures;
     }
 
-    public Scripture (@NonNull String reference, @NonNull String body) {
+    public Scripture(@NonNull String reference, @NonNull String body) {
         this.reference = reference.trim(); // Remove excess whitespace
         // Convert reference to a proper filename by
         // (1) replacing colons with dots,
@@ -68,6 +94,7 @@ public class Scripture {
         // Remove excess whitespace from the body text as well.
         this.body = body.trim();
     }
+
     /**
      * Writes the contained scripture to a file in the given directory.
      */
@@ -94,8 +121,32 @@ public class Scripture {
         }
     }
 
+    /** Returns the scripture reference */
     @Override
     public String toString() {
         return reference;
+    }
+
+    // From Parcelable interface
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    // From Parcelable interface
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(reference);
+        dest.writeString(body);
+    }
+
+    /** Returns the scripture reference */
+    public String getReference() {
+        return reference;
+    }
+
+    /** Returns the text of the scripture */
+    public String getBody() {
+        return body;
     }
 }

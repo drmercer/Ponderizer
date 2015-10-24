@@ -39,6 +39,8 @@
         </activity>
         <activity android:name=".AddScriptureInstructions" >
         </activity>
+        <activity android:name=".ScriptureViewActivity" >
+        </activity>
     </application>
 
 </manifest>

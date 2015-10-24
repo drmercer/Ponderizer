@@ -2,32 +2,24 @@ package net.danmercer.ponderizer;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String CATEGORY_PRESENT = "present";
+    public static final int REQUEST_VIEW_SCRIPTURE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +34,17 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launchAddScripture();
+                Intent i = new Intent(MainActivity.this.getApplicationContext(), AddScriptureInstructions.class);
+                startActivity(i);
             }
         });
 
         // Fill scriptures View
+        refreshScriptureList();
+    }
+
+    // Fills or refreshes the list of Scriptures
+    private void refreshScriptureList() {
         File dir = getDir(CATEGORY_PRESENT, MODE_PRIVATE);
         final LinkedList<Scripture> scriptureList = Scripture.loadScriptures(dir);
         if (!scriptureList.isEmpty()) {
@@ -55,27 +53,35 @@ public class MainActivity extends AppCompatActivity {
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String scripture = scriptureList.get(position).toString();
-                    Toast.makeText(MainActivity.this, scripture, Toast.LENGTH_SHORT).show();
-                    // TODO: start scripture view activity
+                    Scripture scripture = scriptureList.get(position);
+                    Intent launch = new Intent(MainActivity.this, ScriptureViewActivity.class);
+                    // Scripture implements Parcelable, so it can be added directly to the intent:
+                    launch.putExtra(Scripture.EXTRA_NAME, scripture);
+                    startActivityForResult(launch, REQUEST_VIEW_SCRIPTURE);
                 }
             });
         } else {
-            //TODO: set up empty list
             ListView lv = (ListView) findViewById(R.id.scripturesList);
             lv.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item, R.id.listitem_text, new String[]{"Tap to add a scripture"}));
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    launchAddScripture();
+                    // Launch the AddScriptureInstructions activity
+                    Intent i = new Intent(MainActivity.this.getApplicationContext(), AddScriptureInstructions.class);
+                    startActivity(i);
                 }
             });
         }
     }
 
-    private void launchAddScripture() {
-        Intent i = new Intent(MainActivity.this.getApplicationContext(), AddScriptureInstructions.class);
-        startActivity(i);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_VIEW_SCRIPTURE) {
+            if (resultCode == ScriptureViewActivity.RESULT_SCRIPTURE_DELETED) {
+                refreshScriptureList();
+            }
+        }
     }
 
     @Override
