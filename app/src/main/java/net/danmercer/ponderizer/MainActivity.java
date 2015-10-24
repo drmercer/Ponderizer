@@ -25,11 +25,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // Set up ActionBar with support API
+        // Set up ActionBar via the support API
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Set up FAB demo (circle button with email icon) TODO: replace/remove this
+        // Set up "Add" floating action button.
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,6 +40,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Fill scriptures View
+        refreshScriptureList();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         refreshScriptureList();
     }
 
@@ -78,7 +84,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_VIEW_SCRIPTURE) {
+            // The user just got back from viewing a scripture.
             if (resultCode == ScriptureViewActivity.RESULT_SCRIPTURE_DELETED) {
+                // The scripture was deleted, so refresh the list.
                 refreshScriptureList();
             }
         }
