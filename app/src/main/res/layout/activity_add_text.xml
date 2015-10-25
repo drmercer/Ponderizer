@@ -16,6 +16,5 @@
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_add_text" />
-    <!-- TODO: change back to content_main, and use onelist as fragment layout-->
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,9 +1,11 @@
 package net.danmercer.ponderizer.scriptureview;
 
 import android.content.Intent;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -24,17 +26,35 @@ public class ScriptureViewActivity extends AppCompatActivity {
     public static final int IDX_NOTES_TAB = 1;
 
     public class ScriptureViewAdapter extends FragmentPagerAdapter {
+        final NotesViewFragment notesFrag;
+        final ScriptureTextFragment scriptureFrag;
+
         public ScriptureViewAdapter(FragmentManager fm) {
             super(fm);
+            notesFrag = NotesViewFragment.createNew(scripture);
+            scriptureFrag = ScriptureTextFragment.createNew(scripture);
         }
 
         @Override
         public Fragment getItem(int position) {
             switch (position) {
                 case IDX_SCRIPTURE_TAB:
-                    return ScriptureTextFragment.createNew(scripture);
+                    return scriptureFrag;
                 case IDX_NOTES_TAB:
-                    return NotesViewFragment.createNew(scripture);
+                    return notesFrag;
+                default:
+                    Log.e("ScriptureViewAdapter", "Unsupported page index: " + position);
+                    return null;
+            }
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case IDX_SCRIPTURE_TAB:
+                    return "Scripture";
+                case IDX_NOTES_TAB:
+                    return "Notes";
                 default:
                     Log.e("ScriptureViewAdapter", "Unsupported page index: " + position);
                     return null;
@@ -74,16 +94,33 @@ public class ScriptureViewActivity extends AppCompatActivity {
         // Display the scripture reference in the Activty title
         String reference = scripture.getReference();
         ActionBar ab = getSupportActionBar();
-        if (ab != null) {
-            ab.setTitle(reference);
-        } else {
-            setTitle(reference);
-        }
+        ab.setTitle(reference);
 
         // Set up the page fragments (scripture view and notes)
         adapter = new ScriptureViewAdapter(getSupportFragmentManager());
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);
+
+        // Set up tabs
+        TabLayout tl = (TabLayout) findViewById(R.id.tabs);
+        tl.setTabsFromPagerAdapter(adapter);
+        pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tl));
+        tl.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                pager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                // Nothing doing!
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                // Nothing doing!
+            }
+        });
 
         // Set the result to RESULT_OK by default.
         setResult(RESULT_OK);
@@ -114,9 +151,6 @@ public class ScriptureViewActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_add_note:
-                // Add a note to this scripture's notes list
-                Toast.makeText(this, "Add Note to list", Toast.LENGTH_LONG).show();
-                // TODO: add note
                 return true;
             case R.id.action_memorize:
                 // Open the Memorize view
@@ -129,5 +163,11 @@ public class ScriptureViewActivity extends AppCompatActivity {
                 // TODO: open settings activity
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void launchAddNoteActivity() {
+        // Add a note to this scripture's notes list
+        Toast.makeText(this, "Add Note to list", Toast.LENGTH_LONG).show();
+        // TODO: launch note-adding activity
     }
 }
