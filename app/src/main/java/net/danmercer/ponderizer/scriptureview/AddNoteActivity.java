@@ -49,10 +49,10 @@ public class AddNoteActivity extends AppCompatActivity {
             // Save the note to the file
             try {
                 // Make sure the file exists.
-                mFile.createNewFile();
+                boolean append = !mFile.createNewFile();
 
                 // Open a FileWrite in append mode
-                FileWriter fw = new FileWriter(mFile, true);
+                FileWriter fw = new FileWriter(mFile, append);
 
                 // Write timestamp to file
                 String timeStamp = NotesViewFragment.Note.getDateFormat().format(new Date());

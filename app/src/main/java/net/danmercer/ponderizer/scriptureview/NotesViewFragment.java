@@ -59,6 +59,7 @@ public class NotesViewFragment extends Fragment {
 
             LinkedList<Note> notes = new LinkedList<>();
             try {
+                Log.d("Noteload", "Loading notes from file " + f.getAbsolutePath() + "//" + f.getName());
                 final long numOfChars = f.length() / 2;
                 long numRead = 0;
                 BufferedReader br = new BufferedReader(new FileReader(f));
@@ -66,17 +67,22 @@ public class NotesViewFragment extends Fragment {
                 StringBuilder text = new StringBuilder();
                 while (numRead < numOfChars) {
                     String line = br.readLine();
-                    if (line == null) {
-                        // End of file, so break out of loop
-                        break;
-                    }
-                    if (line.startsWith("# ")) { // Begins a new Note
-                        // If we just finished a note,
+                    boolean eof = line == null;
+                    boolean newNote = !eof && line.startsWith("# ");
+
+                    // We might have just finished reading in a note
+                    if (eof || newNote) {
+                        // If we just finished a note...
                         if (timestamp != 0) {
-                            // Pack previous note into a Note object.
+                            // then pack previous note into a Note object.
                             Note prev = new Note(timestamp, text.toString().trim());
                             notes.add(prev); // Add it to the list
                         }
+                    }
+                    if (eof) { // End of file, so break
+                        break;
+                    }
+                    if (newNote) { // Begins a new Note
                         text.delete(0, text.length()); // Empty the StringBuilder
                         // and parse the timeString into a timestamp (long)
                         String timeString = line.substring(2, line.length());
@@ -95,6 +101,12 @@ public class NotesViewFragment extends Fragment {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            for (Note n : notes) {
+                Log.d("Noteload", "# " + n.mTimeString);
+                Log.d("Noteload", n.mText);
+            }
+
             return notes;
         }
 
