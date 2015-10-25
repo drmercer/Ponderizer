@@ -41,15 +41,18 @@
         <!-- Shows instructions for adding from Gospel Library -->
         <activity
             android:name=".AddScriptureInstructions"
-            android:parentActivityName=".MainActivity">
-        </activity>
+            android:parentActivityName=".MainActivity"></activity>
 
         <!-- Displays the text of a scripture -->
         <activity
             android:name=".scriptureview.ScriptureViewActivity"
-            android:parentActivityName=".MainActivity">
-        </activity>
+            android:parentActivityName=".MainActivity"></activity>
 
+        <!-- Adds a note about a certain scripture -->
+        <activity
+            android:name=".scriptureview.AddNoteActivity"
+            android:label="@string/title_activity_add_note"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -146,11 +146,14 @@ public class ScriptureViewActivity extends AppCompatActivity {
                         break;
                     }
                 }
+                File notes = adapter.notesFrag.getFile();
+                if (notes.exists()) notes.delete();
                 // TODO: delete the scripture
                 setResult(RESULT_SCRIPTURE_DELETED);
                 finish();
                 return true;
             case R.id.action_add_note:
+                adapter.notesFrag.launchAddNoteActivity();
                 return true;
             case R.id.action_memorize:
                 // Open the Memorize view
@@ -163,11 +166,5 @@ public class ScriptureViewActivity extends AppCompatActivity {
                 // TODO: open settings activity
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void launchAddNoteActivity() {
-        // Add a note to this scripture's notes list
-        Toast.makeText(this, "Add Note to list", Toast.LENGTH_LONG).show();
-        // TODO: launch note-adding activity
     }
 }

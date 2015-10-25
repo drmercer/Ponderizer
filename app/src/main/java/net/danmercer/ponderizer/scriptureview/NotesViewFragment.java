@@ -1,6 +1,8 @@
 package net.danmercer.ponderizer.scriptureview;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -16,7 +19,6 @@ import net.danmercer.ponderizer.R;
 import net.danmercer.ponderizer.Scripture;
 
 import java.io.BufferedReader;
-import java.io.EOFException;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -33,7 +35,10 @@ import java.util.Locale;
  * Created by Dan on 10/24/2015.
  */
 public class NotesViewFragment extends Fragment {
+    private static final int REQUEST_ADD_NOTE = 2;
+
     public static class Note {
+        public static final String EXTRA_NOTE_FILE = "Note.filename";
         private static DateFormat instance = null;
         public static DateFormat getDateFormat() {
             if (instance == null) {
@@ -76,7 +81,7 @@ public class NotesViewFragment extends Fragment {
                         // and parse the timeString into a timestamp (long)
                         String timeString = line.substring(2, line.length());
                         try {
-                            timestamp = DateFormat.getDateTimeInstance().parse(timeString).getTime();
+                            timestamp = getDateFormat().parse(timeString).getTime();
                         } catch (ParseException e) {
                             Log.e("Note", "Corrupted note in file " + f.getName(), e);
                             timestamp = 0; // This will make the loop discard this note when it
@@ -138,33 +143,74 @@ public class NotesViewFragment extends Fragment {
         return f;
     }
 
+    // The file where these notes are stored.
+    private File file;
+    // The ListView that displays the list of notes
+    private ListView mListView;
+
+    public File getFile() {
+        return file;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.frag_notes_view, container, false);
-        ListView lv = (ListView) v.findViewById(R.id.notes_list);
+        mListView = (ListView) v.findViewById(R.id.notes_list);
 
         // Get the pointer to the notes file.
         String filename = getArguments().getString(ARGSKEY_NOTES_FILENAME);
-        File file = new File(getContext().getDir(Scripture.NOTES_DIR, Context.MODE_PRIVATE),
+        file = new File(getContext().getDir(Scripture.NOTES_DIR, Context.MODE_PRIVATE),
                 filename);
 
-        // Load notes from the file
+        // Load notes into list
+        refreshNoteList();
+
+        return v;
+    }
+
+    private void refreshNoteList() {
         List<Note> notes = Note.loadFromFile(file);
         if (notes.size() != 0) {
             // If there are some notes that already exist, populate the ListView with them
             ListAdapter adapter = new ArrayAdapter<Note>(getContext(), R.layout.list_item,
                     R.id.listitem_text, notes);
-            lv.setAdapter(adapter);
-            // TODO: set up onClickListener to view note
+            mListView.setAdapter(adapter);
+            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    // TODO: open activity to view/edit note
+                }
+            });
         } else {
             // If no notes exist for this scripture, put an "Add note" entry in the ListView
             ListAdapter adapter = new ArrayAdapter<String>(getContext(), R.layout.list_item,
                     R.id.listitem_text, new String[]{"Tap to add a note"});
-            lv.setAdapter(adapter);
-            // TODO: set up onClickListener to add note
+            mListView.setAdapter(adapter);
+            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    launchAddNoteActivity();
+                }
+            });
         }
+    }
 
-        return v;
+    public void launchAddNoteActivity() {
+        // Launch an activity to add a new note
+        Intent i = new Intent(getContext(), AddNoteActivity.class); // TODO: construct with note-adding activity class
+        i.putExtra(Note.EXTRA_NOTE_FILE, file);
+        startActivityForResult(i, REQUEST_ADD_NOTE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // If it was a request to add a note
+        if (requestCode == REQUEST_ADD_NOTE) {
+            // If a note was added successfully
+            if (resultCode == Activity.RESULT_OK && mListView != null) {
+                refreshNoteList();
+            }
+        }
     }
 }

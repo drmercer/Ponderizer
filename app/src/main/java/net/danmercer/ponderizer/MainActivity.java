@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Launch activity with instructions for adding scriptures
                 Intent i = new Intent(MainActivity.this.getApplicationContext(), AddScriptureInstructions.class);
                 startActivity(i);
             }
