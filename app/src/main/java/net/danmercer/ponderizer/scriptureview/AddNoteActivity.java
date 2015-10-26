@@ -47,23 +47,17 @@ public class AddNoteActivity extends AppCompatActivity {
 
         if (id == R.id.action_done) {
             // Save the note to the file
+            long timestamp = System.currentTimeMillis();
+            String note = mNoteEntry.getText().toString();
             try {
                 // Make sure the file exists.
                 boolean append = !mFile.createNewFile();
 
-                // Open a FileWrite in append mode
+                // Open a FileWriter in append mode
                 FileWriter fw = new FileWriter(mFile, append);
 
-                // Write timestamp to file
-                String timeStamp = NotesViewFragment.Note.getDateFormat().format(new Date());
-                fw.write("# ");
-                fw.write(timeStamp);
-                fw.write("\n\n");
-
-                // Write the note text to file
-                String note = mNoteEntry.getText().toString();
-                fw.write(note);
-                fw.write("\n\n");
+                // Write Note to file
+                new NotesViewFragment.Note(timestamp, note).writeToFile(fw);
 
                 // Flush and close the file
                 fw.flush();
