@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import net.danmercer.ponderizer.R;
 import net.danmercer.ponderizer.Scripture;
@@ -177,6 +178,7 @@ public class NotesViewFragment extends Fragment {
         } else if (resultCode == AddNoteActivity.RESULT_DELETED && requestCode == REQUEST_EDIT_NOTE) {
             // Delete the note that was being edited
             deleteNote(mNoteBeingEdited);
+            Toast.makeText(getContext(), "Note deleted", Toast.LENGTH_SHORT).show();
         }
         mNoteBeingEdited = null;
     }

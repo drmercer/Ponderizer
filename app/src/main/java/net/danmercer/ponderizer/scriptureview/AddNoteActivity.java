@@ -181,14 +181,21 @@ public class AddNoteActivity extends AppCompatActivity {
     }
 
     private void saveAndFinish() {
-        mLaunchIntent.putExtra(Note.EXTRA_NOTE_TEXT, mNoteEntry.getText().toString());
-        mLaunchIntent.putExtra(Note.EXTRA_NOTE_TIME, System.currentTimeMillis());
+        String text = mNoteEntry.getText().toString();
+        if (text.isEmpty()) {
+            // The user backspaced all the text, so delete the note.
+            setResult(RESULT_DELETED);
+            finish();
+        } else {
+            mLaunchIntent.putExtra(Note.EXTRA_NOTE_TEXT, text);
+            mLaunchIntent.putExtra(Note.EXTRA_NOTE_TIME, System.currentTimeMillis());
 
-        Toast.makeText(this, "Note saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Note saved", Toast.LENGTH_SHORT).show();
 
-        // Set activity result and finish, going back to the ScriptureViewActivity
-        setResult(RESULT_OK, mLaunchIntent);
-        finish();
+            // Set activity result and finish, going back to the ScriptureViewActivity
+            setResult(RESULT_OK, mLaunchIntent);
+            finish();
+        }
     }
 
 }
