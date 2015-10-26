@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,156 +15,20 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import net.danmercer.ponderizer.R;
 import net.danmercer.ponderizer.Scripture;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by Dan on 10/24/2015.
  */
 public class NotesViewFragment extends Fragment {
     private static final int REQUEST_ADD_NOTE = 2;
-
-    public static class Note {
-        public static final String EXTRA_NOTE_FILE = "Note.filename";
-        private static DateFormat instance = null;
-
-        public static DateFormat getDateFormat() {
-            if (instance == null) {
-                instance = new SimpleDateFormat("dd LLL yyyy, h:mma", Locale.getDefault());
-            }
-            return instance;
-        }
-
-        public static void loadFromFile(File f, List<Note> list) {
-            // Make sure the given File exists and represents a file (not a directory)
-            list.clear(); // Empty the list to prepare to reload the Notes.
-            if (!f.exists()) {
-                // File doesn't exist, no notes have been created.
-                return; // Return, leaving the list empty.
-            } else if (!f.isFile()) {
-                // If it exists but is not a file, throw exception
-                throw new IllegalArgumentException("f must be an existing file.");
-            }
-
-            try {
-                Log.d("Noteload", "Loading notes from file " + f.getAbsolutePath() + "//" + f.getName());
-                final long numOfChars = f.length() / 2;
-                long numRead = 0;
-                BufferedReader br = new BufferedReader(new FileReader(f));
-                long timestamp = 0;
-                StringBuilder text = new StringBuilder();
-                while (numRead < numOfChars) {
-                    String line = br.readLine();
-                    boolean eof = line == null;
-                    boolean newNote = !eof && line.startsWith("# ");
-
-                    // We might have just finished reading in a note
-                    if (eof || newNote) {
-                        // If we just finished a note...
-                        if (timestamp != 0) {
-                            // then pack previous note into a Note object.
-                            Note prev = new Note(timestamp, text.toString().trim());
-                            list.add(prev); // Add it to the list
-                        }
-                    }
-                    if (eof) { // End of file, so break
-                        break;
-                    }
-                    if (newNote) { // Begins a new Note
-                        text.delete(0, text.length()); // Empty the StringBuilder
-                        // and parse the timeString into a timestamp (long)
-                        String timeString = line.substring(2, line.length());
-                        try {
-                            timestamp = getDateFormat().parse(timeString).getTime();
-                        } catch (ParseException e) {
-                            Log.e("Note", "Corrupted note in file " + f.getName(), e);
-                            timestamp = 0; // This will make the loop discard this note when it
-                            // reaches the next note.
-                        }
-                    } else {
-                        // Continues a Note
-                        text.append(line).append('\n');
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        public static void writeNotesToFile(List<Note> notes, File f) {
-            FileWriter fw = null;
-            try {
-                f.createNewFile();
-                fw = new FileWriter(f, false); // Overwrite existing file
-                for (Note n : notes) {
-                    n.writeToFile(fw);
-                }
-            } catch (IOException e) {
-                Log.e("AddNoteActivity", "Couldn't save Note properly", e);
-            } finally {
-                if (fw != null) {
-                    try {
-                        fw.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-
-        private long mTimestamp;
-        private String mTimeString;
-        private final String mText;
-
-        public Note(long timestamp, String text) {
-            mText = text.replaceAll("(?:^#|(?<=\\n)#)", "");
-            // Gets rid of any # symbols at the beginning of lines, because # denotes the beginning
-            // of a note in the text file
-
-            setTimestamp(timestamp);
-        }
-
-        public void setTimestamp(long timestamp) {
-            mTimestamp = timestamp;
-            mTimeString = getDateFormat().format(new Date(mTimestamp));
-        }
-
-        // Returns the string that describes when this note was created or edited
-        @Override
-        public String toString() {
-            return mTimeString;
-        }
-
-        public String getText() {
-            return mText;
-        }
-
-        public void writeToFile(FileWriter fw) throws IOException {
-            // Write note header ("# <timeStamp>")
-            fw.write("# ");
-            fw.write(mTimeString);
-            fw.write("\n");
-
-            // Write note text
-            fw.write(mText);
-            fw.write("\n\n");
-        }
-    }
+    private static final int REQUEST_EDIT_NOTE = 3;
 
     private static final String ARGSKEY_NOTES_FILENAME = "NotesViewFragment.notesFilename";
 
@@ -181,6 +44,8 @@ public class NotesViewFragment extends Fragment {
     private ListView mListView; // The ListView that displays the list of notes
     private List<Note> mNotes; // The list of Notes
     private ArrayAdapter<Note> mAdapter;
+    private ListAdapter mEmptyAdapter;
+    private Note mNoteBeingEdited;
 
     public File getFile() {
         return mFile;
@@ -199,15 +64,17 @@ public class NotesViewFragment extends Fragment {
 
         // Load notes into list
         mNotes = new LinkedList<>();
+        Note.loadFromFile(mFile, mNotes);
         mAdapter = new ArrayAdapter<Note>(getContext(), R.layout.list_item,
                 R.id.listitem_text, mNotes);
+        mEmptyAdapter = new ArrayAdapter<String>(getContext(), R.layout.list_item,
+                R.id.listitem_text, new String[]{"Tap to add a note"});
         refreshNoteList();
 
         return v;
     }
 
     private void refreshNoteList() {
-        Note.loadFromFile(mFile, mNotes);
         if (mNotes.size() != 0) {
             // If there are some notes that already exist, populate the ListView with them
 
@@ -219,15 +86,13 @@ public class NotesViewFragment extends Fragment {
             mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    // TODO: open activity to view/edit note
+                    launchEditNoteActivity(position);
                 }
             });
             registerForContextMenu(mListView);
         } else {
             // If no notes exist for this scripture, put an "Add note" entry in the ListView
-            ListAdapter adapter = new ArrayAdapter<String>(getContext(), R.layout.list_item,
-                    R.id.listitem_text, new String[]{"Tap to add a note"});
-            mListView.setAdapter(adapter);
+            mListView.setAdapter(mEmptyAdapter);
             mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -255,8 +120,7 @@ public class NotesViewFragment extends Fragment {
                 deleteNoteAt(pos);
                 return true;
             case R.id.action_view:
-                // TODO: open Note viewer activity.
-                Toast.makeText(getContext(), mNotes.get(pos).getText(), Toast.LENGTH_SHORT).show();
+                launchEditNoteActivity(pos);
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -264,30 +128,56 @@ public class NotesViewFragment extends Fragment {
     }
 
     private void deleteNoteAt(int position) {
-        mNotes.remove(((Integer) position).intValue());
+        deleteNote(mNotes.get(position));
+    }
+
+    private void deleteNote(Note n) {
+        mNotes.remove(n);
         // Write modified notes list to file
         Note.writeNotesToFile(mNotes, mFile);
-        mAdapter.notifyDataSetChanged();
-        if (mNotes.size() == 0) {
-            refreshNoteList(); // this method switches the ListView over to a temporary adapter
-        }
+
+        // this method switches the ListView over to a the mEmptyAdapter if necessary
+        refreshNoteList();
+    }
+
+    public void launchEditNoteActivity(int pos) {
+        // Launch activity to edit the note
+        Intent i = new Intent(getContext(), AddNoteActivity.class);
+        mNoteBeingEdited = mNotes.get(pos);
+        i.putExtra(Note.EXTRA_NOTE_TIME, mNoteBeingEdited.getTimestamp());
+        i.putExtra(Note.EXTRA_NOTE_TEXT, mNoteBeingEdited.getText());
+        startActivityForResult(i, REQUEST_EDIT_NOTE);
     }
 
     public void launchAddNoteActivity() {
         // Launch an activity to add a new note
-        Intent i = new Intent(getContext(), AddNoteActivity.class); // TODO: construct with note-adding activity class
-        i.putExtra(Note.EXTRA_NOTE_FILE, mFile);
+        Intent i = new Intent(getContext(), AddNoteActivity.class);
         startActivityForResult(i, REQUEST_ADD_NOTE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // If it was a request to add a note
-        if (requestCode == REQUEST_ADD_NOTE) {
-            // If a note was added successfully
-            if (resultCode == Activity.RESULT_OK && mListView != null) {
+        // If the activity was successful
+        if (resultCode == Activity.RESULT_OK) {
+            // If it was a request to add a note
+            if (requestCode == REQUEST_ADD_NOTE) {
+                String noteText = data.getStringExtra(Note.EXTRA_NOTE_TEXT);
+                long time = data.getLongExtra(Note.EXTRA_NOTE_TIME, 0);
+                mNotes.add(0, new Note(time, noteText));
+                Note.writeNotesToFile(mNotes, mFile);
+                refreshNoteList();
+            } else if (requestCode == REQUEST_EDIT_NOTE) {
+                mNotes.remove(mNoteBeingEdited);
+                String noteText = data.getStringExtra(Note.EXTRA_NOTE_TEXT);
+                long time = data.getLongExtra(Note.EXTRA_NOTE_TIME, 0);
+                mNotes.add(0, new Note(time, noteText));
+                Note.writeNotesToFile(mNotes, mFile);
                 refreshNoteList();
             }
+        } else if (resultCode == AddNoteActivity.RESULT_DELETED && requestCode == REQUEST_EDIT_NOTE) {
+            // Delete the note that was being edited
+            deleteNote(mNoteBeingEdited);
         }
+        mNoteBeingEdited = null;
     }
 }
