@@ -1,10 +1,17 @@
 package net.danmercer.ponderizer;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +24,7 @@ import net.danmercer.ponderizer.scriptureview.ScriptureViewActivity;
 
 import java.io.File;
 import java.util.LinkedList;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,6 +51,57 @@ public class MainActivity extends AppCompatActivity {
 
         // Fill scriptures View
         refreshScriptureList();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        int rand = new Random().nextInt(50);
+        if (rand == 33) {
+            Snackbar s = Snackbar.make(findViewById(R.id.fab), "Could this app be improved?", Snackbar.LENGTH_LONG);
+            s.setAction("Tell me how!", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    launchFeedbackDialog();
+                }
+            });
+            s.show();
+        }
+    }
+
+    private void launchFeedbackDialog() {
+        AlertDialog.Builder db = new AlertDialog.Builder(this);
+        db.setMessage("Want to suggest a feature? Tap \"OK\" to write me an email.");
+        AlertDialog.OnClickListener l = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d("onclick", "fired");
+                launchFeedbackEmailIntent();
+            }
+        };
+        db.setPositiveButton("OK", l);
+        db.setNegativeButton("Nah", null);
+        db.show();
+    }
+
+    private void launchFeedbackEmailIntent() {
+        String version = null;
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
+            version = info.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            // Never going to happen.
+            e.printStackTrace();
+        }
+        Intent i = new Intent(Intent.ACTION_SENDTO);
+        i.setType("text/plain");
+        i.setData(Uri.parse("mailto:"));
+        i.putExtra(Intent.EXTRA_EMAIL, new String[]{"danmercerdev@gmail.com"});
+        i.putExtra(Intent.EXTRA_SUBJECT,
+                "Feature Suggestion for Ponderizer (" + version + ")");
+        i.putExtra(Intent.EXTRA_TEXT, "Please describe the feature you would like to see. Thanks " +
+                "for supporting the Ponderizer app!\n\n");
+        startActivity(i);
     }
 
     @Override
@@ -112,9 +171,8 @@ public class MainActivity extends AppCompatActivity {
             // TODO: Open Settings
             Toast.makeText(this, "<would open settings>", Toast.LENGTH_LONG);
             return true;
-        } else if (id == R.id.action_test) {
-            // TODO: START TEST ACTIVITY
-            Toast.makeText(this, "<would open test activity>", Toast.LENGTH_LONG);
+        } else if (id == R.id.action_feedback) {
+            launchFeedbackDialog();
             return true;
         }
 
