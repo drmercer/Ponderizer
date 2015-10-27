@@ -186,7 +186,7 @@ public class AddNoteActivity extends AppCompatActivity {
             // The user backspaced all the text, so delete the note.
             setResult(RESULT_DELETED);
             finish();
-        } else {
+        } else if (mEdited) {
             mLaunchIntent.putExtra(Note.EXTRA_NOTE_TEXT, text);
             mLaunchIntent.putExtra(Note.EXTRA_NOTE_TIME, System.currentTimeMillis());
 
@@ -194,6 +194,9 @@ public class AddNoteActivity extends AppCompatActivity {
 
             // Set activity result and finish, going back to the ScriptureViewActivity
             setResult(RESULT_OK, mLaunchIntent);
+            finish();
+        } else {
+            setResult(RESULT_CANCELED);
             finish();
         }
     }
