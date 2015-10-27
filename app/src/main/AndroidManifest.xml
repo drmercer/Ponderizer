@@ -31,7 +31,8 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter android:label="Ponderize Scripture">
                 <action android:name="android.intent.action.SEND" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="org.lds.ldssa" />
+                <!-- This ^ makes it only accept intents from LDS Gospel Library -->
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
