@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                     Scripture scripture = scriptureList.get(position);
                     Intent launch = new Intent(MainActivity.this, ScriptureViewActivity.class);
                     // Scripture implements Parcelable, so it can be added directly to the intent:
-                    launch.putExtra(Scripture.EXTRA_NAME, scripture);
+                    launch.putExtra(Scripture.EXTRA_SCRIPTURE, scripture);
                     startActivityForResult(launch, REQUEST_VIEW_SCRIPTURE);
                 }
             });

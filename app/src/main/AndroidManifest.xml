@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="net.danmercer.ponderizer">
+    package="net.danmercer.ponderizer" >
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
 
-        <!-- Look up scriptures by reference TODO: Remove AddScriptureReference? -->
+        <!-- Look up scriptures by reference TODO: Remove this activty? -->
         <activity
             android:name=".AddScriptureReferenceActivity"
             android:parentActivityName=".MainActivity" />
@@ -28,12 +28,10 @@
         <activity
             android:name=".AddScriptureTextActivity"
             android:label="Add Scripture to Ponderize"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter android:label="Ponderize Scripture">
                 <action android:name="android.intent.action.SEND" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
@@ -41,18 +39,25 @@
         <!-- Shows instructions for adding from Gospel Library -->
         <activity
             android:name=".AddScriptureInstructions"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
 
         <!-- Displays the text of a scripture -->
         <activity
             android:name=".scriptureview.ScriptureViewActivity"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
 
         <!-- Adds a note about a certain scripture -->
         <activity
             android:name=".scriptureview.AddNoteActivity"
             android:label="@string/title_activity_add_note"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- Practice memorizing a scripture-->
+        <activity
+            android:name=".memorize.MemorizeActivity"
+            android:label="@string/title_activity_memorize"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>

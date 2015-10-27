@@ -7,4 +7,5 @@
     <string name="memorize_scripture">Memorize</string>
     <string name="view_notes">View Notes</string>
     <string name="title_activity_add_note">Add Note</string>
+    <string name="title_activity_memorize">Memorize</string>
 </resources>

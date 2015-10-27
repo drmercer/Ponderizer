@@ -5,7 +5,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +16,7 @@ import android.widget.Toast;
 
 import net.danmercer.ponderizer.R;
 import net.danmercer.ponderizer.Scripture;
+import net.danmercer.ponderizer.memorize.MemorizeActivity;
 
 import java.io.File;
 
@@ -84,7 +84,7 @@ public class ScriptureViewActivity extends AppCompatActivity {
 
         // Get the Scripture to display
         Intent intent = getIntent();
-        scripture = intent.getParcelableExtra(Scripture.EXTRA_NAME);
+        scripture = intent.getParcelableExtra(Scripture.EXTRA_SCRIPTURE);
         if (scripture == null) {
             // If no Scripture was put into the intent, abort the Activity and report an error.
             Log.e("ScriptureViewActivity", "ScriptureViewActivity was launched without a Scripture!");
@@ -157,8 +157,9 @@ public class ScriptureViewActivity extends AppCompatActivity {
                 return true;
             case R.id.action_memorize:
                 // Open the Memorize view
-                Toast.makeText(this, "Memorize Scripture", Toast.LENGTH_LONG).show();
-                // TODO: open memorize view
+                Intent i = new Intent(this, MemorizeActivity.class);
+                i.putExtra(Scripture.EXTRA_SCRIPTURE, scripture);
+                startActivity(i);
                 return true;
             case R.id.action_settings:
                 Toast.makeText(this, "Open Settings", Toast.LENGTH_LONG).show();

@@ -23,7 +23,7 @@ import java.util.LinkedList;
 public class Scripture implements Parcelable {
 
     // Used when putting a Scripture into an intent as a parcelable extra
-    public static final String EXTRA_NAME = Scripture.class.getName();
+    public static final String EXTRA_SCRIPTURE = Scripture.class.getName();
 
     // The name of the directory for the notes files
     public static final String NOTES_DIR = "notes";
