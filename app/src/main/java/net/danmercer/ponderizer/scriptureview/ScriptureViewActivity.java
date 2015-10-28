@@ -138,17 +138,7 @@ public class ScriptureViewActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_delete:
                 // Delete this scripture
-                File presentDir = getDir(Scripture.CATEGORY_PRESENT, MODE_PRIVATE);
-                File[] list = presentDir.listFiles();
-                for (File f : list) {
-                    if (scripture.filename.equals(f.getName())) {
-                        f.delete();
-                        break;
-                    }
-                }
-                File notes = adapter.notesFrag.getFile();
-                if (notes.exists()) notes.delete();
-                // TODO: delete the scripture
+                scripture.delete(this);
                 setResult(RESULT_SCRIPTURE_DELETED);
                 finish();
                 return true;

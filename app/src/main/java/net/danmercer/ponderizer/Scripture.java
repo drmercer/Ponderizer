@@ -1,5 +1,7 @@
 package net.danmercer.ponderizer;
 
+import android.appwidget.AppWidgetManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -158,5 +160,24 @@ public class Scripture implements Parcelable {
 
     public String getFilename() {
         return filename; // TODO: return the notes filename
+    }
+
+    public void delete(Context context) {
+        // Delete scripture file
+        File scripDir = context.getDir(Scripture.CATEGORY_PRESENT, Context.MODE_PRIVATE);
+        File scripFile = new File(scripDir, filename);
+        if (scripFile.exists()) scripFile.delete();
+        // Delete notes file
+        File notesDir = context.getDir(Scripture.NOTES_DIR, Context.MODE_PRIVATE);
+        File noteFile = new File(notesDir, filename);
+        if (noteFile.exists()) noteFile.delete();
+
+        ScriptureAppWidget.updateAllAppWidgets(context);
+    }
+
+    public boolean fileExists(Context context) {
+        File scripDir = context.getDir(Scripture.CATEGORY_PRESENT, Context.MODE_PRIVATE);
+        File scripFile = new File(scripDir, filename);
+        return scripFile.exists();
     }
 }

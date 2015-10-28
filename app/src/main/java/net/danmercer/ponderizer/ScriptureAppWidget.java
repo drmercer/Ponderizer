@@ -4,11 +4,13 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.appwidget.AppWidgetProviderInfo;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import net.danmercer.ponderizer.memorize.MemorizeActivity;
@@ -49,6 +51,7 @@ public class ScriptureAppWidget extends AppWidgetProvider {
         }
 
         Scripture s = new Scripture(reference, scriptureText);
+        boolean scriptureFileExists = s.fileExists(context);
 
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.scripture_app_widget);
@@ -57,24 +60,46 @@ public class ScriptureAppWidget extends AppWidgetProvider {
         views.setTextViewText(R.id.widget_header, reference);
         views.setTextViewText(R.id.widget_body, scriptureText);
 
-        // Set up Memorize button
+        // Set up memorize PendingIntent
         Intent memIntent = new Intent(context, MemorizeActivity.class);
         memIntent.putExtra(Scripture.EXTRA_SCRIPTURE, s);
-        PendingIntent memorizeIntent = PendingIntent.getActivity(context, appWidgetId, memIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        views.setOnClickPendingIntent(R.id.action_memorize, memorizeIntent);
+        PendingIntent memorizeIntent = PendingIntent.getActivity(context, appWidgetId,
+                memIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // Set up Add Note button
+        // Set up add note PendingIntent
         Intent noteIntent = new Intent(context, AddNoteActivity.class);
         noteIntent.putExtra(Scripture.EXTRA_SCRIPTURE, s);
-        PendingIntent addNoteIntent = PendingIntent.getActivity(context, appWidgetId, noteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        views.setOnClickPendingIntent(R.id.action_add_note, addNoteIntent);
+        PendingIntent addNoteIntent = PendingIntent.getActivity(context, appWidgetId,
+                noteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // Set up Scripture text (takes user to ScriptureViewActivity when clicked)
+        // Set up scripture view PendingIntent
         Intent viewIntent = new Intent(context, ScriptureViewActivity.class);
         viewIntent.putExtra(Scripture.EXTRA_SCRIPTURE, s);
-        PendingIntent scripViewIntent = PendingIntent.getActivity(context, appWidgetId, viewIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        views.setOnClickPendingIntent(R.id.widget_body, scripViewIntent);
-        views.setOnClickPendingIntent(R.id.widget_header, scripViewIntent);
+        PendingIntent scripViewIntent = PendingIntent.getActivity(context, appWidgetId,
+                viewIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        if (scriptureFileExists) {
+            // Attach proper PendingIntent to Memorize button
+            views.setOnClickPendingIntent(R.id.action_memorize, memorizeIntent);
+
+            // Attach proper PendingIntent to Add Note button
+            views.setOnClickPendingIntent(R.id.action_add_note, addNoteIntent);
+
+            // Attach proper PendingIntent to Scripture text (takes user to ScriptureViewActivity
+            // when clicked)
+            views.setOnClickPendingIntent(R.id.widget_body, scripViewIntent);
+            views.setOnClickPendingIntent(R.id.widget_header, scripViewIntent);
+        } else {
+            // Hide buttons, because the scripture is no longer saved
+            // In the user's list.
+            views.setViewVisibility(R.id.action_memorize, View.GONE);
+            views.setViewVisibility(R.id.action_add_note, View.GONE);
+
+            // Cancel all PendingIntents
+            memorizeIntent.cancel();
+            addNoteIntent.cancel();
+            scripViewIntent.cancel();
+        }
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -99,6 +124,19 @@ public class ScriptureAppWidget extends AppWidgetProvider {
             prefs.remove(PREF_KEY_TEXT + appWidgetIds[i]);
             prefs.commit();
         }
+    }
+
+    // Can be called with a Context to update all the appwidgets of this type
+    public static void updateAllAppWidgets(Context c) {
+        ComponentName componentName = new ComponentName(
+                c.getApplicationContext(),
+                ScriptureAppWidget.class);
+        int[] ids = AppWidgetManager.getInstance(c).getAppWidgetIds(componentName);
+
+        Intent i = new Intent(c, ScriptureAppWidget.class);
+        i.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        i.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        c.sendBroadcast(i);
     }
 
     @Override

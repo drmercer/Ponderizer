@@ -12,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import net.danmercer.ponderizer.memorize.MemorizeActivity;
+import net.danmercer.ponderizer.scriptureview.AddNoteActivity;
 import net.danmercer.ponderizer.scriptureview.ScriptureViewActivity;
 
 import java.io.File;
@@ -29,6 +32,7 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     public static final int REQUEST_VIEW_SCRIPTURE = 1;
+    private LinkedList<Scripture> mScriptureList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,20 +117,18 @@ public class MainActivity extends AppCompatActivity {
     // Fills or refreshes the list of Scriptures
     private void refreshScriptureList() {
         File dir = getDir(Scripture.CATEGORY_PRESENT, MODE_PRIVATE);
-        final LinkedList<Scripture> scriptureList = Scripture.loadScriptures(dir);
-        if (!scriptureList.isEmpty()) {
+        mScriptureList = Scripture.loadScriptures(dir);
+        if (!mScriptureList.isEmpty()) {
             ListView lv = (ListView) findViewById(R.id.scripturesList);
-            lv.setAdapter(new ArrayAdapter<Scripture>(this, R.layout.list_item, R.id.listitem_text, scriptureList));
+            lv.setAdapter(new ArrayAdapter<Scripture>(this, R.layout.list_item, R.id.listitem_text, mScriptureList));
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Scripture scripture = scriptureList.get(position);
-                    Intent launch = new Intent(MainActivity.this, ScriptureViewActivity.class);
-                    // Scripture implements Parcelable, so it can be added directly to the intent:
-                    launch.putExtra(Scripture.EXTRA_SCRIPTURE, scripture);
-                    startActivityForResult(launch, REQUEST_VIEW_SCRIPTURE);
+                    Scripture scripture = mScriptureList.get(position);
+                    launchScriptureViewActivity(scripture);
                 }
             });
+            registerForContextMenu(lv);
         } else {
             ListView lv = (ListView) findViewById(R.id.scripturesList);
             lv.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item, R.id.listitem_text, new String[]{"Tap to add a scripture"}));
@@ -138,6 +140,65 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(i);
                 }
             });
+            unregisterForContextMenu(lv);
+        }
+    }
+
+    void launchScriptureViewActivity(Scripture scripture) {
+        Intent i = new Intent(this, ScriptureViewActivity.class);
+        // Scripture implements Parcelable, so it can be added directly to the intent:
+        i.putExtra(Scripture.EXTRA_SCRIPTURE, scripture);
+        startActivityForResult(i, REQUEST_VIEW_SCRIPTURE);
+    }
+
+    private void launchMemorizeActivity(Scripture scripture) {
+        Intent i = new Intent(this, MemorizeActivity.class);
+        i.putExtra(Scripture.EXTRA_SCRIPTURE, scripture);
+        startActivity(i);
+    }
+
+    private void launchAddNoteActivity(Scripture scripture) {
+        Intent i = new Intent(this, AddNoteActivity.class);
+        i.putExtra(Scripture.EXTRA_SCRIPTURE, scripture);
+        startActivity(i);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        getMenuInflater().inflate(R.menu.context_scripture, menu);
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int pos = info.position; // Get index of item that was long-clicked
+        Scripture s = mScriptureList.get(pos);
+
+        switch (item.getItemId()) {
+
+            case R.id.action_delete:
+                // Delete this scripture
+                s.delete(this);
+                // Refresh mScripturesList
+                refreshScriptureList();
+                return true;
+
+            case R.id.action_add_note:
+                launchAddNoteActivity(s);
+                return true;
+
+            case R.id.action_view:
+                launchScriptureViewActivity(s);
+                return true;
+
+            case R.id.action_memorize:
+                launchMemorizeActivity(s);
+                return true;
+
+            default:
+                return super.onContextItemSelected(item);
         }
     }
 
