@@ -180,9 +180,13 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.action_delete:
                 // Delete this scripture
-                s.delete(this);
+                s.deleteWithConfirmation(this, new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshScriptureList();
+                    }
+                });
                 // Refresh mScripturesList
-                refreshScriptureList();
                 return true;
 
             case R.id.action_add_note:

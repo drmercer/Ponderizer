@@ -18,8 +18,6 @@ import net.danmercer.ponderizer.R;
 import net.danmercer.ponderizer.Scripture;
 import net.danmercer.ponderizer.memorize.MemorizeActivity;
 
-import java.io.File;
-
 public class ScriptureViewActivity extends AppCompatActivity {
     public static final int NUM_OF_TABS = 2;
     public static final int IDX_SCRIPTURE_TAB = 0;
@@ -138,9 +136,13 @@ public class ScriptureViewActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_delete:
                 // Delete this scripture
-                scripture.delete(this);
-                setResult(RESULT_SCRIPTURE_DELETED);
-                finish();
+                scripture.deleteWithConfirmation(this, new Runnable() {
+                    @Override
+                    public void run() {
+                        setResult(RESULT_SCRIPTURE_DELETED);
+                        finish();
+                    }
+                });
                 return true;
             case R.id.action_add_note:
                 adapter.notesFrag.launchAddNoteActivity();

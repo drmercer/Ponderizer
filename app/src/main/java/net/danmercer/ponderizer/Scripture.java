@@ -1,15 +1,11 @@
 package net.danmercer.ponderizer;
 
-import android.appwidget.AppWidgetManager;
+import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.EOFException;
@@ -129,7 +125,9 @@ public class Scripture implements Parcelable {
         }
     }
 
-    /** Returns the scripture reference */
+    /**
+     * Returns the scripture reference
+     */
     @Override
     public String toString() {
         return reference;
@@ -148,12 +146,16 @@ public class Scripture implements Parcelable {
         dest.writeString(body);
     }
 
-    /** Returns the scripture reference */
+    /**
+     * Returns the scripture reference
+     */
     public String getReference() {
         return reference;
     }
 
-    /** Returns the text of the scripture */
+    /**
+     * Returns the text of the scripture
+     */
     public String getBody() {
         return body;
     }
@@ -162,6 +164,27 @@ public class Scripture implements Parcelable {
         return filename; // TODO: return the notes filename
     }
 
+    /**
+     * @param context
+     * @param r       The Runnable to run after the user confirms the deletion
+     */
+    public void deleteWithConfirmation(final Context context, final Runnable r) {
+        AlertDialog.Builder db = new AlertDialog.Builder(context);
+        db.setMessage(
+                "Are you sure you want to delete this scripture and its notes from your list?");
+        DialogInterface.OnClickListener l = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Scripture.this.delete(context);
+                r.run();
+            }
+        };
+        db.setPositiveButton("Yes", l);
+        db.setNegativeButton("No", null);
+        db.show();
+    }
+
+    // Deletes this scripture
     public void delete(Context context) {
         // Delete scripture file
         File scripDir = context.getDir(Scripture.CATEGORY_PRESENT, Context.MODE_PRIVATE);
