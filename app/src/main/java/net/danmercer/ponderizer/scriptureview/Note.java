@@ -115,6 +115,27 @@ public class Note {
         }
     }
 
+    // Utility method, called by AddNoteActivity.saveAndFinish() when launched from an app widget
+    public static void writeNoteToFile(long timestamp, String note, File f) {
+        FileWriter fw = null;
+        try {
+            f.createNewFile();
+            fw = new FileWriter(f, true);
+            new Note(timestamp, note).writeToFile(fw);
+        } catch (IOException e) {
+            Log.e("AddNoteActivity", "Couldn't save Note properly", e);
+        } finally {
+            if (fw != null) {
+                try {
+                    fw.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.e("AddNoteActivity", "Couldn't save Note properly", e);
+                }
+            }
+        }
+    }
+
     private long mTimestamp;
     private String mTimeString;
     private final String mText;

@@ -2,6 +2,7 @@ package net.danmercer.ponderizer.scriptureview;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +19,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import net.danmercer.ponderizer.R;
+import net.danmercer.ponderizer.Scripture;
+
+import java.io.File;
 
 public class AddNoteActivity extends AppCompatActivity {
     public static final int RESULT_DELETED = 4;
@@ -182,17 +187,30 @@ public class AddNoteActivity extends AppCompatActivity {
 
     private void saveAndFinish() {
         String text = mNoteEntry.getText().toString();
+
         if (text.isEmpty()) {
             // The user backspaced all the text, so delete the note.
             setResult(RESULT_DELETED);
             finish();
         } else if (mEdited) {
-            mLaunchIntent.putExtra(Note.EXTRA_NOTE_TEXT, text);
-            mLaunchIntent.putExtra(Note.EXTRA_NOTE_TIME, System.currentTimeMillis());
+            long time = System.currentTimeMillis();
+            if (mLaunchIntent.hasExtra(Scripture.EXTRA_SCRIPTURE)) {
+                // If the launch intent has an EXTRA_SCRIPTURE extra, it means this activity was
+                // launched from a widget, so write the new note directly to file.
+                Scripture s = mLaunchIntent.getParcelableExtra(Scripture.EXTRA_SCRIPTURE);
+                File noteFile = new File(getDir(Scripture.NOTES_DIR, Context.MODE_PRIVATE),
+                        s.getFilename());
+                Note.writeNoteToFile(time, text, noteFile);
+            } else {
+                // Otherwise, send the note via Intent back to the ScriptureViewActivity that
+                // launched this activity
+                mLaunchIntent.putExtra(Note.EXTRA_NOTE_TEXT, text);
+                mLaunchIntent.putExtra(Note.EXTRA_NOTE_TIME, time);
+            }
 
             Toast.makeText(this, "Note saved", Toast.LENGTH_SHORT).show();
 
-            // Set activity result and finish, going back to the ScriptureViewActivity
+            // Set activity result and finish
             setResult(RESULT_OK, mLaunchIntent);
             finish();
         } else {

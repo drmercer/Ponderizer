@@ -7,17 +7,22 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import java.io.File;
+import java.util.LinkedList;
 
 /**
  * The configuration screen for the {@link ScriptureAppWidget ScriptureAppWidget} AppWidget.
  */
-public class ScriptureAppWidgetConfigureActivity extends Activity {
+public class ScriptureAppWidgetConfigureActivity extends Activity implements AdapterView.OnItemClickListener {
 
+    // FIELDS:
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID; // Default value is an invalid ID
-    EditText mAppWidgetText;
-    private static final String PREFS_NAME = "net.danmercer.ponderizer.ScriptureAppWidget";
-    private static final String PREF_PREFIX_KEY = "appwidget_";
+    private LinkedList<Scripture> mScriptureList;
 
     public ScriptureAppWidgetConfigureActivity() {
         super();
@@ -32,8 +37,24 @@ public class ScriptureAppWidgetConfigureActivity extends Activity {
         setResult(RESULT_CANCELED);
 
         setContentView(R.layout.scripture_app_widget_configure);
-        mAppWidgetText = (EditText) findViewById(R.id.appwidget_text);
-        findViewById(R.id.add_button).setOnClickListener(mOnClickListener);
+        ListView mListView = (ListView) findViewById(R.id.scripturesList);
+
+        // Initialize ListView
+        File dir = getDir(Scripture.CATEGORY_PRESENT, MODE_PRIVATE);
+        mScriptureList = Scripture.loadScriptures(dir);
+        if (!mScriptureList.isEmpty()) {
+            ListView lv = (ListView) findViewById(R.id.scripturesList);
+            lv.setAdapter(new ArrayAdapter<Scripture>(this, R.layout.list_item, R.id.listitem_text, mScriptureList));
+            lv.setOnItemClickListener(this);
+        } else {
+            // Scriptures list is empty, so tell the user to add a scripture first.
+            Toast.makeText(this,
+                    "Please add a scripture from Gospel Library before placing a widget.",
+                    Toast.LENGTH_LONG).show();
+            startActivity(new Intent(this, AddScriptureInstructions.class));
+            finish();
+            return;
+        }
 
         // Find the widget id from the intent.
         Intent intent = getIntent();
@@ -50,49 +71,27 @@ public class ScriptureAppWidgetConfigureActivity extends Activity {
         }
     }
 
-    View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            final Context context = ScriptureAppWidgetConfigureActivity.this;
+    // Called when an entry in the ListView is clicked.
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Scripture scripture = mScriptureList.get(position);
 
-            // When the button is clicked, store the string locally
-            String widgetText = mAppWidgetText.getText().toString();
-            saveTitlePref(context, mAppWidgetId, widgetText);
+        String reference = scripture.getReference();
+        String text = scripture.getBody();
 
-            // It is the responsibility of the configuration activity to update the app widget
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-            ScriptureAppWidget.updateAppWidget(context, appWidgetManager, mAppWidgetId);
+        // Save widget data to preferences file
+        ScriptureAppWidget.saveWidgetPrefs(this, mAppWidgetId, reference, text);
 
-            // Make sure we pass back the original appWidgetId
-            Intent resultValue = new Intent();
-            resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-            setResult(RESULT_OK, resultValue);
-            finish();
-        }
-    };
+        // It is the responsibility of the configuration activity to update the app widget
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+        ScriptureAppWidget.updateAppWidget(this, appWidgetManager, mAppWidgetId);
 
-    // Write the prefix to the SharedPreferences object for this widget
-    static void saveTitlePref(Context context, int appWidgetId, String text) {
-        SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-        prefs.putString(PREF_PREFIX_KEY + appWidgetId, text);
-        prefs.commit();
+        // Make sure we pass back the original appWidgetId
+        Intent resultValue = new Intent();
+        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+        setResult(RESULT_OK, resultValue);
+        finish();
     }
 
-    // Read the prefix from the SharedPreferences object for this widget.
-    // If there is no preference saved, get the default from a resource
-    static String loadTitlePref(Context context, int appWidgetId) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-        String titleValue = prefs.getString(PREF_PREFIX_KEY + appWidgetId, null);
-        if (titleValue != null) {
-            return titleValue;
-        } else {
-            return context.getString(R.string.appwidget_text);
-        }
-    }
-
-    static void deleteTitlePref(Context context, int appWidgetId) {
-        SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-        prefs.remove(PREF_PREFIX_KEY + appWidgetId);
-        prefs.commit();
-    }
 }
 

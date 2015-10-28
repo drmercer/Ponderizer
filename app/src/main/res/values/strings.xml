@@ -9,6 +9,6 @@
     <string name="title_activity_add_note">Add Note</string>
     <string name="title_activity_memorize">Memorize</string>
     <string name="appwidget_text">EXAMPLE</string>
-    <string name="configure">Configure</string>
+    <string name="configure">Choose the scripture you wish to display:</string>
     <string name="add_widget">Add widget</string>
 </resources>
