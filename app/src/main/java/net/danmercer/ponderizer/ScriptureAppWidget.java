@@ -13,6 +13,7 @@ import android.widget.RemoteViews;
 
 import net.danmercer.ponderizer.memorize.MemorizeActivity;
 import net.danmercer.ponderizer.scriptureview.AddNoteActivity;
+import net.danmercer.ponderizer.scriptureview.ScriptureViewActivity;
 
 /**
  * Implementation of App Widget functionality.
@@ -67,6 +68,13 @@ public class ScriptureAppWidget extends AppWidgetProvider {
         noteIntent.putExtra(Scripture.EXTRA_SCRIPTURE, s);
         PendingIntent addNoteIntent = PendingIntent.getActivity(context, appWidgetId, noteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.action_add_note, addNoteIntent);
+
+        // Set up Scripture text (takes user to ScriptureViewActivity when clicked)
+        Intent viewIntent = new Intent(context, ScriptureViewActivity.class);
+        viewIntent.putExtra(Scripture.EXTRA_SCRIPTURE, s);
+        PendingIntent scripViewIntent = PendingIntent.getActivity(context, appWidgetId, viewIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setOnClickPendingIntent(R.id.widget_body, scripViewIntent);
+        views.setOnClickPendingIntent(R.id.widget_header, scripViewIntent);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
