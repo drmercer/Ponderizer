@@ -24,13 +24,14 @@
             android:name=".AddScriptureReferenceActivity"
             android:parentActivityName=".MainActivity" />
 
-        <!-- "Share" text from other apps (i.e. Gospel Library) and add as scripture -->
+        <!-- "Share" text from Gospel Library and add as scripture -->
         <activity
             android:name=".AddScriptureTextActivity"
             android:label="Add Scripture to Ponderize"
             android:theme="@style/AppTheme.NoActionBar" >
-            <intent-filter android:label="Ponderize Scripture">
+            <intent-filter android:label="Ponderize Scripture" >
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="org.lds.ldssa" />
                 <!-- This ^ makes it only accept intents from LDS Gospel Library -->
                 <data android:mimeType="text/plain" />
@@ -53,11 +54,29 @@
             android:label="@string/title_activity_add_note"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!-- Practice memorizing a scripture-->
+        <!-- Practice memorizing a scripture -->
         <activity
             android:name=".memorize.MemorizeActivity"
             android:label="@string/title_activity_memorize"
             android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+
+        <!-- Scripture widget provider -->
+        <receiver android:name=".ScriptureAppWidget" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/scripture_app_widget_info" />
+        </receiver>
+
+        <!-- Scripture widget configuration activity-->
+        <activity android:name=".ScriptureAppWidgetConfigureActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
         </activity>
     </application>
 

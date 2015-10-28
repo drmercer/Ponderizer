@@ -9,4 +9,5 @@
 
     <!-- Accent color; -->
     <color name="colorAccent">#795548</color>
+    <color name="widget_background">#88000000</color>
 </resources>
