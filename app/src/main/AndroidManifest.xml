@@ -31,12 +31,37 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter android:label="Ponderize Scripture" >
                 <action android:name="android.intent.action.SEND" />
+            </intent-filter>
+        </activity>
 
+        <activity-alias
+            android:name=".AddScriptureTextActivityFromAnyApp"
+            android:targetActivity=".AddScriptureTextActivity"
+            android:label="Add Scripture to Ponderize"
+            android:enabled="false" >
+            <!-- This activity-alias is disabled by default, but can be enabled from settings -->
+            <!-- TODO: add option to enable this in Settings -->
+            <intent-filter android:label="Ponderize Scripture" >
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".AddScriptureTextOnlyGospelLibrary"
+            android:targetActivity=".AddScriptureTextActivity"
+            android:label="Add Scripture to Ponderize"
+            android:enabled="true" >
+            <!-- This activity-alias is enabled by default, but will be disabled when that^ one -->
+            <!-- is enabled-->
+            <intent-filter android:label="Ponderize Scripture" >
+                <action android:name="android.intent.action.SEND" />
                 <category android:name="org.lds.ldssa" />
                 <!-- This ^ makes it only accept intents from LDS Gospel Library -->
                 <data android:mimeType="text/plain" />
             </intent-filter>
-        </activity>
+        </activity-alias>
 
         <!-- Shows instructions for adding from Gospel Library -->
         <activity
