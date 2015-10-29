@@ -1,3 +1,19 @@
+/*
+ * Copyright 2015. Dan Mercer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.danmercer.ponderizer;
 
 import android.content.ClipData;
@@ -5,9 +21,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -15,7 +28,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import net.danmercer.ponderizer.scriptureview.Note;
@@ -106,7 +118,7 @@ public class ExportActivity extends AppCompatActivity implements CompoundButton.
                 mDateAndTimeButton.setEnabled(isChecked);
                 mDateOnlyButton.setEnabled(isChecked);
                 return; // Since it was only the Note Headers checkbox that changed, we can return from
-                // here because the code below is irrelevant.
+            // here because the code below is irrelevant.
         }
 
         // We only want the Export and Clipboard buttons to be clickable if the user has at least
@@ -119,7 +131,7 @@ public class ExportActivity extends AppCompatActivity implements CompoundButton.
     }
 
     private void export() {
-       String export = generateText();
+        String export = generateText();
 
         // Share string with intent
         Intent i = new Intent(Intent.ACTION_SEND);

@@ -1,9 +1,23 @@
+/*
+ * Copyright 2015. Dan Mercer
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.danmercer.ponderizer.memorize;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -13,7 +27,6 @@ import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import net.danmercer.ponderizer.R;
 import net.danmercer.ponderizer.Scripture;
@@ -101,7 +114,7 @@ public class MemorizeActivity extends AppCompatActivity {
         // Count all the words.
         int wordCount = 0;
         while (m.find()) {
-           wordCount++;
+            wordCount++;
         }
         m.reset();
 
@@ -116,7 +129,7 @@ public class MemorizeActivity extends AppCompatActivity {
             // Divide that number into two parts, a floored half and a ceiling'ed half. This way we
             // can more evenly distribute the masked words throughout the text.
             int part1 = wordsToMaskPerTen / 2;
-            int part2 = (wordsToMaskPerTen % 2 == 1)? part1 + 1 : part1;
+            int part2 = (wordsToMaskPerTen % 2 == 1) ? part1 + 1 : part1;
             Log.d("mathy", "wordsToMaskPerTen: " + wordsToMaskPerTen);
             Log.d("mathy", "part 1: " + part1);
             Log.d("mathy", "part 2: " + part2);
