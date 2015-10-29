@@ -79,6 +79,9 @@ public class MemorizeActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) { /* Don't care! */ }
         });
         mScripView = (TextView) findViewById(R.id.scripture_text);
+
+        // Set the seek bar to maximum, so that the user starts with the text masked.
+        mSeekBar.setProgress(mSeekBar.getMax());
     }
 
     private void updateTextView() {

@@ -140,7 +140,7 @@ public class ExportActivity extends AppCompatActivity implements CompoundButton.
         Toast.makeText(this, "Copied to clipboard.", Toast.LENGTH_SHORT).show();
     }
 
-    // Calls generateText() // TODO: left off here. finish this comment
+    // Calls generateText(...) with the current data from the checkboxes and radiobuttons.
     private String generateText() {
         CheckBox cbScriptureText = (CheckBox) findViewById(R.id.checkBox_scriptureText);
         CheckBox cbScriptureRef = (CheckBox) findViewById(R.id.checkBox_scriptureReference);
