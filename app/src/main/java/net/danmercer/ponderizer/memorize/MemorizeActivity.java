@@ -45,6 +45,10 @@ public class MemorizeActivity extends AppCompatActivity {
         }
         mText = mScripture.getBody();
 
+        // Set activity title to show scripture reference
+        setTitle(getTitle() + " " + mScripture.getReference());
+
+        // Set up Spinner
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setAdapter(new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_dropdown_item,
@@ -63,6 +67,7 @@ public class MemorizeActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) { /* Don't care! */ }
         });
 
+        // Set up SeekBar
         mSeekBar = (SeekBar) findViewById(R.id.seekBar);
         mSeekBar.setMax(100);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
