@@ -3,16 +3,15 @@
     android:oneshot="false"
     android:visible="true">
 
-    <item android:drawable="@drawable/how_to_add_1" android:duration="1600"/>
-    <item android:drawable="@drawable/how_to_add_2" android:duration="600"/>
-    <item android:drawable="@drawable/how_to_add_3" android:duration="1200"/>
-    <item android:drawable="@drawable/how_to_add_4" android:duration="600"/>
-    <item android:drawable="@drawable/how_to_add_5" android:duration="1600"/>
-    <item android:drawable="@drawable/how_to_add_6" android:duration="600"/>
-    <item android:drawable="@drawable/how_to_add_7" android:duration="1400"/>
-    <item android:drawable="@drawable/how_to_add_8" android:duration="800"/>
-    <item android:drawable="@drawable/how_to_add_9" android:duration="1200"/>
-    <item android:drawable="@drawable/how_to_add_10" android:duration="600"/>
-    <item android:drawable="@drawable/how_to_add_11" android:duration="3000"/>
+    <item android:drawable="@drawable/howto_anim_01" android:duration="1600"/>
+    <item android:drawable="@drawable/howto_anim_02" android:duration="600"/>
+    <item android:drawable="@drawable/howto_anim_03" android:duration="1200"/>
+    <item android:drawable="@drawable/howto_anim_04" android:duration="600"/>
+    <item android:drawable="@drawable/howto_anim_05" android:duration="1600"/>
+    <item android:drawable="@drawable/howto_anim_06" android:duration="600"/>
+    <item android:drawable="@drawable/howto_anim_07" android:duration="1400"/>
+    <item android:drawable="@drawable/howto_anim_08" android:duration="1200"/>
+    <item android:drawable="@drawable/howto_anim_09" android:duration="600"/>
+    <item android:drawable="@drawable/howto_anim_10" android:duration="3000"/>
 
 </animation-list>
