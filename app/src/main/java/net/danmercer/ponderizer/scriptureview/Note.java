@@ -20,11 +20,12 @@ import java.util.Locale;
 public class Note {
     public static final String EXTRA_NOTE_TIME = "Note.time";
     public static final String EXTRA_NOTE_TEXT = "Note.text";
+    private static final String DATE_FORMAT_STRING = "dd LLL yyyy";
     private static DateFormat instance = null;
 
     public static DateFormat getDateFormat() {
         if (instance == null) {
-            instance = new SimpleDateFormat("dd LLL yyyy, h:mma", Locale.getDefault());
+            instance = new SimpleDateFormat(DATE_FORMAT_STRING + ", h:mma", Locale.getDefault());
         }
         return instance;
     }
@@ -151,7 +152,7 @@ public class Note {
     // Returns the string that describes when this note was created or edited
     @Override
     public String toString() {
-        return mTimeString;
+        return getTimeString();
     }
 
     public String getText() {
@@ -176,5 +177,13 @@ public class Note {
         // Write note text
         fw.write(mText);
         fw.write("\n\n");
+    }
+
+    public String getTimeString() {
+        return mTimeString;
+    }
+
+    public String getDateString() {
+        return new SimpleDateFormat(DATE_FORMAT_STRING).format(new Date(mTimestamp));
     }
 }

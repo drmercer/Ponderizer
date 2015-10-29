@@ -232,13 +232,10 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            // TODO: Open Settings
-            Toast.makeText(this, "<would open settings>", Toast.LENGTH_LONG);
-            return true;
-        } else if (id == R.id.action_feedback) {
-            launchFeedbackDialog();
-            return true;
+        switch (id) {
+            case R.id.action_feedback:
+                launchFeedbackDialog();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

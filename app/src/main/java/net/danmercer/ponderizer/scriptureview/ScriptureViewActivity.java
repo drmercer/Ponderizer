@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import net.danmercer.ponderizer.ExportActivity;
 import net.danmercer.ponderizer.R;
 import net.danmercer.ponderizer.Scripture;
 import net.danmercer.ponderizer.memorize.MemorizeActivity;
@@ -134,6 +135,7 @@ public class ScriptureViewActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
             case R.id.action_delete:
                 // Delete this scripture
                 scripture.deleteWithConfirmation(this, new Runnable() {
@@ -144,19 +146,23 @@ public class ScriptureViewActivity extends AppCompatActivity {
                     }
                 });
                 return true;
+
             case R.id.action_add_note:
                 adapter.notesFrag.launchAddNoteActivity();
                 return true;
+
             case R.id.action_memorize:
                 // Open the Memorize view
                 Intent i = new Intent(this, MemorizeActivity.class);
                 i.putExtra(Scripture.EXTRA_SCRIPTURE, scripture);
                 startActivity(i);
                 return true;
-            case R.id.action_settings:
-                Toast.makeText(this, "Open Settings", Toast.LENGTH_LONG).show();
-                // Open Settings Activity
-                // TODO: open settings activity
+
+            case R.id.action_export:
+                Intent intent = new Intent(this, ExportActivity.class);
+                intent.putExtra(Scripture.EXTRA_SCRIPTURE, scripture);
+                startActivity(intent);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

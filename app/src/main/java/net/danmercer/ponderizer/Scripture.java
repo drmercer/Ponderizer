@@ -7,6 +7,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import net.danmercer.ponderizer.scriptureview.Note;
+
 import java.io.BufferedReader;
 import java.io.EOFException;
 import java.io.File;
@@ -161,7 +163,7 @@ public class Scripture implements Parcelable {
     }
 
     public String getFilename() {
-        return filename; // TODO: return the notes filename
+        return filename;
     }
 
     /**
@@ -187,11 +189,11 @@ public class Scripture implements Parcelable {
     // Deletes this scripture
     public void delete(Context context) {
         // Delete scripture file
-        File scripDir = context.getDir(Scripture.CATEGORY_PRESENT, Context.MODE_PRIVATE);
+        File scripDir = context.getDir(Scripture.CATEGORY_PRESENT, 0);
         File scripFile = new File(scripDir, filename);
         if (scripFile.exists()) scripFile.delete();
         // Delete notes file
-        File notesDir = context.getDir(Scripture.NOTES_DIR, Context.MODE_PRIVATE);
+        File notesDir = context.getDir(Scripture.NOTES_DIR, 0);
         File noteFile = new File(notesDir, filename);
         if (noteFile.exists()) noteFile.delete();
 
@@ -199,8 +201,17 @@ public class Scripture implements Parcelable {
     }
 
     public boolean fileExists(Context context) {
-        File scripDir = context.getDir(Scripture.CATEGORY_PRESENT, Context.MODE_PRIVATE);
+        File scripDir = context.getDir(Scripture.CATEGORY_PRESENT, 0);
         File scripFile = new File(scripDir, filename);
         return scripFile.exists();
+    }
+
+    public boolean hasNotes(Context c) {
+        File notesFile = getNotesFile(c);
+        return notesFile.exists(); // The file should not exist if there are no notes.
+    }
+
+    public File getNotesFile(Context c) {
+        return new File(c.getDir(Scripture.NOTES_DIR, 0), filename);
     }
 }

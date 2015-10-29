@@ -72,11 +72,20 @@
                 android:resource="@xml/scripture_app_widget_info" />
         </receiver>
 
-        <!-- Scripture widget configuration activity-->
-        <activity android:name=".ScriptureAppWidgetConfigureActivity">
+        <!-- Scripture widget configuration activity -->
+        <activity android:name=".ScriptureAppWidgetConfigureActivity" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ExportActivity"
+            android:label="@string/title_activity_export"
+            android:parentActivityName=".scriptureview.ScriptureViewActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.danmercer.ponderizer.scriptureview.ScriptureViewActivity" />
         </activity>
     </application>
 

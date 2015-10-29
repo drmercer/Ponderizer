@@ -11,4 +11,6 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="configure">Choose the scripture you wish to display:</string>
     <string name="add_widget">Add widget</string>
+    <string name="title_activity_export">Export / Share Scripture</string>
+    <string name="no_notes">(There are no notes for this scripture)</string>
 </resources>

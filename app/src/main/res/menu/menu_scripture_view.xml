@@ -22,4 +22,9 @@
         android:orderInCategory="3"
         android:title="Delete Scripture"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_export"
+        android:orderInCategory="4"
+        android:title="Export / Share"
+        app:showAsAction="never" />
 </menu>
