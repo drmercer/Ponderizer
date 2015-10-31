@@ -74,20 +74,17 @@ public class ScriptureAppWidget extends AppWidgetProvider {
         views.setTextViewText(R.id.widget_body, scriptureText);
 
         // Set up memorize PendingIntent
-        Intent memIntent = new Intent(context, MemorizeActivity.class);
-        memIntent.putExtra(Scripture.EXTRA_SCRIPTURE, s);
+        Intent memIntent = s.getMemorizeIntent(context);
         PendingIntent memorizeIntent = PendingIntent.getActivity(context, appWidgetId,
                 memIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Set up add note PendingIntent
-        Intent noteIntent = new Intent(context, AddNoteActivity.class);
-        noteIntent.putExtra(Scripture.EXTRA_SCRIPTURE, s);
+        Intent noteIntent = s.getAddNoteIntent(context);
         PendingIntent addNoteIntent = PendingIntent.getActivity(context, appWidgetId,
                 noteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Set up scripture view PendingIntent
-        Intent viewIntent = new Intent(context, ScriptureViewActivity.class);
-        viewIntent.putExtra(Scripture.EXTRA_SCRIPTURE, s);
+        Intent viewIntent = s.getViewIntent(context);
         PendingIntent scripViewIntent = PendingIntent.getActivity(context, appWidgetId,
                 viewIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -101,7 +98,6 @@ public class ScriptureAppWidget extends AppWidgetProvider {
             // Attach proper PendingIntent to Scripture text (takes user to ScriptureViewActivity
             // when clicked)
             views.setOnClickPendingIntent(R.id.widget_body, scripViewIntent);
-            views.setOnClickPendingIntent(R.id.widget_header, scripViewIntent);
         } else {
             // Hide buttons, because the scripture is no longer saved
             // In the user's list.
@@ -113,6 +109,13 @@ public class ScriptureAppWidget extends AppWidgetProvider {
             addNoteIntent.cancel();
             scripViewIntent.cancel();
         }
+
+        // Set up widget "context menu"
+        Intent menuIntent = new Intent(context, WidgetPopupMenuActivity.class);
+        menuIntent.putExtra(Scripture.EXTRA_SCRIPTURE, s);
+        menuIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        PendingIntent menuPending = PendingIntent.getActivity(context, appWidgetId, menuIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setOnClickPendingIntent(R.id.widget_header, menuPending);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
