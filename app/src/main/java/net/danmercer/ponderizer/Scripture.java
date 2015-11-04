@@ -19,9 +19,14 @@ package net.danmercer.ponderizer;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+
+import net.danmercer.ponderizer.memorize.MemorizeActivity;
+import net.danmercer.ponderizer.scriptureview.AddNoteActivity;
+import net.danmercer.ponderizer.scriptureview.ScriptureViewActivity;
 
 import java.io.BufferedReader;
 import java.io.EOFException;
@@ -227,5 +232,25 @@ public class Scripture implements Parcelable {
 
     public File getNotesFile(Context c) {
         return new File(c.getDir(Scripture.NOTES_DIR, 0), filename);
+    }
+
+    // INTENT UTILITY METHODS, called by ScriptureAppWidget and WidgetPopupMenuActivity
+
+    public Intent getMemorizeIntent(Context context) {
+        Intent i = new Intent(context, MemorizeActivity.class);
+        i.putExtra(Scripture.EXTRA_SCRIPTURE, this);
+        return i;
+    }
+
+    public Intent getAddNoteIntent(Context context) {
+        Intent i = new Intent(context, AddNoteActivity.class);
+        i.putExtra(Scripture.EXTRA_SCRIPTURE, this);
+        return i;
+    }
+
+    public Intent getViewIntent(Context context) {
+        Intent i = new Intent(context, ScriptureViewActivity.class);
+        i.putExtra(Scripture.EXTRA_SCRIPTURE, this);
+        return i;
     }
 }

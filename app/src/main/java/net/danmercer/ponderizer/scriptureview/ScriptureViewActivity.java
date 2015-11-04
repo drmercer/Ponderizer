@@ -103,6 +103,7 @@ public class ScriptureViewActivity extends AppCompatActivity {
             // If no Scripture was put into the intent, abort the Activity and report an error.
             Log.e("ScriptureViewActivity", "ScriptureViewActivity was launched without a Scripture!");
             finish();
+            return;
         }
 
         // Display the scripture reference in the Activty title

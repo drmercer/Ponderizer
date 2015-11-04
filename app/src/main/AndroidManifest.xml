@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="net.danmercer.ponderizer" >
+    package="net.danmercer.ponderizer"
+    android:versionCode="3"
+    android:versionName="1.1.1">
 
     <application
         android:allowBackup="true"
@@ -36,27 +38,31 @@
 
         <activity-alias
             android:name=".AddScriptureTextActivityFromAnyApp"
-            android:targetActivity=".AddScriptureTextActivity"
+            android:enabled="false"
             android:label="Add Scripture to Ponderize"
-            android:enabled="false" >
+            android:targetActivity=".AddScriptureTextActivity" >
+
             <!-- This activity-alias is disabled by default, but can be enabled from settings -->
             <!-- TODO: add option to enable this in Settings -->
             <intent-filter android:label="Ponderize Scripture" >
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity-alias>
-
         <activity-alias
             android:name=".AddScriptureTextOnlyGospelLibrary"
-            android:targetActivity=".AddScriptureTextActivity"
+            android:enabled="true"
             android:label="Add Scripture to Ponderize"
-            android:enabled="true" >
+            android:targetActivity=".AddScriptureTextActivity" >
+
             <!-- This activity-alias is enabled by default, but will be disabled when that^ one -->
-            <!-- is enabled-->
+            <!-- is enabled -->
             <intent-filter android:label="Ponderize Scripture" >
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="org.lds.ldssa" />
                 <!-- This ^ makes it only accept intents from LDS Gospel Library -->
                 <data android:mimeType="text/plain" />
@@ -97,12 +103,20 @@
                 android:resource="@xml/scripture_app_widget_info" />
         </receiver>
 
+        <!-- Scripture widget "context menu" -->
+        <activity
+            android:name=".WidgetPopupMenuActivity"
+            android:theme="@style/AppTheme.Dialog">
+        </activity>
+
         <!-- Scripture widget configuration activity -->
         <activity android:name=".ScriptureAppWidgetConfigureActivity" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
+
+        <!-- Export scriptures and notes -->
         <activity
             android:name=".ExportActivity"
             android:label="@string/title_activity_export"
