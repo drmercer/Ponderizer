@@ -253,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.action_help:
-                Uri url = Uri.parse("https://github.com/drmercer/Ponderizer/wiki");
+                Uri url = Uri.parse("https://github.com/drmercer/Ponderizer/wiki/User-Help-Pages");
                 Intent help = new Intent(Intent.ACTION_VIEW, url);
                 startActivity(help);
         }
