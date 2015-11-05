@@ -22,7 +22,6 @@
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_main_onelist" />
-    <!-- TODO: change back to content_main, and use onelist as fragment layout-->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -31,6 +30,5 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_add_white_24dp" />
-    <!-- TODO: change ic_input_add to a better drawable-->
 
 </android.support.design.widget.CoordinatorLayout>

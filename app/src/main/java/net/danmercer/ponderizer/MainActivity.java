@@ -37,7 +37,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import net.danmercer.ponderizer.memorize.MemorizeActivity;
-import net.danmercer.ponderizer.scriptureview.AddNoteActivity;
 import net.danmercer.ponderizer.scriptureview.ScriptureViewActivity;
 
 import java.io.File;
@@ -131,8 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Fills or refreshes the list of Scriptures
     private void refreshScriptureList() {
-        File dir = getDir(Scripture.CATEGORY_PRESENT, MODE_PRIVATE);
-        mScriptureList = Scripture.loadScriptures(dir);
+        mScriptureList = Scripture.loadScriptures(this, NewMainActivity.Category.IN_PROGRESS);
         if (!mScriptureList.isEmpty()) {
             ListView lv = (ListView) findViewById(R.id.scripturesList);
             lv.setAdapter(new ArrayAdapter<Scripture>(this, R.layout.list_item, R.id.listitem_text, mScriptureList));
@@ -140,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Scripture scripture = mScriptureList.get(position);
-                    launchScriptureViewActivity(scripture);
+                    startActivityForResult(scripture.getViewIntent(MainActivity.this), REQUEST_VIEW_SCRIPTURE);
                 }
             });
             registerForContextMenu(lv);
@@ -157,25 +155,6 @@ public class MainActivity extends AppCompatActivity {
             });
             unregisterForContextMenu(lv);
         }
-    }
-
-    void launchScriptureViewActivity(Scripture scripture) {
-        Intent i = new Intent(this, ScriptureViewActivity.class);
-        // Scripture implements Parcelable, so it can be added directly to the intent:
-        i.putExtra(Scripture.EXTRA_SCRIPTURE, scripture);
-        startActivityForResult(i, REQUEST_VIEW_SCRIPTURE);
-    }
-
-    private void launchMemorizeActivity(Scripture scripture) {
-        Intent i = new Intent(this, MemorizeActivity.class);
-        i.putExtra(Scripture.EXTRA_SCRIPTURE, scripture);
-        startActivity(i);
-    }
-
-    private void launchAddNoteActivity(Scripture scripture) {
-        Intent i = new Intent(this, AddNoteActivity.class);
-        i.putExtra(Scripture.EXTRA_SCRIPTURE, scripture);
-        startActivity(i);
     }
 
     @Override
@@ -198,22 +177,22 @@ public class MainActivity extends AppCompatActivity {
                 s.deleteWithConfirmation(this, new Runnable() {
                     @Override
                     public void run() {
+                        // Refresh mScripturesList
                         refreshScriptureList();
                     }
                 });
-                // Refresh mScripturesList
                 return true;
 
             case R.id.action_add_note:
-                launchAddNoteActivity(s);
+                startActivity(s.getAddNoteIntent(this));
                 return true;
 
             case R.id.action_view:
-                launchScriptureViewActivity(s);
+                startActivityForResult(s.getViewIntent(this), REQUEST_VIEW_SCRIPTURE);
                 return true;
 
             case R.id.action_memorize:
-                launchMemorizeActivity(s);
+                startActivity(s.getMemorizeIntent(this));
                 return true;
 
             default:

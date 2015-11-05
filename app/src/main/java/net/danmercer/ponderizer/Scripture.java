@@ -47,10 +47,6 @@ public class Scripture implements Parcelable {
     // The name of the directory for the notes files
     public static final String NOTES_DIR = "notes";
 
-    // The name of the directory where this scripture is stored. Will be important once I implement
-    // multiple lists.
-    public static final String CATEGORY_PRESENT = "present";
-
     /**
      * CREATOR used by the Android OS to reconstruct a Scripture object that has been stored in a
      * Parcel
@@ -60,7 +56,8 @@ public class Scripture implements Parcelable {
         public Scripture createFromParcel(Parcel source) {
             String reference = source.readString();
             String body = source.readString();
-            return new Scripture(reference, body);
+            NewMainActivity.Category cat = (NewMainActivity.Category) source.readSerializable();
+            return new Scripture(reference, body, cat);
         }
 
         @Override
@@ -72,8 +69,11 @@ public class Scripture implements Parcelable {
     public final String reference;
     public final String filename;
     public final String body;
+    private NewMainActivity.Category mCategory;
 
-    public static LinkedList<Scripture> loadScriptures(@NonNull File dir) {
+    public static LinkedList<Scripture> loadScriptures(@NonNull Context c, NewMainActivity.Category category) {
+        File dir = c.getDir(category.name(), Context.MODE_PRIVATE);
+
         File[] files = dir.listFiles();
         LinkedList<Scripture> scriptures = new LinkedList<>();
         for (File f : files) {
@@ -96,7 +96,10 @@ public class Scripture implements Parcelable {
                             break;
                         }
                     }
-                    scriptures.add(new Scripture(reference, body.toString()));
+
+                    // Add the new scripture
+                    Scripture s = new Scripture(reference, body.toString(), category);
+                    scriptures.add(s);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -105,7 +108,8 @@ public class Scripture implements Parcelable {
         return scriptures;
     }
 
-    public Scripture(@NonNull String reference, @NonNull String body) {
+    public Scripture(@NonNull String reference, @NonNull String body,
+                     @NonNull NewMainActivity.Category cat) {
         this.reference = reference.trim(); // Remove excess whitespace
         // Convert reference to a proper filename by
         // (1) replacing colons with dots,
@@ -118,6 +122,9 @@ public class Scripture implements Parcelable {
 
         // Remove excess whitespace from the body text as well.
         this.body = body.trim();
+
+        // This part's simple enough. :)
+        this.mCategory = cat;
     }
 
     /**
@@ -165,6 +172,7 @@ public class Scripture implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(reference);
         dest.writeString(body);
+        dest.writeSerializable(mCategory);
     }
 
     /**
@@ -183,6 +191,10 @@ public class Scripture implements Parcelable {
 
     public String getFilename() {
         return filename;
+    }
+
+    public NewMainActivity.Category getCategory() {
+        return mCategory;
     }
 
     /**
@@ -208,7 +220,7 @@ public class Scripture implements Parcelable {
     // Deletes this scripture
     public void delete(Context context) {
         // Delete scripture file
-        File scripDir = context.getDir(Scripture.CATEGORY_PRESENT, 0);
+        File scripDir = context.getDir(mCategory.name(), 0);
         File scripFile = new File(scripDir, filename);
         if (scripFile.exists()) scripFile.delete();
         // Delete notes file
@@ -220,7 +232,7 @@ public class Scripture implements Parcelable {
     }
 
     public boolean fileExists(Context context) {
-        File scripDir = context.getDir(Scripture.CATEGORY_PRESENT, 0);
+        File scripDir = context.getDir(mCategory.name(), 0);
         File scripFile = new File(scripDir, filename);
         return scripFile.exists();
     }

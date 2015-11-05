@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.danmercer.ponderizer"
     android:versionCode="3"
-    android:versionName="1.1.1">
+    android:versionName="1.1.1" >
 
     <application
         android:allowBackup="true"
@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".NewMainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
@@ -106,7 +106,7 @@
         <!-- Scripture widget "context menu" -->
         <activity
             android:name=".WidgetPopupMenuActivity"
-            android:theme="@style/AppTheme.Dialog">
+            android:theme="@style/AppTheme.Dialog" >
         </activity>
 
         <!-- Scripture widget configuration activity -->
@@ -125,6 +125,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.danmercer.ponderizer.scriptureview.ScriptureViewActivity" />
+        </activity>
+        <activity
+            android:name=".memorize.MemorizeTestActivity"
+            android:label="@string/title_activity_memorize_test"
+            android:parentActivityName=".memorize.MemorizeActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.danmercer.ponderizer.memorize.MemorizeActivity" />
         </activity>
     </application>
 

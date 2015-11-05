@@ -2,17 +2,38 @@
     <string name="app_name">Ponderizer</string>
     <string name="action_settings">Settings</string>
 
+    <!-- MAIN ACTIVITY -->
     <!-- Scripture context menu strings-->
     <string name="view_scripture">View Scripture</string>
     <string name="memorize_scripture">Memorize</string>
     <string name="view_notes">View Notes</string>
+    <string name="tap_to_add_scripture">Tap to add a scripture</string>
+    <string name="complete_a_scripture">Memorize a scripture to put it here.</string>
+    <string name="feedback_tell_me">Tell me how!</string>
+    <string name="feedback_could_improve">Could this app be improved?</string>
+    <string name="feedback_dialog_message">Want to suggest a feature? Tap "OK" to write me an email.</string>
+    <string name="feedback_dialog_confirm">Never mind</string>
+    <string name="feedback_dialog_cancel">OK</string>
 
+    <!-- ADD NOTE ACTIVITY -->
     <string name="title_activity_add_note">Add Note</string>
-    <string name="title_activity_memorize">Memorize</string>
-    <string name="title_activity_export">Export / Share Scripture</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="configure">Choose the scripture you wish to display:</string>
-    <string name="add_widget">Add widget</string>
-    <string name="no_notes">(There are no notes for this scripture)</string>
     <string name="text_hint_add_note">Type your note here</string>
+
+    <!-- MEMORIZE ACTIVITY -->
+    <string name="title_activity_memorize">Memorize</string>
+
+    <!-- MEMORIZATION TEST ACTIVITY -->
+    <string name="title_activity_memorize_test">Memorization Test</string>
+    <string name="enter_recitiation_fmt">Please enter the text of %s from memory</string>
+    <string name="hint_recite_scripture">Type the scripture here</string>
+
+    <!-- EXPORT ACTIVITY -->
+    <string name="title_activity_export">Export / Share Scripture</string>
+    <string name="no_notes">(There are no notes for this scripture)</string>
+
+    <!-- CONFIGURE WIDGET ACTIVITY -->
+    <string name="configure">Choose the scripture you wish to display:</string>
+    <string name="widget_body_description">Scripture Text</string>
+
+    <!-- UNSORTED STRINGS -->
 </resources>

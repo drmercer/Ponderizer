@@ -21,6 +21,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -55,6 +57,7 @@ public class MemorizeActivity extends AppCompatActivity {
             // If no Scripture was put into the intent, abort the Activity and report an error.
             Log.e("MemorizeActivity", "MemorizeActivity was launched without a Scripture!");
             finish();
+            return;
         }
         mText = mScripture.getBody();
 
@@ -100,6 +103,25 @@ public class MemorizeActivity extends AppCompatActivity {
 
         // Set the seek bar to maximum, so that the user starts with the text masked.
         mSeekBar.setProgress(mSeekBar.getMax());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_memorize, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_start_test:
+                // Launch MemorizeTestActivity
+                Intent intent = new Intent(this, MemorizeTestActivity.class);
+                intent.putExtra(Scripture.EXTRA_SCRIPTURE, mScripture);
+                startActivity(intent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void updateTextView() {

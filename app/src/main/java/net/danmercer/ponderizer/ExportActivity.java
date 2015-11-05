@@ -84,7 +84,7 @@ public class ExportActivity extends AppCompatActivity implements CompoundButton.
         mScripBox = (CheckBox) findViewById(R.id.checkBox_scriptureText);
         mScripBox.setOnCheckedChangeListener(this);
 
-        // Set up Export Buttonm
+        // Set up Export Button
         mExportButton = (Button) findViewById(R.id.button_export);
         mExportButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,7 +152,7 @@ public class ExportActivity extends AppCompatActivity implements CompoundButton.
         Toast.makeText(this, "Copied to clipboard.", Toast.LENGTH_SHORT).show();
     }
 
-    // Calls generateText(...) with the current data from the checkboxes and radiobuttons.
+    // Calls generateText(...) with the current data from the checkboxes and radio buttons.
     private String generateText() {
         CheckBox cbScriptureText = (CheckBox) findViewById(R.id.checkBox_scriptureText);
         CheckBox cbScriptureRef = (CheckBox) findViewById(R.id.checkBox_scriptureReference);
