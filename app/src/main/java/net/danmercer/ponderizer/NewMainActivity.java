@@ -21,7 +21,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.net.Uri;
+import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -171,6 +173,10 @@ public class NewMainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id) {
+            case R.id.action_insert_sm:
+                ScriptureMasteryHelper.showDialog(this);
+                return true;
+            
             case R.id.action_feedback:
                 launchFeedbackDialog();
                 return true;

@@ -26,7 +26,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.io.File;
 import java.util.LinkedList;
 
 /**
@@ -51,12 +50,12 @@ public class ScriptureAppWidgetConfigureActivity extends Activity implements Ada
         setResult(RESULT_CANCELED);
 
         setContentView(R.layout.scripture_app_widget_configure);
-        ListView mListView = (ListView) findViewById(R.id.scripturesList);
+        ListView mListView = (ListView) findViewById(R.id.scripture_list_view);
 
         // Initialize ListView
         mScriptureList = Scripture.loadScriptures(this, NewMainActivity.Category.IN_PROGRESS);
         if (!mScriptureList.isEmpty()) {
-            ListView lv = (ListView) findViewById(R.id.scripturesList);
+            ListView lv = (ListView) findViewById(R.id.scripture_list_view);
             lv.setAdapter(new ArrayAdapter<Scripture>(this, R.layout.list_item, R.id.listitem_text, mScriptureList));
             lv.setOnItemClickListener(this);
         } else {

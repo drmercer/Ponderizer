@@ -11,7 +11,7 @@
     <string name="complete_a_scripture">Memorize a scripture to put it here.</string>
     <string name="feedback_tell_me">Tell me how!</string>
     <string name="feedback_could_improve">Could this app be improved?</string>
-    <string name="feedback_dialog_message">Want to suggest a feature? Tap "OK" to write me an email.</string>
+    <string name="feedback_dialog_message">Want to suggest a feature? Tap \"OK\" to write me an email.</string>
     <string name="feedback_dialog_confirm">Never mind</string>
     <string name="feedback_dialog_cancel">OK</string>
 
@@ -34,6 +34,12 @@
     <!-- CONFIGURE WIDGET ACTIVITY -->
     <string name="configure">Choose the scripture you wish to display:</string>
     <string name="widget_body_description">Scripture Text</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="cancel">Cancel</string>
+    <string name="import_sm">Import</string>
+    <string name="sm_dialog_message">Choose which Scripture Mastery collections to add to your list.</string>
+    <string name="sm_dialog_title">Import Scripture Mastery</string>
 
     <!-- UNSORTED STRINGS -->
 </resources>

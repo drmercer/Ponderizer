@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ NOTE: The texts and references in this file were taken from
+  ~ https://www.lds.org/manual/book-of-mormon-seminary-teacher-manual-2013/appendix/lesson-166
+  -->
+<resources>
+    <string-array name="sm_ot_refs">
+        <item>Moses 1:39</item>
+        <item>Moses 7:18</item>
+        <item>Abraham 3:22–23</item>
+        <item>Genesis 1:26–27</item>
+        <item>Genesis 2:24</item>
+        <item>Genesis 39:9</item>
+        <item>Exodus 19:5–6</item>
+        <item>Exodus 20:3–17</item>
+        <item>Joshua 24:15</item>
+        <item>1 Samuel 16:7</item>
+        <item>Psalm 24:3–4</item>
+        <item>Psalm 119:105</item>
+        <item>Psalm 127:3</item>
+        <item>Proverbs 3:5–6</item>
+        <item>Isaiah 1:18</item>
+        <item>Isaiah 5:20</item>
+        <item>Isaiah 29:13–14</item>
+        <item>Isaiah 53:3–5</item>
+        <item>Isaiah 58:6–7</item>
+        <item>Isaiah 58:13–14</item>
+        <item>Jeremiah 1:4–5</item>
+        <item>Ezekiel 37:15–17</item>
+        <item>Amos 3:7</item>
+        <item>Malachi 3:8–10</item>
+        <item>Malachi 4:5–6</item>
+    </string-array>
+    <string-array name="sm_ot_texts">
+        <item>39 For behold, this is my work and my glory—to bring to pass the immortality and eternal life of man.</item>
+        <item>18 And the Lord called his people Zion, because they were of one heart and one mind, and dwelt in righteousness; and there was no poor among them.</item>
+        <item>22 Now the Lord had shown unto me, Abraham, the intelligences that were organized before the world was; and among all these there were many of the noble and great ones;
+ 23 And God saw these souls that they were good, and he stood in the midst of them, and he said: These I will make my rulers; for he stood among those that were spirits, and he saw that they were good; and he said unto me: Abraham, thou art one of them; thou wast chosen before thou wast born.</item>
+        <item>26 And God said, Let us make man in our image, after our likeness: and let them have dominion over the fish of the sea, and over the fowl of the air, and over the cattle, and over all the earth, and over every creeping thing that creepeth upon the earth.
+ 27 So God created man in his own image, in the image of God created he him; male and female created he them.</item>
+        <item>24 Therefore shall a man leave his father and his mother, and shall cleave unto his wife: and they shall be one flesh.</item>
+        <item>9 There is none greater in this house than I; neither hath he kept back any thing from me but thee, because thou art his wife: how then can I do this great wickedness, and sin against God?</item>
+        <item>5 Now therefore, if ye will obey my voice indeed, and keep my covenant, then ye shall be a peculiar treasure unto me above all people: for all the earth is mine:
+ 6 And ye shall be unto me a kingdom of priests, and an holy nation. These are the words which thou shalt speak unto the children of Israel.</item>
+        <item>3 Thou shalt have no other gods before me.
+ 4 Thou shalt not make unto thee any graven image, or any likeness of any thing that is in heaven above, or that is in the earth beneath, or that is in the water under the earth:
+ 5 Thou shalt not bow down thyself to them, nor serve them: for I the Lord thy God am a jealous God, visiting the iniquity of the fathers upon the children unto the third and fourth generation of them that hate me;
+ 6 And shewing mercy unto thousands of them that love me, and keep my commandments.
+ 7 Thou shalt not take the name of the Lord thy God in vain; for the Lord will not hold him guiltless that taketh his name in vain.
+ 8 Remember the sabbath day, to keep it holy.
+ 9 Six days shalt thou labour, and do all thy work:
+ 10 But the seventh day is the sabbath of the Lord thy God: in it thou shalt not do any work, thou, nor thy son, nor thy daughter, thy manservant, nor thy maidservant, nor thy cattle, nor thy stranger that is within thy gates:
+ 11 For in six days the Lord made heaven and earth, the sea, and all that in them is, and rested the seventh day: wherefore the Lord blessed the sabbath day, and hallowed it.
+ 12 Honour thy father and thy mother: that thy days may be long upon the land which the Lord thy God giveth thee.
+ 13 Thou shalt not kill.
+ 14 Thou shalt not commit adultery.
+ 15 Thou shalt not steal.
+ 16 Thou shalt not bear false witness against thy neighbour.
+ 17 Thou shalt not covet thy neighbour’s house, thou shalt not covet thy neighbour’s wife, nor his manservant, nor his maidservant, nor his ox, nor his ass, nor any thing that is thy neighbour’s.</item>
+        <item>15 And if it seem evil unto you to serve the Lord, choose you this day whom ye will serve; whether the gods which your fathers served that were on the other side of the flood, or the gods of the Amorites, in whose land ye dwell: but as for me and my house, we will serve the Lord.</item>
+        <item>7 But the Lord said unto Samuel, Look not on his countenance, or on the height of his stature; because I have refused him: for the Lord seeth not as man seeth; for man looketh on the outward appearance, but the Lord looketh on the heart.</item>
+        <item>3 Who shall ascend into the hill of the Lord? or who shall stand in his holy place?
+ 4 He that hath clean hands, and a pure heart; who hath not lifted up his soul unto vanity, nor sworn deceitfully.</item>
+        <item>105 Thy word is a lamp unto my feet, and a light unto my path.</item>
+        <item>3 Lo, children are an heritage of the Lord: and the fruit of the womb is his reward.</item>
+        <item>5 Trust in the Lord with all thine heart; and lean not unto thine own understanding.
+ 6 In all thy ways acknowledge him, and he shall direct thy paths.</item>
+        <item>18 Come now, and let us reason together, saith the Lord: though your sins be as scarlet, they shall be as white as snow; though they be red like crimson, they shall be as wool.</item>
+        <item>20 Woe unto them that call evil good, and good evil; that put darkness for light, and light for darkness; that put bitter for sweet, and sweet for bitter!</item>
+        <item>13 Wherefore the Lord said, Forasmuch as this people draw near me with their mouth, and with their lips do honour me, but have removed their heart far from me, and their fear toward me is taught by the precept of men:
+ 14 Therefore, behold, I will proceed to do a marvellous work among this people, even a marvellous work and a wonder: for the wisdom of their wise men shall perish, and the understanding of their prudent men shall be hid.</item>
+        <item>3 He is despised and rejected of men; a man of sorrows, and acquainted with grief: and we hid as it were our faces from him; he was despised, and we esteemed him not.
+ 4 Surely he hath borne our griefs, and carried our sorrows: yet we did esteem him stricken, smitten of God, and afflicted.
+ 5 But he was wounded for our transgressions, he was bruised for our iniquities: the chastisement of our peace was upon him; and with his stripes we are healed.</item>
+        <item>6 Is not this the fast that I have chosen? to loose the bands of wickedness, to undo the heavy burdens, and to let the oppressed go free, and that ye break every yoke?
+ 7 Is it not to deal thy bread to the hungry, and that thou bring the poor that are cast out to thy house? when thou seest the naked, that thou cover him; and that thou hide not thyself from thine own flesh?</item>
+        <item>13 If thou turn away thy foot from the sabbath, from doing thy pleasure on my holy day; and call the sabbath a delight, the holy of the Lord, honourable; and shalt honour him, not doing thine own ways, nor finding thine own pleasure, nor speaking thine own words:
+ 14 Then shalt thou delight thyself in the Lord; and I will cause thee to ride upon the high places of the earth, and feed thee with the heritage of Jacob thy father: for the mouth of the Lord hath spoken it.</item>
+        <item>4 Then the word of the Lord came unto me, saying,
+ 5 Before I formed thee in the belly I knew thee; and before thou camest forth out of the womb I sanctified thee, and I ordained thee a prophet unto the nations.</item>
+        <item>15 The word of the Lord came again unto me, saying,
+ 16 Moreover, thou son of man, take thee one stick, and write upon it, For Judah, and for the children of Israel his companions: then take another stick, and write upon it, For Joseph, the stick of Ephraim, and for all the house of Israel his companions:
+ 17 And join them one to another into one stick; and they shall become one in thine hand.</item>
+        <item>7 Surely the Lord God will do nothing, but he revealeth his secret unto his servants the prophets.</item>
+        <item>8 Will a man rob God? Yet ye have robbed me. But ye say, Wherein have we robbed thee? In tithes and offerings.
+ 9 Ye are cursed with a curse: for ye have robbed me, even this whole nation.
+ 10 Bring ye all the tithes into the storehouse, that there may be meat in mine house, and prove me now herewith, saith the Lord of hosts, if I will not open you the windows of heaven, and pour you out a blessing, that there shall not be room enough to receive it.</item>
+        <item>5 Behold, I will send you Elijah the prophet before the coming of the great and dreadful day of the Lord:
+ 6 And he shall turn the heart of the fathers to the children, and the heart of the children to their fathers, lest I come and smite the earth with a curse.</item>
+    </string-array>
+
+    <string-array name="sm_nt_refs">
+        <item>Matthew 5:14–16</item>
+        <item>Matthew 11:28–30</item>
+        <item>Matthew 16:15–19</item>
+        <item>Matthew 22:36–39</item>
+        <item>Matthew 28:19–20</item>
+        <item>Luke 24:36–39</item>
+        <item>John 3:5</item>
+        <item>John 14:6</item>
+        <item>John 14:15</item>
+        <item>John 17:3</item>
+        <item>Acts 2:36–38</item>
+        <item>Acts 3:19–21</item>
+        <item>1 Corinthians 6:19–20</item>
+        <item>1 Corinthians 15:20–22</item>
+        <item>1 Corinthians 15:40–42</item>
+        <item>Galatians 5:22–23</item>
+        <item>Ephesians 4:11–14</item>
+        <item>Philippians 4:13</item>
+        <item>2 Thessalonians 2:1–3</item>
+        <item>2 Timothy 3:15–17</item>
+        <item>Hebrews 12:9</item>
+        <item>James 1:5–6</item>
+        <item>James 2:17–18</item>
+        <item>1 Peter 4:6</item>
+        <item>Revelation 20:12</item>
+    </string-array>
+
+    <string-array name="sm_nt_texts">
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+    </string-array>
+
+    <string-array name="sm_bom_refs">
+        <item>1 Nephi 3:7</item>
+        <item>2 Nephi 2:25</item>
+        <item>2 Nephi 2:27</item>
+        <item>2 Nephi 9:28–29</item>
+        <item>2 Nephi 25:23, 26</item>
+        <item>2 Nephi 28:7–9</item>
+        <item>2 Nephi 31:19–20</item>
+        <item>2 Nephi 32:3</item>
+        <item>2 Nephi 32:8–9</item>
+        <item>Mosiah 2:17</item>
+        <item>Mosiah 3:19</item>
+        <item>Mosiah 4:30</item>
+        <item>Alma 7:11–13</item>
+        <item>Alma 32:21</item>
+        <item>Alma 37:35</item>
+        <item>Alma 39:9</item>
+        <item>Alma 41:10</item>
+        <item>Helaman 5:12</item>
+        <item>3 Nephi 12:48</item>
+        <item>3 Nephi 18:15, 20–21</item>
+        <item>Ether 12:6</item>
+        <item>Ether 12:27</item>
+        <item>Moroni 7:41</item>
+        <item>Moroni 7:45, 47–48</item>
+        <item>Moroni 10:4–5</item>
+    </string-array>
+
+    <string-array name="sm_bom_texts">
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+    </string-array>
+
+    <string-array name="sm_dnc_refs">
+        <item>D&amp;C 1:37–38</item>
+        <item>D&amp;C 6:36</item>
+        <item>D&amp;C 8:2–3</item>
+        <item>D&amp;C 10:5</item>
+        <item>D&amp;C 13:1</item>
+        <item>D&amp;C 18:10–11</item>
+        <item>D&amp;C 18:15–16</item>
+        <item>D&amp;C 19:16–19</item>
+        <item>D&amp;C 19:23</item>
+        <item>D&amp;C 25:13</item>
+        <item>D&amp;C 46:33</item>
+        <item>D&amp;C 58:27</item>
+        <item>D&amp;C 58:42–43</item>
+        <item>D&amp;C 64:9–11</item>
+        <item>D&amp;C 76:22–24</item>
+        <item>D&amp;C 76:40–41</item>
+        <item>D&amp;C 78:19</item>
+        <item>D&amp;C 82:10</item>
+        <item>D&amp;C 88:124</item>
+        <item>D&amp;C 89:18–21</item>
+        <item>D&amp;C 107:8</item>
+        <item>D&amp;C 121:36, 41–42</item>
+        <item>D&amp;C 130:22–23</item>
+        <item>D&amp;C 131:1–4</item>
+        <item>JS—H 1:15–20</item>
+    </string-array>
+
+    <string-array name="sm_dnc_texts">
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+        <item>                  </item>
+    </string-array>
+    <string-array name="sm_collections" >
+        <item>Old Testament</item>
+        <item>New Testament</item>
+        <item>Book of Mormon</item>
+        <item>Doctrine &amp; Covenants</item>
+    </string-array>
+</resources>

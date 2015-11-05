@@ -128,9 +128,10 @@ public class Scripture implements Parcelable {
     }
 
     /**
-     * Writes the contained scripture to a file in the given directory.
+     * Writes the contained scripture to a file in the appropriate directory.
      */
-    public boolean writeToFile(File dir) {
+    public boolean writeToFile(Context c) {
+        File dir = getDir(c, mCategory);
         File dest = new File(dir, filename);
         if (!dest.exists()) {
             try {
@@ -212,15 +213,15 @@ public class Scripture implements Parcelable {
                 r.run();
             }
         };
-        db.setPositiveButton("Yes", l);
-        db.setNegativeButton("No", null);
+        db.setPositiveButton(R.string.yes, l);
+        db.setNegativeButton(R.string.no, null);
         db.show();
     }
 
     // Deletes this scripture
     public void delete(Context context) {
         // Delete scripture file
-        File scripDir = context.getDir(mCategory.name(), 0);
+        File scripDir = getDir(context, mCategory);
         File scripFile = new File(scripDir, filename);
         if (scripFile.exists()) scripFile.delete();
         // Delete notes file
@@ -232,9 +233,13 @@ public class Scripture implements Parcelable {
     }
 
     public boolean fileExists(Context context) {
-        File scripDir = context.getDir(mCategory.name(), 0);
+        File scripDir = getDir(context, mCategory); // TODO: left off here, extract method (to use in SMHelper)
         File scripFile = new File(scripDir, filename);
         return scripFile.exists();
+    }
+
+    public static File getDir(Context context, NewMainActivity.Category category) {
+        return context.getDir(category.name(), 0);
     }
 
     public boolean hasNotes(Context c) {

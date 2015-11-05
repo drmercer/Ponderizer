@@ -105,7 +105,7 @@ public class AddScriptureTextActivity extends AppCompatActivity {
             }
 
             new Scripture(reference, body, NewMainActivity.Category.IN_PROGRESS)
-                    .writeToFile(getDir(NewMainActivity.Category.IN_PROGRESS.name(), MODE_PRIVATE));
+                    .writeToFile(this);
             Toast.makeText(this, "Added " + reference, Toast.LENGTH_LONG).show();
             setResult(RESULT_OK);
             finish();

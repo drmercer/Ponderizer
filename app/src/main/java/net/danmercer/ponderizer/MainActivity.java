@@ -36,10 +36,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import net.danmercer.ponderizer.memorize.MemorizeActivity;
 import net.danmercer.ponderizer.scriptureview.ScriptureViewActivity;
 
-import java.io.File;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -132,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
     private void refreshScriptureList() {
         mScriptureList = Scripture.loadScriptures(this, NewMainActivity.Category.IN_PROGRESS);
         if (!mScriptureList.isEmpty()) {
-            ListView lv = (ListView) findViewById(R.id.scripturesList);
+            ListView lv = (ListView) findViewById(R.id.scripture_list_view);
             lv.setAdapter(new ArrayAdapter<Scripture>(this, R.layout.list_item, R.id.listitem_text, mScriptureList));
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -143,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
             });
             registerForContextMenu(lv);
         } else {
-            ListView lv = (ListView) findViewById(R.id.scripturesList);
+            ListView lv = (ListView) findViewById(R.id.scripture_list_view);
             lv.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item, R.id.listitem_text, new String[]{"Tap to add a scripture"}));
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -227,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id) {
+
             case R.id.action_feedback:
                 launchFeedbackDialog();
                 return true;

@@ -68,7 +68,7 @@ public class ScriptureListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mContentView = inflater.inflate(R.layout.content_main_onelist, container, false);
-        mListView = (ListView) mContentView.findViewById(R.id.scripturesList);
+        mListView = (ListView) mContentView.findViewById(R.id.scripture_list_view);
 
         refreshScriptureList();
         return mContentView;
@@ -114,6 +114,12 @@ public class ScriptureListFragment extends Fragment {
             mListView.setOnItemClickListener(null);
             unregisterForContextMenu(mListView);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshScriptureList();
     }
 
     // This is called to create the context menu for the list menu items.
