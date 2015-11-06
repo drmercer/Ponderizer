@@ -190,11 +190,17 @@ public class NewMainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void refreshScriptureLists() {
+        mSectionsPagerAdapter.refreshLists();
+    }
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
     public class MainPagerAdapter extends FragmentPagerAdapter {
+
+        private ScriptureListFragment[] frags = new ScriptureListFragment[2];
 
         public MainPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -213,7 +219,10 @@ public class NewMainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return ScriptureListFragment.newInstance(getCategoryForPosition(position));
+            if (frags[position] == null) {
+                frags[position] = ScriptureListFragment.newInstance(getCategoryForPosition(position));
+            }
+            return frags[position];
         }
 
         @Override
@@ -233,6 +242,12 @@ public class NewMainActivity extends AppCompatActivity {
                 default:
                     // Invalid position
                     return null;
+            }
+        }
+
+        public void refreshLists() {
+            for (ScriptureListFragment f : frags) {
+                f.refreshScriptureList();
             }
         }
     }

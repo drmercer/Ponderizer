@@ -24,7 +24,11 @@
         <!-- Look up scriptures by reference TODO: Remove this activty? -->
         <activity
             android:name=".AddScriptureReferenceActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".NewMainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.danmercer.ponderizer.scriptureview.ScriptureViewActivity" />
+        </activity>
 
         <!-- "Share" text from Gospel Library and add as scripture -->
         <activity
@@ -72,12 +76,20 @@
         <!-- Shows instructions for adding from Gospel Library -->
         <activity
             android:name=".AddScriptureInstructions"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".NewMainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.danmercer.ponderizer.scriptureview.ScriptureViewActivity" />
+        </activity>
 
         <!-- Displays the text of a scripture -->
         <activity
             android:name=".scriptureview.ScriptureViewActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".NewMainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.danmercer.ponderizer.scriptureview.ScriptureViewActivity" />
+        </activity>
 
         <!-- Adds a note about a certain scripture -->
         <activity

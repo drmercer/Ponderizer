@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ NOTE: The texts and references in this file were taken from
+  ~ NOTE: The references in this file were taken from the list at
   ~ https://www.lds.org/manual/book-of-mormon-seminary-teacher-manual-2013/appendix/lesson-166
+  ~ and the texts were obtained from that lds.org website as well.
+  ~
+  ~ I do not claim copyright on this XML file. It is effectively public domain as far as my work
+  ~ is concerned. (Note: this statement applies ONLY to this file. All other files I have created
+  ~ in this project are Copyright 2015 Dan Mercer.) The scripture texts remain the copyright of
+  ~ any respective copyright owners.
   -->
 <resources>
     <string-array name="sm_ot_refs">

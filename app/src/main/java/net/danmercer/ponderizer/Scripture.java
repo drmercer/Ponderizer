@@ -198,6 +198,24 @@ public class Scripture implements Parcelable {
         return mCategory;
     }
 
+
+    public void changeCategory(Context c, NewMainActivity.Category category) {
+        if (category != mCategory) {
+            // Delete file from old category directory
+            File dir = getDir(c, mCategory);
+            File file = new File(dir, filename);
+            if (file.exists()) file.delete();
+
+            // Write file to new category directory
+            this.mCategory = category;
+            writeToFile(c);
+        }
+    }
+
+    public boolean isCompleted() {
+        return mCategory == NewMainActivity.Category.COMPLETED;
+    }
+
     /**
      * @param context
      * @param r       The Runnable to run after the user confirms the deletion

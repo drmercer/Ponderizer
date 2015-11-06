@@ -7,13 +7,19 @@
     <string name="view_scripture">View Scripture</string>
     <string name="memorize_scripture">Memorize</string>
     <string name="view_notes">View Notes</string>
+    <!-- ViewPager default text -->
     <string name="tap_to_add_scripture">Tap to add a scripture</string>
-    <string name="complete_a_scripture">Memorize a scripture to put it here.</string>
+    <string name="complete_a_scripture">Mark a scripture as "Completed" to put it here.</string>
+    <!-- feedback dialog -->
     <string name="feedback_tell_me">Tell me how!</string>
     <string name="feedback_could_improve">Could this app be improved?</string>
     <string name="feedback_dialog_message">Want to suggest a feature? Tap \"OK\" to write me an email.</string>
     <string name="feedback_dialog_confirm">Never mind</string>
     <string name="feedback_dialog_cancel">OK</string>
+
+    <!-- SCRIPTURE VIEW ACTIVITY -->
+    <string name="menu_mark_in_progress">Mark as \"In Progress\"</string>
+    <string name="menu_mark_complete">Mark as \"Completed\"</string>
 
     <!-- ADD NOTE ACTIVITY -->
     <string name="title_activity_add_note">Add Note</string>
@@ -34,12 +40,15 @@
     <!-- CONFIGURE WIDGET ACTIVITY -->
     <string name="configure">Choose the scripture you wish to display:</string>
     <string name="widget_body_description">Scripture Text</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
-    <string name="cancel">Cancel</string>
+
+    <!-- SCRIPTURE MASTERY DIALOG -->
     <string name="import_sm">Import</string>
     <string name="sm_dialog_message">Choose which Scripture Mastery collections to add to your list.</string>
     <string name="sm_dialog_title">Import Scripture Mastery</string>
 
-    <!-- UNSORTED STRINGS -->
+    <!-- generic text -->
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="cancel">Cancel</string>
+
 </resources>

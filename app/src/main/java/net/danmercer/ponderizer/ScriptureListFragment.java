@@ -19,6 +19,7 @@ package net.danmercer.ponderizer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -42,6 +43,7 @@ public class ScriptureListFragment extends Fragment {
     private View mContentView;
     private ListView mListView;
     private NewMainActivity.Category mCategory;
+    private int mContextMenuPos = -1;
 
     /**
      * Returns a new instance of this fragment for the given section
@@ -75,7 +77,7 @@ public class ScriptureListFragment extends Fragment {
     }
 
     // Fills or refreshes the list of Scriptures
-    private void refreshScriptureList() {
+    public void refreshScriptureList() {
         mScriptureList = Scripture.loadScriptures(getContext(), mCategory);
 
         if (!mScriptureList.isEmpty()) {
@@ -114,6 +116,8 @@ public class ScriptureListFragment extends Fragment {
             mListView.setOnItemClickListener(null);
             unregisterForContextMenu(mListView);
         }
+
+        Log.d("ScriptureListFragment", mScriptureList.size() + " scriptures in category " + mCategory.name());
     }
 
     @Override
@@ -125,17 +129,39 @@ public class ScriptureListFragment extends Fragment {
     // This is called to create the context menu for the list menu items.
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        getActivity().getMenuInflater().inflate(R.menu.context_scripture, menu);
+        getActivity().getMenuInflater().inflate(R.menu.menu_scripture_view, menu);
         super.onCreateContextMenu(menu, v, menuInfo);
+        Log.d("ScriptureListFragment", "onCreateContextMenu " + mCategory.name());
+
+        // Get index of item that was long-clicked
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        mContextMenuPos = info.position;
+        Scripture s = mScriptureList.get(mContextMenuPos);
+        Log.d("ScriptureListFragment", "scripture = " + s.getReference());
+        MenuItem markCompleted = menu.findItem(R.id.action_mark_completed);
+        if (s.isCompleted()) {
+            markCompleted.setTitle(R.string.menu_mark_in_progress);
+        } else {
+            markCompleted.setTitle(R.string.menu_mark_complete);
+        }
+
+
     }
 
     // Called when the user taps an item in a scripture context menu
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        Log.d("ScriptureListFragment", "onContextItemSelected " + mCategory.name() + ", " + mContextMenuPos);
+
         AdapterView.AdapterContextMenuInfo info =
                 (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int pos = info.position; // Get index of item that was long-clicked
+        if (mContextMenuPos != pos) {
+            return false;
+        }
+        mContextMenuPos = -1;
         Scripture s = mScriptureList.get(pos);
+        Log.d("ScriptureListFragment", "scripture = " + s.getReference());
 
         switch (item.getItemId()) {
 
@@ -161,6 +187,25 @@ public class ScriptureListFragment extends Fragment {
             case R.id.action_memorize:
                 startActivity(s.getMemorizeIntent(getContext()));
                 return true;
+
+            case R.id.action_mark_completed:
+                // Mark the scripture as completed/incompleted - i.e. toggle the category
+                if (!s.isCompleted()) {
+                    s.changeCategory(getContext(), NewMainActivity.Category.COMPLETED);
+                    item.setTitle(R.string.menu_mark_in_progress);
+                } else {
+                    s.changeCategory(getContext(), NewMainActivity.Category.IN_PROGRESS);
+                    item.setTitle(R.string.menu_mark_complete);
+                }
+                ((NewMainActivity) getActivity()).refreshScriptureLists();
+                return true;
+
+            case R.id.action_export:
+                Intent intent = new Intent(getContext(), ExportActivity.class);
+                intent.putExtra(Scripture.EXTRA_SCRIPTURE, s);
+                startActivity(intent);
+                return true;
+
 
             default:
                 return super.onContextItemSelected(item);

@@ -30,6 +30,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import net.danmercer.ponderizer.ExportActivity;
+import net.danmercer.ponderizer.NewMainActivity;
 import net.danmercer.ponderizer.R;
 import net.danmercer.ponderizer.Scripture;
 import net.danmercer.ponderizer.memorize.MemorizeActivity;
@@ -81,8 +82,7 @@ public class ScriptureViewActivity extends AppCompatActivity {
         }
     }
 
-    // The result code that this activity ends with iff the scripture has been deleted. This tells
-    // the MainActivity (which starts this one) that it should refresh its scripture list
+    // The result code that this activity ends with iff the scripture has been deleted.
     public static final int RESULT_SCRIPTURE_DELETED = 2;
     // The scripture being shown in this activity
     Scripture scripture;
@@ -110,6 +110,7 @@ public class ScriptureViewActivity extends AppCompatActivity {
         String reference = scripture.getReference();
         ActionBar ab = getSupportActionBar();
         ab.setTitle(reference);
+
 
         // Set up the page fragments (scripture view and notes)
         adapter = new ScriptureViewAdapter(getSupportFragmentManager());
@@ -145,6 +146,13 @@ public class ScriptureViewActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_scripture_view, menu);
+
+        MenuItem markCompleted = menu.findItem(R.id.action_mark_completed);
+        if (scripture.isCompleted()) {
+            markCompleted.setTitle(R.string.menu_mark_in_progress);
+        } else {
+            markCompleted.setTitle(R.string.menu_mark_complete);
+        }
         return true;
     }
 
@@ -169,9 +177,19 @@ public class ScriptureViewActivity extends AppCompatActivity {
 
             case R.id.action_memorize:
                 // Open the Memorize view
-                Intent i = new Intent(this, MemorizeActivity.class);
-                i.putExtra(Scripture.EXTRA_SCRIPTURE, scripture);
-                startActivity(i);
+                startActivity(scripture.getMemorizeIntent(this));
+                return true;
+
+            case R.id.action_mark_completed:
+                // Mark the scripture as completed/incompleted - i.e. toggle the category
+                if (!scripture.isCompleted()) {
+                    scripture.changeCategory(this, NewMainActivity.Category.COMPLETED);
+                    item.setTitle(R.string.menu_mark_in_progress);
+                } else {
+                    scripture.changeCategory(this, NewMainActivity.Category.IN_PROGRESS);
+                    item.setTitle(R.string.menu_mark_complete);
+                }
+                finish();
                 return true;
 
             case R.id.action_export:
