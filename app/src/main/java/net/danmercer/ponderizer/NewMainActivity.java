@@ -21,9 +21,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.net.Uri;
-import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -128,8 +126,8 @@ public class NewMainActivity extends AppCompatActivity {
                 launchFeedbackEmailIntent();
             }
         };
-        db.setPositiveButton(R.string.feedback_dialog_cancel, l);
-        db.setNegativeButton(R.string.feedback_dialog_confirm, null);
+        db.setPositiveButton(R.string.feedback_dialog_confirm, l);
+        db.setNegativeButton(R.string.feedback_dialog_cancel, null);
         db.show();
     }
 
