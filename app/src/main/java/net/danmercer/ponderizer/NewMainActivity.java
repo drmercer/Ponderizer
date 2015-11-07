@@ -47,6 +47,10 @@ public class NewMainActivity extends AppCompatActivity {
     public enum Category {
         IN_PROGRESS,
         COMPLETED;
+
+        public static Category getCategory(int idx) {
+            return Category.values()[idx];
+        }
     }
 
     /**
@@ -170,12 +174,7 @@ public class NewMainActivity extends AppCompatActivity {
 
         switch (id) {
             case R.id.action_insert_sm:
-                ScriptureMasteryHelper.showDialog(this, new Runnable() {
-                    @Override
-                    public void run() {
-                        refreshScriptureLists();
-                    }
-                });
+                ScriptureMasteryHelper.showDialog(this);
                 return true;
             
             case R.id.action_feedback:

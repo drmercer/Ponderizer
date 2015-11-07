@@ -13,13 +13,13 @@
         app:showAsAction="never"
         android:visible="false"/>
     <item
-        android:id="@+id/action_help"
+        android:id="@+id/action_feedback"
         android:orderInCategory="99"
-        android:title="Help"
+        android:title="Suggest a Feature"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_feedback"
+        android:id="@+id/action_help"
         android:orderInCategory="100"
-        android:title="Suggest a Feature"
+        android:title="Help"
         app:showAsAction="never" />
 </menu>
