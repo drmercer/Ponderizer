@@ -227,8 +227,7 @@ public class Scripture implements Parcelable {
      */
     public void deleteWithConfirmation(final Context context, final Runnable r) {
         AlertDialog.Builder db = new AlertDialog.Builder(context);
-        db.setMessage(
-                "Are you sure you want to delete this scripture and its notes from your list?");
+        db.setMessage(R.string.dialog_confirm_delete_scripture);
         DialogInterface.OnClickListener l = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

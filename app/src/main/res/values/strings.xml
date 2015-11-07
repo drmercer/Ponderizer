@@ -6,7 +6,7 @@
     <!-- Scripture context menu strings-->
     <string name="view_scripture">View Scripture</string>
     <string name="memorize_scripture">Memorize</string>
-    <string name="view_notes">View Notes</string>
+    <string name="view_notes">View Study Journal</string>
     <!-- ViewPager default text -->
     <string name="tap_to_add_scripture">Tap to add a scripture</string>
     <string name="complete_a_scripture">Mark a scripture as "Completed" to put it here.</string>
@@ -18,12 +18,22 @@
     <string name="feedback_dialog_cancel">OK</string>
 
     <!-- SCRIPTURE VIEW ACTIVITY -->
+    <string name="tab_title_scripture">Scripture</string>
+    <string name="tab_title_notes">Study Journal</string>
     <string name="menu_mark_in_progress">Mark as \"In Progress\"</string>
     <string name="menu_mark_complete">Mark as \"Completed\"</string>
+    <string name="dialog_confirm_delete_scripture">Are you sure you want to delete this scripture and its study journals from your list?</string>
+    <string name="tap_to_add_note">Tap to add a journal entry</string>
 
     <!-- ADD NOTE ACTIVITY -->
-    <string name="title_activity_add_note">Add Note</string>
-    <string name="text_hint_add_note">Type your note here</string>
+    <string name="title_activity_add_note">Add journal entry</string>
+    <string name="text_hint_add_note">Type your study journal entry here</string>
+    <string name="prompt_delete_note">Are you sure you want to delete this journal entry?</string>
+    <string name="prompt_discard_changes">Are you sure you want to discard your changes?</string>
+    <string name="dialog_edit_note_title">Edit Journal Entry</string>
+    <string name="prompt_confirm_edit_note">Are you sure you want to edit this journal entry?</string>
+    <string name="toast_note_saved">Journal entry saved</string>
+    <string name="toast_note_deleted">Journal entry deleted</string>
 
     <!-- MEMORIZE ACTIVITY -->
     <string name="title_activity_memorize">Memorize</string>
@@ -43,8 +53,9 @@
 
     <!-- SCRIPTURE MASTERY DIALOG -->
     <string name="import_sm">Import</string>
-    <string name="sm_dialog_message">Choose which Scripture Mastery collections to add to your list.</string>
     <string name="sm_dialog_title">Import Scripture Mastery</string>
+    <string name="remove_sm">Remove</string>
+    <string name="sm_remove_prompt">This will remove %d scriptures from your list. Continue?</string>
 
     <!-- generic text -->
     <string name="yes">Yes</string>

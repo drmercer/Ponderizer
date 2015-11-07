@@ -67,9 +67,9 @@ public class ScriptureViewActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case IDX_SCRIPTURE_TAB:
-                    return "Scripture";
+                    return getResources().getString(R.string.tab_title_scripture);
                 case IDX_NOTES_TAB:
-                    return "Notes";
+                    return getResources().getString(R.string.tab_title_notes);
                 default:
                     Log.e("ScriptureViewAdapter", "Unsupported page index: " + position);
                     return null;

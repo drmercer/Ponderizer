@@ -84,8 +84,11 @@ public class NotesViewFragment extends Fragment {
         Note.loadFromFile(mFile, mNotes);
         mAdapter = new ArrayAdapter<Note>(getContext(), R.layout.list_item,
                 R.id.listitem_text, mNotes);
+
+        // Set up adapter for empty list
+        String emptyText = getResources().getString(R.string.tap_to_add_note);
         mEmptyAdapter = new ArrayAdapter<String>(getContext(), R.layout.list_item,
-                R.id.listitem_text, new String[]{"Tap to add a note"});
+                R.id.listitem_text, new String[]{emptyText});
         refreshNoteList();
 
         return v;
@@ -194,7 +197,7 @@ public class NotesViewFragment extends Fragment {
         } else if (resultCode == AddNoteActivity.RESULT_DELETED && requestCode == REQUEST_EDIT_NOTE) {
             // Delete the note that was being edited
             deleteNote(mNoteBeingEdited);
-            Toast.makeText(getContext(), "Note deleted", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.toast_note_deleted, Toast.LENGTH_SHORT).show();
         }
         mNoteBeingEdited = null;
     }
