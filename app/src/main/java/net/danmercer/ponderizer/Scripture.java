@@ -66,6 +66,14 @@ public class Scripture implements Parcelable {
         }
     };
 
+    public static String convertRefToFilename(String ref) {
+        return ref.trim() // Example: start with 1 Nephi 3:7, 10-11
+                .toLowerCase() // 1 nephi 3:7, 10-11
+                .replace(':', '.') // 1 nephi 3.7, 10-11
+                .replaceAll("[\\s\\\\\\?/\\*\"<>]", "") // 1nephi3.7,10-11
+                .concat(".txt"); // 1nephi3.7,10-11.txt
+    }
+
     public final String reference;
     public final String filename;
     public final String body;
@@ -115,10 +123,7 @@ public class Scripture implements Parcelable {
         // (1) replacing colons with dots,
         // (2) removing any whitespace or other illegal characters, and
         // (3) appending ".txt" to the end to make it a text file.
-        this.filename = this.reference.toLowerCase()
-                .replace(':', '.')
-                .replaceAll("[\\s\\\\\\?/\\*\"<>]", "")
-                .concat(".txt");
+        this.filename = convertRefToFilename(this.reference);
 
         // Remove excess whitespace from the body text as well.
         this.body = body.trim();
@@ -251,7 +256,7 @@ public class Scripture implements Parcelable {
     }
 
     public boolean fileExists(Context context) {
-        File scripDir = getDir(context, mCategory); // TODO: left off here, extract method (to use in SMHelper)
+        File scripDir = getDir(context, mCategory);
         File scripFile = new File(scripDir, filename);
         return scripFile.exists();
     }
