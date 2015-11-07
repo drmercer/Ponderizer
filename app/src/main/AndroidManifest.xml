@@ -27,7 +27,7 @@
             android:parentActivityName=".NewMainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="net.danmercer.ponderizer.scriptureview.ScriptureViewActivity" />
+                android:value="net.danmercer.ponderizer.NewMainActivity" />
         </activity>
 
         <!-- "Share" text from Gospel Library and add as scripture -->
@@ -79,7 +79,7 @@
             android:parentActivityName=".NewMainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="net.danmercer.ponderizer.scriptureview.ScriptureViewActivity" />
+                android:value="net.danmercer.ponderizer.NewMainActivity" />
         </activity>
 
         <!-- Displays the text of a scripture -->
@@ -88,7 +88,7 @@
             android:parentActivityName=".NewMainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="net.danmercer.ponderizer.scriptureview.ScriptureViewActivity" />
+                android:value="net.danmercer.ponderizer.NewMainActivity" />
         </activity>
 
         <!-- Adds a note about a certain scripture -->
