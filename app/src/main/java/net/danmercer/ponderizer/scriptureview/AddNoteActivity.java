@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -79,7 +80,7 @@ public class AddNoteActivity extends AppCompatActivity {
                         switch (which) {
                             case Dialog.BUTTON_POSITIVE:
                                 setTextEditingEnabled(true);
-                                setTitle("Edit Note");
+                                setTitle(R.string.dialog_edit_note_title);
                                 invalidateOptionsMenu();
                                 return;
                             default:
@@ -88,22 +89,22 @@ public class AddNoteActivity extends AppCompatActivity {
                         }
                     }
                 };
-        db.setMessage("Are you sure you want to edit this note?");
-        db.setPositiveButton("Yes", listener);
-        db.setNegativeButton("No", listener);
+        db.setMessage(R.string.prompt_confirm_edit_note);
+        db.setPositiveButton(R.string.yes, listener);
+        db.setNegativeButton(R.string.no, listener);
         db.show();
     }
 
     private void promptToConfirmDiscard() {
-        promptToConfirmResult(RESULT_CANCELED, "Are you sure you want to discard your changes?");
+        promptToConfirmResult(RESULT_CANCELED, R.string.prompt_discard_changes);
     }
 
     private void promptToConfirmDelete() {
-        promptToConfirmResult(RESULT_DELETED, "Are you sure you want to delete this note?");
+        promptToConfirmResult(RESULT_DELETED, R.string.prompt_delete_note);
     }
 
     // Called by promptToConfirmDiscard() and promptToConfirmDelete()
-    private void promptToConfirmResult(final int resultCode, String prompt) {
+    private void promptToConfirmResult(final int resultCode, @StringRes int promptId) {
         AlertDialog.Builder db = new AlertDialog.Builder(AddNoteActivity.this);
         DialogInterface.OnClickListener listener =
                 new DialogInterface.OnClickListener() {
@@ -119,7 +120,7 @@ public class AddNoteActivity extends AppCompatActivity {
                         }
                     }
                 };
-        db.setMessage(prompt);
+        db.setMessage(promptId);
         db.setPositiveButton("Yes", listener);
         db.setNegativeButton("No", listener);
         db.show();
@@ -219,7 +220,7 @@ public class AddNoteActivity extends AppCompatActivity {
                 mLaunchIntent.putExtra(Note.EXTRA_NOTE_TIME, time);
             }
 
-            Toast.makeText(this, "Note saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.toast_note_saved, Toast.LENGTH_SHORT).show();
 
             // Set activity result and finish
             setResult(RESULT_OK, mLaunchIntent);
