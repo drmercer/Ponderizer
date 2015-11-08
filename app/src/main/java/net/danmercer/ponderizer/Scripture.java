@@ -25,7 +25,9 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import net.danmercer.ponderizer.memorize.MemorizeActivity;
+import net.danmercer.ponderizer.memorize.MemorizeTestActivity;
 import net.danmercer.ponderizer.scriptureview.AddNoteActivity;
+import net.danmercer.ponderizer.scriptureview.ScriptureIntent;
 import net.danmercer.ponderizer.scriptureview.ScriptureViewActivity;
 
 import java.io.BufferedReader;
@@ -40,9 +42,6 @@ import java.util.LinkedList;
  * Created by Dan on 10/22/2015.
  */
 public class Scripture implements Parcelable {
-
-    // Used when putting a Scripture into an intent as a parcelable extra
-    public static final String EXTRA_SCRIPTURE = Scripture.class.getName();
 
     // The name of the directory for the notes files
     public static final String NOTES_DIR = "notes";
@@ -276,20 +275,14 @@ public class Scripture implements Parcelable {
     // INTENT UTILITY METHODS, called by ScriptureAppWidget and WidgetPopupMenuActivity
 
     public Intent getMemorizeIntent(Context context) {
-        Intent i = new Intent(context, MemorizeActivity.class);
-        i.putExtra(Scripture.EXTRA_SCRIPTURE, this);
-        return i;
+        return new ScriptureIntent(context, MemorizeTestActivity.class, this);
     }
 
     public Intent getAddNoteIntent(Context context) {
-        Intent i = new Intent(context, AddNoteActivity.class);
-        i.putExtra(Scripture.EXTRA_SCRIPTURE, this);
-        return i;
+        return new ScriptureIntent(context, AddNoteActivity.class, this);
     }
 
     public Intent getViewIntent(Context context) {
-        Intent i = new Intent(context, ScriptureViewActivity.class);
-        i.putExtra(Scripture.EXTRA_SCRIPTURE, this);
-        return i;
+        return new ScriptureIntent(context, ScriptureViewActivity.class, this);
     }
 }

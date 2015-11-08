@@ -16,9 +16,11 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- This file is both used in the MemorizeActivity and appended to the menu of the ScriptureViewActivity -->
     <item
         android:id="@+id/action_start_test"
         android:title="@string/title_activity_memorize_test"
         android:icon="@drawable/ic_assignment_white_24dp"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 </menu>

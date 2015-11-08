@@ -206,10 +206,10 @@ public class AddNoteActivity extends AppCompatActivity {
             finish();
         } else if (mEdited) {
             long time = System.currentTimeMillis();
-            if (mLaunchIntent.hasExtra(Scripture.EXTRA_SCRIPTURE)) {
+            if (mLaunchIntent.hasExtra(ScriptureIntent.EXTRA_SCRIPTURE)) {
                 // If the launch intent has an EXTRA_SCRIPTURE extra, it means this activity was
                 // launched from a widget, so write the new note directly to file.
-                Scripture s = mLaunchIntent.getParcelableExtra(Scripture.EXTRA_SCRIPTURE);
+                Scripture s = mLaunchIntent.getParcelableExtra(ScriptureIntent.EXTRA_SCRIPTURE);
                 File noteFile = new File(getDir(Scripture.NOTES_DIR, Context.MODE_PRIVATE),
                         s.getFilename());
                 Note.writeNoteToFile(time, text, noteFile);

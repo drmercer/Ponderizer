@@ -32,6 +32,7 @@ import android.widget.TextView;
 
 import net.danmercer.ponderizer.R;
 import net.danmercer.ponderizer.Scripture;
+import net.danmercer.ponderizer.scriptureview.ScriptureIntent;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -52,7 +53,7 @@ public class MemorizeActivity extends AppCompatActivity {
 
         // Get the Scripture to display
         Intent intent = getIntent();
-        mScripture = intent.getParcelableExtra(Scripture.EXTRA_SCRIPTURE);
+        mScripture = intent.getParcelableExtra(ScriptureIntent.EXTRA_SCRIPTURE);
         if (mScripture == null) {
             // If no Scripture was put into the intent, abort the Activity and report an error.
             Log.e("MemorizeActivity", "MemorizeActivity was launched without a Scripture!");
@@ -116,9 +117,7 @@ public class MemorizeActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_start_test:
                 // Launch MemorizeTestActivity
-                Intent intent = new Intent(this, MemorizeTestActivity.class);
-                intent.putExtra(Scripture.EXTRA_SCRIPTURE, mScripture);
-                startActivity(intent);
+                startActivity(new ScriptureIntent(this, MemorizeTestActivity.class, mScripture));
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -152,9 +151,6 @@ public class MemorizeActivity extends AppCompatActivity {
             // can more evenly distribute the masked words throughout the text.
             int part1 = wordsToMaskPerTen / 2;
             int part2 = (wordsToMaskPerTen % 2 == 1) ? part1 + 1 : part1;
-            Log.d("mathy", "wordsToMaskPerTen: " + wordsToMaskPerTen);
-            Log.d("mathy", "part 1: " + part1);
-            Log.d("mathy", "part 2: " + part2);
 
             for (int i = 0; m.find(); i++) {
                 boolean mask;

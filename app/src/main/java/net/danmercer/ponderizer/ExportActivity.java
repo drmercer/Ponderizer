@@ -31,6 +31,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import net.danmercer.ponderizer.scriptureview.Note;
+import net.danmercer.ponderizer.scriptureview.ScriptureIntent;
 
 import java.util.LinkedList;
 
@@ -50,7 +51,7 @@ public class ExportActivity extends AppCompatActivity implements CompoundButton.
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mScripture = getIntent().getParcelableExtra(Scripture.EXTRA_SCRIPTURE);
+        mScripture = getIntent().getParcelableExtra(ScriptureIntent.EXTRA_SCRIPTURE);
         boolean hasNotes = mScripture.hasNotes(this);
 
         mNoteHeadersBox = (CheckBox) findViewById(R.id.checkBox_noteHeaders);

@@ -17,14 +17,10 @@
 package net.danmercer.ponderizer.memorize;
 
 import android.app.AlertDialog;
-import android.app.Notification;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -32,8 +28,6 @@ import android.text.Editable;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StrikethroughSpan;
-import android.text.style.StyleSpan;
-import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -43,8 +37,8 @@ import android.widget.TextView;
 import net.danmercer.ponderizer.NewMainActivity;
 import net.danmercer.ponderizer.R;
 import net.danmercer.ponderizer.Scripture;
+import net.danmercer.ponderizer.scriptureview.ScriptureIntent;
 
-import java.util.Arrays;
 import java.util.Random;
 
 public class MemorizeTestActivity extends AppCompatActivity implements View.OnClickListener {
@@ -72,7 +66,7 @@ public class MemorizeTestActivity extends AppCompatActivity implements View.OnCl
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Get scripture from intent
-        mScripture = getIntent().getParcelableExtra(Scripture.EXTRA_SCRIPTURE);
+        mScripture = getIntent().getParcelableExtra(ScriptureIntent.EXTRA_SCRIPTURE);
         if (mScripture == null) {
             Log.e("MemorizeTestActivity", "Started MemorizeTestActivity without a scripture.");
             setResult(RESULT_CANCELED);

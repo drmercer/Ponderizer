@@ -27,13 +27,14 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import net.danmercer.ponderizer.ExportActivity;
 import net.danmercer.ponderizer.NewMainActivity;
 import net.danmercer.ponderizer.R;
 import net.danmercer.ponderizer.Scripture;
-import net.danmercer.ponderizer.memorize.MemorizeActivity;
+import net.danmercer.ponderizer.memorize.MemorizeTestActivity;
 
 public class ScriptureViewActivity extends AppCompatActivity {
     public static final int NUM_OF_TABS = 2;
@@ -98,7 +99,7 @@ public class ScriptureViewActivity extends AppCompatActivity {
 
         // Get the Scripture to display
         Intent intent = getIntent();
-        scripture = intent.getParcelableExtra(Scripture.EXTRA_SCRIPTURE);
+        scripture = intent.getParcelableExtra(ScriptureIntent.EXTRA_SCRIPTURE);
         if (scripture == null) {
             // If no Scripture was put into the intent, abort the Activity and report an error.
             Log.e("ScriptureViewActivity", "ScriptureViewActivity was launched without a Scripture!");
@@ -145,7 +146,10 @@ public class ScriptureViewActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_scripture_view, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_scripture_view, menu);
+        inflater.inflate(R.menu.menu_memorize, menu);
+        // Appends the "Memorize Test" button to this menu
 
         MenuItem markCompleted = menu.findItem(R.id.action_mark_completed);
         if (scripture.isCompleted()) {
@@ -180,6 +184,11 @@ public class ScriptureViewActivity extends AppCompatActivity {
                 startActivity(scripture.getMemorizeIntent(this));
                 return true;
 
+            case R.id.action_start_test:
+                // Launch MemorizeTestActivity
+                startActivity(new ScriptureIntent(this, MemorizeTestActivity.class, scripture));
+                return true;
+
             case R.id.action_mark_completed:
                 // Mark the scripture as completed/incompleted - i.e. toggle the category
                 if (!scripture.isCompleted()) {
@@ -193,9 +202,7 @@ public class ScriptureViewActivity extends AppCompatActivity {
                 return true;
 
             case R.id.action_export:
-                Intent intent = new Intent(this, ExportActivity.class);
-                intent.putExtra(Scripture.EXTRA_SCRIPTURE, scripture);
-                startActivity(intent);
+                startActivity(new ScriptureIntent(this, ExportActivity.class, scripture));
                 return true;
         }
         return super.onOptionsItemSelected(item);

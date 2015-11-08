@@ -29,6 +29,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import net.danmercer.ponderizer.scriptureview.ScriptureIntent;
+
 import java.util.LinkedList;
 
 public class ScriptureListFragment extends Fragment {
@@ -201,9 +203,7 @@ public class ScriptureListFragment extends Fragment {
                 return true;
 
             case R.id.action_export:
-                Intent intent = new Intent(getContext(), ExportActivity.class);
-                intent.putExtra(Scripture.EXTRA_SCRIPTURE, s);
-                startActivity(intent);
+                startActivity(new ScriptureIntent(getContext(), ExportActivity.class, s));
                 return true;
 
 

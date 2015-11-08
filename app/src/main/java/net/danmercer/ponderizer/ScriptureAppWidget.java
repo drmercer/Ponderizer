@@ -26,9 +26,7 @@ import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.RemoteViews;
 
-import net.danmercer.ponderizer.memorize.MemorizeActivity;
-import net.danmercer.ponderizer.scriptureview.AddNoteActivity;
-import net.danmercer.ponderizer.scriptureview.ScriptureViewActivity;
+import net.danmercer.ponderizer.scriptureview.ScriptureIntent;
 
 /**
  * Implementation of App Widget functionality.
@@ -116,8 +114,7 @@ public class ScriptureAppWidget extends AppWidgetProvider {
         }
 
         // Set up widget "context menu"
-        Intent menuIntent = new Intent(context, WidgetPopupMenuActivity.class);
-        menuIntent.putExtra(Scripture.EXTRA_SCRIPTURE, s);
+        Intent menuIntent = new ScriptureIntent(context, WidgetPopupMenuActivity.class, s);
         menuIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         PendingIntent menuPending = PendingIntent.getActivity(context, appWidgetId, menuIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.widget_header, menuPending);
