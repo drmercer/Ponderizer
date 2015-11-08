@@ -12,7 +12,7 @@
         android:text="@string/configure" />
 
     <ListView
-        android:id="@+id/scripturesList"
+        android:id="@+id/scripture_list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

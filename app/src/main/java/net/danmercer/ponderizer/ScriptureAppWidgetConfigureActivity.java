@@ -26,7 +26,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.io.File;
 import java.util.LinkedList;
 
 /**
@@ -51,13 +50,12 @@ public class ScriptureAppWidgetConfigureActivity extends Activity implements Ada
         setResult(RESULT_CANCELED);
 
         setContentView(R.layout.scripture_app_widget_configure);
-        ListView mListView = (ListView) findViewById(R.id.scripturesList);
+        ListView mListView = (ListView) findViewById(R.id.scripture_list_view);
 
         // Initialize ListView
-        File dir = getDir(Scripture.CATEGORY_PRESENT, MODE_PRIVATE);
-        mScriptureList = Scripture.loadScriptures(dir);
+        mScriptureList = Scripture.loadScriptures(this, NewMainActivity.Category.IN_PROGRESS);
         if (!mScriptureList.isEmpty()) {
-            ListView lv = (ListView) findViewById(R.id.scripturesList);
+            ListView lv = (ListView) findViewById(R.id.scripture_list_view);
             lv.setAdapter(new ArrayAdapter<Scripture>(this, R.layout.list_item, R.id.listitem_text, mScriptureList));
             lv.setOnItemClickListener(this);
         } else {
@@ -89,9 +87,10 @@ public class ScriptureAppWidgetConfigureActivity extends Activity implements Ada
 
         String reference = scripture.getReference();
         String text = scripture.getBody();
+        NewMainActivity.Category cat = scripture.getCategory();
 
         // Save widget data to preferences file
-        ScriptureAppWidget.saveWidgetPrefs(this, mAppWidgetId, reference, text);
+        ScriptureAppWidget.saveWidgetPrefs(this, mAppWidgetId, reference, text, cat);
 
         // It is the responsibility of the configuration activity to update the app widget
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);

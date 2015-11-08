@@ -24,6 +24,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import net.danmercer.ponderizer.scriptureview.ScriptureIntent;
+
 public class WidgetPopupMenuActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Scripture mScripture;
@@ -46,7 +48,7 @@ public class WidgetPopupMenuActivity extends AppCompatActivity implements View.O
         }
 
         // Get the Scripture from the intent.
-        mScripture = intent.getParcelableExtra(Scripture.EXTRA_SCRIPTURE);
+        mScripture = intent.getParcelableExtra(ScriptureIntent.EXTRA_SCRIPTURE);
         if (mScripture == null) {
             // Exit with an error if no Scripture was in the intent
             Log.e("WidgetPopupMenuActivity", "No Scripture provided in intent");

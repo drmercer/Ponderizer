@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.danmercer.ponderizer"
-    android:versionCode="3"
-    android:versionName="1.1.1">
+    android:versionCode="4"
+    android:versionName="2.0">
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".NewMainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,14 +24,18 @@
         <!-- Look up scriptures by reference TODO: Remove this activty? -->
         <activity
             android:name=".AddScriptureReferenceActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".NewMainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.danmercer.ponderizer.NewMainActivity" />
+        </activity>
 
         <!-- "Share" text from Gospel Library and add as scripture -->
         <activity
             android:name=".AddScriptureTextActivity"
             android:label="Add Scripture to Ponderize"
-            android:theme="@style/AppTheme.NoActionBar" >
-            <intent-filter android:label="Ponderize Scripture" >
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter android:label="Ponderize Scripture">
                 <action android:name="android.intent.action.SEND" />
             </intent-filter>
         </activity>
@@ -40,11 +44,11 @@
             android:name=".AddScriptureTextActivityFromAnyApp"
             android:enabled="false"
             android:label="Add Scripture to Ponderize"
-            android:targetActivity=".AddScriptureTextActivity" >
+            android:targetActivity=".AddScriptureTextActivity">
 
             <!-- This activity-alias is disabled by default, but can be enabled from settings -->
             <!-- TODO: add option to enable this in Settings -->
-            <intent-filter android:label="Ponderize Scripture" >
+            <intent-filter android:label="Ponderize Scripture">
                 <action android:name="android.intent.action.SEND" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -56,11 +60,11 @@
             android:name=".AddScriptureTextOnlyGospelLibrary"
             android:enabled="true"
             android:label="Add Scripture to Ponderize"
-            android:targetActivity=".AddScriptureTextActivity" >
+            android:targetActivity=".AddScriptureTextActivity">
 
             <!-- This activity-alias is enabled by default, but will be disabled when that^ one -->
             <!-- is enabled -->
-            <intent-filter android:label="Ponderize Scripture" >
+            <intent-filter android:label="Ponderize Scripture">
                 <action android:name="android.intent.action.SEND" />
 
                 <category android:name="org.lds.ldssa" />
@@ -72,12 +76,20 @@
         <!-- Shows instructions for adding from Gospel Library -->
         <activity
             android:name=".AddScriptureInstructions"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".NewMainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.danmercer.ponderizer.NewMainActivity" />
+        </activity>
 
         <!-- Displays the text of a scripture -->
         <activity
             android:name=".scriptureview.ScriptureViewActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".NewMainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.danmercer.ponderizer.NewMainActivity" />
+        </activity>
 
         <!-- Adds a note about a certain scripture -->
         <activity
@@ -89,11 +101,10 @@
         <activity
             android:name=".memorize.MemorizeActivity"
             android:label="@string/title_activity_memorize"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <!-- Scripture widget provider -->
-        <receiver android:name=".ScriptureAppWidget" >
+        <receiver android:name=".ScriptureAppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -106,11 +117,10 @@
         <!-- Scripture widget "context menu" -->
         <activity
             android:name=".WidgetPopupMenuActivity"
-            android:theme="@style/AppTheme.Dialog">
-        </activity>
+            android:theme="@style/AppTheme.Dialog"></activity>
 
         <!-- Scripture widget configuration activity -->
-        <activity android:name=".ScriptureAppWidgetConfigureActivity" >
+        <activity android:name=".ScriptureAppWidgetConfigureActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -121,10 +131,23 @@
             android:name=".ExportActivity"
             android:label="@string/title_activity_export"
             android:parentActivityName=".scriptureview.ScriptureViewActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.danmercer.ponderizer.scriptureview.ScriptureViewActivity" />
+        </activity>
+        <activity
+            android:name=".memorize.MemorizeTestActivity"
+            android:label="@string/title_activity_memorize_test"
+            android:parentActivityName=".memorize.MemorizeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.danmercer.ponderizer.memorize.MemorizeActivity" />
+        </activity>
+        <activity
+            android:name=".AboutActivity"
+            android:label="@string/about">
         </activity>
     </application>
 

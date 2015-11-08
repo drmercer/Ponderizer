@@ -31,6 +31,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import net.danmercer.ponderizer.scriptureview.Note;
+import net.danmercer.ponderizer.scriptureview.ScriptureIntent;
 
 import java.util.LinkedList;
 
@@ -50,7 +51,7 @@ public class ExportActivity extends AppCompatActivity implements CompoundButton.
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mScripture = getIntent().getParcelableExtra(Scripture.EXTRA_SCRIPTURE);
+        mScripture = getIntent().getParcelableExtra(ScriptureIntent.EXTRA_SCRIPTURE);
         boolean hasNotes = mScripture.hasNotes(this);
 
         mNoteHeadersBox = (CheckBox) findViewById(R.id.checkBox_noteHeaders);
@@ -84,7 +85,7 @@ public class ExportActivity extends AppCompatActivity implements CompoundButton.
         mScripBox = (CheckBox) findViewById(R.id.checkBox_scriptureText);
         mScripBox.setOnCheckedChangeListener(this);
 
-        // Set up Export Buttonm
+        // Set up Export Button
         mExportButton = (Button) findViewById(R.id.button_export);
         mExportButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,7 +153,7 @@ public class ExportActivity extends AppCompatActivity implements CompoundButton.
         Toast.makeText(this, "Copied to clipboard.", Toast.LENGTH_SHORT).show();
     }
 
-    // Calls generateText(...) with the current data from the checkboxes and radiobuttons.
+    // Calls generateText(...) with the current data from the checkboxes and radio buttons.
     private String generateText() {
         CheckBox cbScriptureText = (CheckBox) findViewById(R.id.checkBox_scriptureText);
         CheckBox cbScriptureRef = (CheckBox) findViewById(R.id.checkBox_scriptureReference);

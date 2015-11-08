@@ -26,9 +26,7 @@ import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.RemoteViews;
 
-import net.danmercer.ponderizer.memorize.MemorizeActivity;
-import net.danmercer.ponderizer.scriptureview.AddNoteActivity;
-import net.danmercer.ponderizer.scriptureview.ScriptureViewActivity;
+import net.danmercer.ponderizer.scriptureview.ScriptureIntent;
 
 /**
  * Implementation of App Widget functionality.
@@ -40,6 +38,7 @@ public class ScriptureAppWidget extends AppWidgetProvider {
     static final String PREFS_NAME = "net.danmercer.ponderizer.ScriptureAppWidget";
     static final String PREF_KEY_REFERENCE = "ref_";
     static final String PREF_KEY_TEXT = "body_";
+    private static final String PREF_KEY_CATEGORY = "category_";
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -54,16 +53,20 @@ public class ScriptureAppWidget extends AppWidgetProvider {
     // Also called by ScriptureAppWidgetConfigureActivity.onListItemClick()
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
-        // Get widget text from SharedPreferences
+        // Get scripture info from SharedPreferences
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
         String reference = prefs.getString(PREF_KEY_REFERENCE + appWidgetId, null);
         String scriptureText = prefs.getString(PREF_KEY_TEXT + appWidgetId, null);
+        String categoryName = prefs.getString(PREF_KEY_CATEGORY + appWidgetId,
+                NewMainActivity.Category.IN_PROGRESS.name());
+        NewMainActivity.Category cat = NewMainActivity.Category.valueOf(categoryName);
+
         boolean hasScripture = reference != null && scriptureText != null;
         if (!hasScripture) {
             return;
         }
 
-        Scripture s = new Scripture(reference, scriptureText);
+        Scripture s = new Scripture(reference, scriptureText, cat);
         boolean scriptureFileExists = s.fileExists(context);
 
         // Construct the RemoteViews object
@@ -111,8 +114,7 @@ public class ScriptureAppWidget extends AppWidgetProvider {
         }
 
         // Set up widget "context menu"
-        Intent menuIntent = new Intent(context, WidgetPopupMenuActivity.class);
-        menuIntent.putExtra(Scripture.EXTRA_SCRIPTURE, s);
+        Intent menuIntent = new ScriptureIntent(context, WidgetPopupMenuActivity.class, s);
         menuIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         PendingIntent menuPending = PendingIntent.getActivity(context, appWidgetId, menuIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.widget_header, menuPending);
@@ -122,10 +124,11 @@ public class ScriptureAppWidget extends AppWidgetProvider {
     }
 
     // Called by ScriptureAppWidgetConfigureActivity to save widget info to a SharedPreferences
-    public static void saveWidgetPrefs(Context context, int appWidgetId, String reference, String text) {
+    public static void saveWidgetPrefs(Context context, int appWidgetId, String reference, String text, NewMainActivity.Category cat) {
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
         prefs.putString(PREF_KEY_REFERENCE + appWidgetId, reference);
         prefs.putString(PREF_KEY_TEXT + appWidgetId, text);
+        prefs.putString(PREF_KEY_CATEGORY + appWidgetId, cat.name());
         prefs.commit();
     }
 
@@ -133,11 +136,11 @@ public class ScriptureAppWidget extends AppWidgetProvider {
     public void onDeleted(Context context, int[] appWidgetIds) {
         // When the user deletes the widget, delete the preference associated with it.
         final int N = appWidgetIds.length;
-        for (int i = 0; i < N; i++) {
+        for (int id : appWidgetIds) {
             // Remove widget info from SharedPreferences
             SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-            prefs.remove(PREF_KEY_REFERENCE + appWidgetIds[i]);
-            prefs.remove(PREF_KEY_TEXT + appWidgetIds[i]);
+            prefs.remove(PREF_KEY_REFERENCE + id);
+            prefs.remove(PREF_KEY_TEXT + id);
             prefs.commit();
         }
     }
