@@ -184,6 +184,11 @@ public class NewMainActivity extends AppCompatActivity {
                 Uri url = Uri.parse("https://github.com/drmercer/Ponderizer/wiki/User-Help-Pages");
                 Intent help = new Intent(Intent.ACTION_VIEW, url);
                 startActivity(help);
+                return true;
+
+            case R.id.action_about:
+                startActivity(new Intent(this, AboutActivity.class));
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

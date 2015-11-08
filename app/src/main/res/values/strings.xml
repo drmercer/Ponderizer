@@ -71,5 +71,23 @@
     <string name="ok">OK</string>
     <string name="share">Share</string>
     <string name="choose_share">Share with...</string>
+    <string name="about">About</string>
+    <string name="about_text_body">
+        <![CDATA[
+        <a href="https://play.google.com/store/apps/details?id=net.danmercer.ponderizer">Rate the
+        app!</a> Please tell the world what you think of Ponderizer by rating it on the Play Store.
+        <br/><br/>
+        Share Ponderizer with your friends! Encourage them to study and ponderize like you do. :)
+        <br/><br/>
+        <a href="https://paypal.me/danmercer">Donate</a>. As you know, Ponderizer is completely
+        free. So donations are a great way to assist me with future development and other things.
+        Every little bit counts!
+        <br/><br/>
+        <a href="https://github.com/drmercer/ponderizer">Contribute</a> to the source code.
+        Fork my project on GitHub, and you can help write the next greatest feature!
+        ]]>
+    </string>
+    <string name="about_text_share_snippet">Share Ponderizer</string>
+    <string name="about_text_intro">Hi! I\'m Dan Mercer, the author of Ponderizer. I hope you\'re enjoying this app. If you are, please consider contributing in one of the ways below.</string>
 
 </resources>
