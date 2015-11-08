@@ -45,8 +45,10 @@
     <string name="dialog_title_nailed_it">Nailed It!</string>
     <string name="dialog_msg_nailed_it">You recited the scripture perfectly!</string>
     <string name="dialog_your_score">Your Score</string>
-    <string name="dialog_msg_score_fmt">You recited %d%% of the scripture correctly.</string>
+    <string name="dialog_msg_score_fmt">You recited %1$d%% of the scripture correctly.</string>
     <string name="dialog_mark_complete"> Would you like to mark this scripture as completed?</string>
+    <string name="share_results_fmt">I memorized %1$s with %2$d%% accuracy using Ponderizer. Give it a try!</string>
+    <string name="share_results_subject_fmt">I memorized %1$s with %2$d%% accuracy using Ponderizer.</string>
 
     <!-- EXPORT ACTIVITY -->
     <string name="title_activity_export">Export / Share Scripture</string>
@@ -67,5 +69,7 @@
     <string name="no">No</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
+    <string name="share">Share</string>
+    <string name="choose_share">Share with...</string>
 
 </resources>

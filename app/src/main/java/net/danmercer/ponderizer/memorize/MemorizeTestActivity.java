@@ -19,9 +19,11 @@ package net.danmercer.ponderizer.memorize;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -51,6 +53,7 @@ public class MemorizeTestActivity extends AppCompatActivity implements View.OnCl
     public static final int COLOR_CORRECT = 0xFF11BB44;
     public static final int COLOR_INCORRECT = Color.RED;
     public static final String SPLIT_REGEX = "[\\s\\d]+";
+    public static final String PLAYSTORE_URL = "https://play.google.com/store/apps/details?id=net.danmercer.ponderizer";
     private Scripture mScripture;
     private EditText mScriptureView;
     private Drawable mBlankBackground;
@@ -169,7 +172,7 @@ public class MemorizeTestActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void showResults() {
-        int percentageCorrect = (100 * (mWords.length - mMissedWordCount)) / mWords.length;
+        final int percentageCorrect = (100 * (mWords.length - mMissedWordCount)) / mWords.length;
         boolean offerToMarkComplete = percentageCorrect >= 90
                 && mScripture.getCategory() != NewMainActivity.Category.COMPLETED;
 
@@ -198,6 +201,26 @@ public class MemorizeTestActivity extends AppCompatActivity implements View.OnCl
             db.setPositiveButton(R.string.ok, null);
         }
         db.setMessage(msg);
+        // Give the user the option to share their results with others
+        db.setNeutralButton(R.string.share, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Start an Activity chooser with a share Intent
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_TEXT,
+                        getString(
+                                R.string.share_results_fmt,
+                                mScripture.getReference(),
+                                percentageCorrect) + "\n\n" + PLAYSTORE_URL);
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT,
+                        getString(R.string.share_results_subject_fmt,
+                                mScripture.getReference(),
+                                percentageCorrect));
+                Intent chooser = Intent.createChooser(shareIntent, getString(R.string.choose_share));
+                startActivity(chooser);
+            }
+        });
         AlertDialog dialog = db.create();
         dialog.show();
     }
