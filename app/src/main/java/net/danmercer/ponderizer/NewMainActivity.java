@@ -38,6 +38,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.io.File;
 import java.util.Random;
 
 public class NewMainActivity extends AppCompatActivity {
@@ -67,8 +68,24 @@ public class NewMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_main);
 
+        // Set up the App Bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Migrate scriptures from old file system
+        File ipDir = Scripture.getDir(this, Category.IN_PROGRESS);
+        File parentDir = ipDir.getParentFile();
+        File oldDir = new File(parentDir, "app_present");
+        if (oldDir.exists()) {
+            File[] oldFiles = oldDir.listFiles();
+            for (File f : oldFiles) {
+                Log.d("NewMain", "old = " + f.getAbsolutePath());
+                File newPath = new File(ipDir, f.getName());
+                Log.d("NewMain", "new = " + newPath.getAbsolutePath());
+                f.renameTo(newPath);
+            }
+        }
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
