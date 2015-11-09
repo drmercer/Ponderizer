@@ -34,6 +34,7 @@ import net.danmercer.ponderizer.ExportActivity;
 import net.danmercer.ponderizer.NewMainActivity;
 import net.danmercer.ponderizer.R;
 import net.danmercer.ponderizer.Scripture;
+import net.danmercer.ponderizer.memorize.MemorizeActivity;
 import net.danmercer.ponderizer.memorize.MemorizeTestActivity;
 
 public class ScriptureViewActivity extends AppCompatActivity {
@@ -181,7 +182,7 @@ public class ScriptureViewActivity extends AppCompatActivity {
 
             case R.id.action_memorize:
                 // Open the Memorize view
-                startActivity(scripture.getMemorizeIntent(this));
+                startActivity(new ScriptureIntent(this, MemorizeActivity.class, scripture));
                 return true;
 
             case R.id.action_start_test:

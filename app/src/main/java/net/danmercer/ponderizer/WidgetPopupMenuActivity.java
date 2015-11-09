@@ -24,7 +24,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import net.danmercer.ponderizer.memorize.MemorizeActivity;
+import net.danmercer.ponderizer.scriptureview.AddNoteActivity;
 import net.danmercer.ponderizer.scriptureview.ScriptureIntent;
+import net.danmercer.ponderizer.scriptureview.ScriptureViewActivity;
 
 public class WidgetPopupMenuActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -80,13 +83,13 @@ public class WidgetPopupMenuActivity extends AppCompatActivity implements View.O
                 launchConfigActivity();
                 return;
             case R.id.button_view_scripture:
-                startActivity(mScripture.getViewIntent(this));
+                startActivity(new ScriptureIntent(this, ScriptureViewActivity.class, mScripture));
                 return;
             case R.id.button_memorize:
-                startActivity(mScripture.getMemorizeIntent(this));
+                startActivity(new ScriptureIntent(this, MemorizeActivity.class, mScripture));
                 return;
             case R.id.button_add_note:
-                startActivity(mScripture.getAddNoteIntent(this));
+                startActivity(new ScriptureIntent(this, AddNoteActivity.class, mScripture));
                 return;
         }
     }

@@ -29,7 +29,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import net.danmercer.ponderizer.memorize.MemorizeActivity;
+import net.danmercer.ponderizer.scriptureview.AddNoteActivity;
 import net.danmercer.ponderizer.scriptureview.ScriptureIntent;
+import net.danmercer.ponderizer.scriptureview.ScriptureViewActivity;
 
 import java.util.LinkedList;
 
@@ -88,7 +91,7 @@ public class ScriptureListFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Scripture scripture = mScriptureList.get(position);
-                    startActivityForResult(scripture.getViewIntent(getContext()), REQUEST_VIEW_SCRIPTURE);
+                    startActivityForResult(new ScriptureIntent(getContext(), ScriptureViewActivity.class, scripture), REQUEST_VIEW_SCRIPTURE);
                 }
             });
             registerForContextMenu(mListView);
@@ -179,15 +182,15 @@ public class ScriptureListFragment extends Fragment {
                 return true;
 
             case R.id.action_add_note:
-                startActivity(s.getAddNoteIntent(getContext()));
+                startActivity(new ScriptureIntent(getContext(), AddNoteActivity.class, s));
                 return true;
 
             case R.id.action_view:
-                startActivityForResult(s.getViewIntent(getContext()), REQUEST_VIEW_SCRIPTURE);
+                startActivityForResult(new ScriptureIntent(getContext(), ScriptureViewActivity.class, s), REQUEST_VIEW_SCRIPTURE);
                 return true;
 
             case R.id.action_memorize:
-                startActivity(s.getMemorizeIntent(getContext()));
+                startActivity(new ScriptureIntent(getContext(), MemorizeActivity.class, s));
                 return true;
 
             case R.id.action_mark_completed:

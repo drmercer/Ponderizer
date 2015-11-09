@@ -272,17 +272,4 @@ public class Scripture implements Parcelable {
         return new File(c.getDir(Scripture.NOTES_DIR, 0), filename);
     }
 
-    // INTENT UTILITY METHODS, called by ScriptureAppWidget and WidgetPopupMenuActivity
-
-    public Intent getMemorizeIntent(Context context) {
-        return new ScriptureIntent(context, MemorizeTestActivity.class, this);
-    }
-
-    public Intent getAddNoteIntent(Context context) {
-        return new ScriptureIntent(context, AddNoteActivity.class, this);
-    }
-
-    public Intent getViewIntent(Context context) {
-        return new ScriptureIntent(context, ScriptureViewActivity.class, this);
-    }
 }

@@ -26,7 +26,10 @@ import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import net.danmercer.ponderizer.memorize.MemorizeActivity;
+import net.danmercer.ponderizer.scriptureview.AddNoteActivity;
 import net.danmercer.ponderizer.scriptureview.ScriptureIntent;
+import net.danmercer.ponderizer.scriptureview.ScriptureViewActivity;
 
 /**
  * Implementation of App Widget functionality.
@@ -77,17 +80,17 @@ public class ScriptureAppWidget extends AppWidgetProvider {
         views.setTextViewText(R.id.widget_body, scriptureText);
 
         // Set up memorize PendingIntent
-        Intent memIntent = s.getMemorizeIntent(context);
+        Intent memIntent = new ScriptureIntent(context, MemorizeActivity.class, s);
         PendingIntent memorizeIntent = PendingIntent.getActivity(context, appWidgetId,
                 memIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Set up add note PendingIntent
-        Intent noteIntent = s.getAddNoteIntent(context);
+        Intent noteIntent = new ScriptureIntent(context, AddNoteActivity.class, s);
         PendingIntent addNoteIntent = PendingIntent.getActivity(context, appWidgetId,
                 noteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Set up scripture view PendingIntent
-        Intent viewIntent = s.getViewIntent(context);
+        Intent viewIntent = new ScriptureIntent(context, ScriptureViewActivity.class, s);
         PendingIntent scripViewIntent = PendingIntent.getActivity(context, appWidgetId,
                 viewIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
