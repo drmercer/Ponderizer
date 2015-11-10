@@ -20,7 +20,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -39,6 +38,10 @@ import net.danmercer.ponderizer.R;
 import net.danmercer.ponderizer.Scripture;
 import net.danmercer.ponderizer.scriptureview.ScriptureIntent;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 public class MemorizeTestActivity extends AppCompatActivity implements View.OnClickListener {
@@ -50,10 +53,10 @@ public class MemorizeTestActivity extends AppCompatActivity implements View.OnCl
     public static final String PLAYSTORE_URL = "https://play.google.com/store/apps/details?id=net.danmercer.ponderizer";
     private Scripture mScripture;
     private EditText mScriptureView;
-    private Drawable mBlankBackground;
-    private Button mCorrectAnswer;
     private Button[] mAnswerButtons;
     private String[] mWords;
+    private Button mCorrectAnswer;
+    private String mCorrectWord;
     private int mNextWordIndex = 0;
     private int mMissedWordCount = 0;
 
@@ -63,7 +66,6 @@ public class MemorizeTestActivity extends AppCompatActivity implements View.OnCl
         setContentView(R.layout.activity_memorize_test);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Get scripture from intent
         mScripture = getIntent().getParcelableExtra(ScriptureIntent.EXTRA_SCRIPTURE);
@@ -76,10 +78,21 @@ public class MemorizeTestActivity extends AppCompatActivity implements View.OnCl
 
         // Split the scripture text into words
         String body = mScripture.body;
-        if (body.matches(SPLIT_REGEX + ".*")) {
-            body = body.replaceFirst(SPLIT_REGEX, "");
-        }
         mWords = body.split(SPLIT_REGEX);
+        // Do all this to avoid empty strings in the mWords array.
+        LinkedList<String> temp = new LinkedList<>(Arrays.asList(mWords));
+        for (String word : mWords) {
+            if (word == null || word.trim().isEmpty()) {
+                // Filter any empty words out of the temp list
+                temp.remove(word);
+            }
+        }
+        int newWordCount = temp.size();
+        // If some words were removed...
+        if (newWordCount != mWords.length) {
+            // Create a new array without the empty words.
+            mWords = temp.toArray(new String[newWordCount]);
+        }
 
         // Set up the instructions view with formatted text
         TextView instructions = (TextView) findViewById(R.id.text1);
@@ -95,9 +108,6 @@ public class MemorizeTestActivity extends AppCompatActivity implements View.OnCl
         mAnswerButtons[1] = (Button) findViewById(R.id.button2);
         mAnswerButtons[2] = (Button) findViewById(R.id.button3);
         mAnswerButtons[3] = (Button) findViewById(R.id.button4);
-
-        // Grab the default background from the first button.
-        mBlankBackground = mAnswerButtons[0].getBackground();
 
         // Use this activity as a click listener
         for (Button b : mAnswerButtons) {
@@ -121,8 +131,8 @@ public class MemorizeTestActivity extends AppCompatActivity implements View.OnCl
             showResults();
             return;
         }
-        String correctChoice = mWords[mNextWordIndex];
-        nextChoices[0] = correctChoice;// next answer
+        mCorrectWord = mWords[mNextWordIndex++];
+        nextChoices[0] = mCorrectWord; // next answer
 
         // fill nextChoices 1-3 with bogus answers
         Random random = new Random();
@@ -148,21 +158,22 @@ public class MemorizeTestActivity extends AppCompatActivity implements View.OnCl
         for (int i = 0; i < 4; i++) {
             Button b = mAnswerButtons[i];
             b.setText(nextChoices[i]);
-            if (nextChoices[i] == correctChoice) {
+            if (nextChoices[i] == mCorrectWord) {
                 mCorrectAnswer = b;
             }
         }
 
         // Increment next word index
-        mNextWordIndex++;
     }
 
     private static boolean arrayContains(String word, String[] strings) {
-        boolean b = false;
+        String wordLowerCase = word.toLowerCase();
         for (String s : strings) {
-            b |= (word.equals(s));
+            if (s != null && wordLowerCase.equals(s.toLowerCase())){
+                return true;
+            }
         }
-        return b;
+        return false;
     }
 
     private void showResults() {
@@ -175,14 +186,15 @@ public class MemorizeTestActivity extends AppCompatActivity implements View.OnCl
         String msg;
         if (percentageCorrect == 100) {
             // The user recited the scripture perfectly!
-            db.setTitle(R.string.dialog_title_nailed_it);
-            msg = getString(R.string.dialog_msg_nailed_it);
+            db.setTitle(R.string.results_title_perfect);
+            msg = getString(R.string.results_msg_perfect);
         } else {
-            db.setTitle(R.string.dialog_your_score);
-            msg = getString(R.string.dialog_msg_score_fmt, percentageCorrect);
+            db.setTitle(R.string.results_title);
+            msg = getString(R.string.results_msg_score_fmt, percentageCorrect);
         }
-        if (offerToMarkComplete) {
-            msg += getString(R.string.dialog_mark_complete);
+        if (offerToMarkComplete) { // If they did well enough...
+            // Ask if they want to mark the scripture as completed.
+            msg += " " + getString(R.string.results_mark_complete);
             db.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -191,44 +203,46 @@ public class MemorizeTestActivity extends AppCompatActivity implements View.OnCl
                 }
             });
             db.setNegativeButton(R.string.no, null);
+
+            // Also give the user the option to share their results
+            db.setNeutralButton(R.string.share, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Start an Activity chooser with a share Intent
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.setType("text/plain");
+                    shareIntent.putExtra(Intent.EXTRA_TEXT,
+                            getString(
+                                    R.string.results_share_text_fmt,
+                                    mScripture.getReference(),
+                                    percentageCorrect) + "\n\n" + PLAYSTORE_URL);
+                    shareIntent.putExtra(Intent.EXTRA_SUBJECT,
+                            getString(R.string.results_share_subject_fmt,
+                                    mScripture.getReference(),
+                                    percentageCorrect));
+                    Intent chooser = Intent.createChooser(shareIntent, getString(R.string.choose_share));
+                    startActivity(chooser);
+                }
+            });
         } else {
+            msg += " " + getString(R.string.results_keep_trying);
             db.setPositiveButton(R.string.ok, null);
         }
         db.setMessage(msg);
-        // Give the user the option to share their results with others
-        db.setNeutralButton(R.string.share, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Start an Activity chooser with a share Intent
-                Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                shareIntent.setType("text/plain");
-                shareIntent.putExtra(Intent.EXTRA_TEXT,
-                        getString(
-                                R.string.share_results_fmt,
-                                mScripture.getReference(),
-                                percentageCorrect) + "\n\n" + PLAYSTORE_URL);
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT,
-                        getString(R.string.share_results_subject_fmt,
-                                mScripture.getReference(),
-                                percentageCorrect));
-                Intent chooser = Intent.createChooser(shareIntent, getString(R.string.choose_share));
-                startActivity(chooser);
-            }
-        });
         AlertDialog dialog = db.create();
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
 
     @Override
     public void onClick(View v) {
         Log.d("OnClickListener", "" + v.getId());
-        String correctWord = mCorrectAnswer.getText().toString();
 
         // Add word to string with proper format - red and strikethrough for incorrect words
         Editable text = mScriptureView.getText();
         text.append(" ");
         if (v != mCorrectAnswer) {
-            // Count incorrect words
+            // Count each incorrect word
             mMissedWordCount++;
 
             // Append the user's input to the text in the scripture view.
@@ -245,12 +259,13 @@ public class MemorizeTestActivity extends AppCompatActivity implements View.OnCl
 
             // Append correct word without formatting
             text.append(' ');
-            text.append(correctWord);
+            text.append(mCorrectWord);
         } else {
+            // Grab the start and end indices of the new word in the TextView
             int oldLength = text.length();
-            text.append(correctWord);
+            text.append(mCorrectWord);
             int newLength = text.length();
-            // Add color
+            // Add color to a Span between those indices
             ForegroundColorSpan cs = new ForegroundColorSpan(COLOR_CORRECT);
             text.setSpan(cs, oldLength, newLength, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         }

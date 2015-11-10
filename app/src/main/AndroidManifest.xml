@@ -13,21 +13,13 @@
         <activity
             android:name=".NewMainActivity"
             android:label="@string/app_name"
+            android:launchMode="standard"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Look up scriptures by reference TODO: Remove this activty? -->
-        <activity
-            android:name=".AddScriptureReferenceActivity"
-            android:parentActivityName=".NewMainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="net.danmercer.ponderizer.NewMainActivity" />
         </activity>
 
         <!-- "Share" text from Gospel Library and add as scripture -->
@@ -75,16 +67,13 @@
 
         <!-- Shows instructions for adding from Gospel Library -->
         <activity
-            android:name=".AddScriptureInstructions"
-            android:parentActivityName=".NewMainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="net.danmercer.ponderizer.NewMainActivity" />
+            android:name=".AddScriptureInstructions">
         </activity>
 
         <!-- Displays the text of a scripture -->
         <activity
             android:name=".scriptureview.ScriptureViewActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".NewMainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -101,7 +90,15 @@
         <activity
             android:name=".memorize.MemorizeActivity"
             android:label="@string/title_activity_memorize"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <!-- Test your knowledge of a scripture -->
+        <activity
+            android:name=".memorize.MemorizeTestActivity"
+            android:label="@string/title_activity_memorize_test"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
         <!-- Scripture widget provider -->
         <receiver android:name=".ScriptureAppWidget">
@@ -117,7 +114,7 @@
         <!-- Scripture widget "context menu" -->
         <activity
             android:name=".WidgetPopupMenuActivity"
-            android:theme="@style/AppTheme.Dialog"></activity>
+            android:theme="@style/AppTheme.Dialog" />
 
         <!-- Scripture widget configuration activity -->
         <activity android:name=".ScriptureAppWidgetConfigureActivity">
@@ -130,21 +127,9 @@
         <activity
             android:name=".ExportActivity"
             android:label="@string/title_activity_export"
-            android:parentActivityName=".scriptureview.ScriptureViewActivity"
             android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="net.danmercer.ponderizer.scriptureview.ScriptureViewActivity" />
         </activity>
-        <activity
-            android:name=".memorize.MemorizeTestActivity"
-            android:label="@string/title_activity_memorize_test"
-            android:parentActivityName=".memorize.MemorizeActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="net.danmercer.ponderizer.memorize.MemorizeActivity" />
-        </activity>
+
         <activity
             android:name=".AboutActivity"
             android:label="@string/about">

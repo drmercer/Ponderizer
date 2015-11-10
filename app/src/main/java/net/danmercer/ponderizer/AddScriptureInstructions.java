@@ -35,10 +35,12 @@ public class AddScriptureInstructions extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_scripture_instructions);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Button b = (Button) findViewById(R.id.instruction_button);
+        // Set up Gospel Library button
+        Button b = (Button) findViewById(R.id.button_open_gospel_library);
         if (isGospelLibraryInstalled()) {
-            b.setText("Launch Gospel Library app");
+            b.setText(R.string.open_gospel_library);
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -49,7 +51,7 @@ public class AddScriptureInstructions extends AppCompatActivity {
                 }
             });
         } else {
-            b.setText("Install Gopsel Library app from Google Play");
+            b.setText(R.string.install_gospel_library);
             // Open Google play to install the app.
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -59,6 +61,21 @@ public class AddScriptureInstructions extends AppCompatActivity {
             });
         }
 
+        // Set up Import SM button
+        Button buttonSM = (Button) findViewById(R.id.button_import_sm);
+        buttonSM.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ScriptureMasteryHelper.showDialog(AddScriptureInstructions.this, new Runnable() {
+                    @Override
+                    public void run() {
+                        finish(); // Finish the activity after the user imports SM scriptures
+                    }
+                });
+            }
+        });
+
+        // Start tutorial animation
         ImageView demo = (ImageView) findViewById(R.id.how_to_add_view);
         AnimationDrawable ad = (AnimationDrawable) demo.getDrawable();
         ad.start();

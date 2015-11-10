@@ -86,7 +86,7 @@ public class ScriptureListFragment extends Fragment {
         mScriptureList = Scripture.loadScriptures(getContext(), mCategory);
 
         if (!mScriptureList.isEmpty()) {
-            mListView.setAdapter(new ArrayAdapter<Scripture>(getContext(), R.layout.list_item, R.id.listitem_text, mScriptureList));
+            mListView.setAdapter(new ArrayAdapter<Scripture>(getContext(), R.layout.list_item, R.id.item_text, mScriptureList));
             mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -100,7 +100,7 @@ public class ScriptureListFragment extends Fragment {
             mListView.setAdapter(new ArrayAdapter<String>(
                     getContext(),
                     R.layout.list_item,
-                    R.id.listitem_text,
+                    R.id.item_text,
                     new String[]{getResources().getString(R.string.tap_to_add_scripture)}));
             mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -115,8 +115,8 @@ public class ScriptureListFragment extends Fragment {
             // Set up a "Memorize a scripture to put it here." filler entry.
             mListView.setAdapter(new ArrayAdapter<String>(
                     getContext(),
-                    android.R.layout.simple_list_item_1,
-                    android.R.id.text1,
+                    R.layout.list_item,
+                    R.id.item_text,
                     new String[]{getResources().getString(R.string.complete_a_scripture)}));
             mListView.setOnItemClickListener(null);
             unregisterForContextMenu(mListView);
@@ -134,7 +134,7 @@ public class ScriptureListFragment extends Fragment {
     // This is called to create the context menu for the list menu items.
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        getActivity().getMenuInflater().inflate(R.menu.menu_scripture_view, menu);
+        getActivity().getMenuInflater().inflate(R.menu.context_scripture, menu);
         super.onCreateContextMenu(menu, v, menuInfo);
         Log.d("ScriptureListFragment", "onCreateContextMenu " + mCategory.name());
 
@@ -149,7 +149,6 @@ public class ScriptureListFragment extends Fragment {
         } else {
             markCompleted.setTitle(R.string.menu_mark_complete);
         }
-
 
     }
 

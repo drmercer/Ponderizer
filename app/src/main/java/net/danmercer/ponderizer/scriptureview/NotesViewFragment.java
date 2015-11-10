@@ -83,12 +83,12 @@ public class NotesViewFragment extends Fragment {
         mNotes = new LinkedList<>();
         Note.loadFromFile(mFile, mNotes);
         mAdapter = new ArrayAdapter<Note>(getContext(), R.layout.list_item,
-                R.id.listitem_text, mNotes);
+                R.id.item_text, mNotes);
 
         // Set up adapter for empty list
         String emptyText = getResources().getString(R.string.tap_to_add_note);
         mEmptyAdapter = new ArrayAdapter<String>(getContext(), R.layout.list_item,
-                R.id.listitem_text, new String[]{emptyText});
+                R.id.item_text, new String[]{emptyText});
         refreshNoteList();
 
         return v;

@@ -35,7 +35,15 @@
             android:layout_below="@id/how_to_add_view"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:id="@+id/instruction_button"/>
+            android:id="@+id/button_open_gospel_library"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/button_open_gospel_library"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:text="@string/sm_dialog_title"
+            android:id="@+id/button_import_sm"/>
 
     </RelativeLayout>
 

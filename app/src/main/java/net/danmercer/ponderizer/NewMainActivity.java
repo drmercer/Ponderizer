@@ -116,15 +116,15 @@ public class NewMainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        // One in fifty times, show a SnackBar asking for feature suggestions.
+        // One in fifty times, show a SnackBar prompting the user to view the about page
         int rand = new Random().nextInt(50);
         if (rand == 33) {
             Snackbar s = Snackbar.make(findViewById(R.id.fab),
-                    R.string.feedback_could_improve, Snackbar.LENGTH_LONG);
-            s.setAction(R.string.feedback_tell_me, new View.OnClickListener() {
+                    R.string.popup_like_this_app, Snackbar.LENGTH_LONG);
+            s.setAction(R.string.popup_contribute, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    launchFeedbackDialog();
+                    startActivity(new Intent(NewMainActivity.this, AboutActivity.class));
                 }
             });
             s.show();

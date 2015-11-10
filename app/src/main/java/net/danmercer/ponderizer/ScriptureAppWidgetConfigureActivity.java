@@ -56,7 +56,7 @@ public class ScriptureAppWidgetConfigureActivity extends Activity implements Ada
         mScriptureList = Scripture.loadScriptures(this, NewMainActivity.Category.IN_PROGRESS);
         if (!mScriptureList.isEmpty()) {
             ListView lv = (ListView) findViewById(R.id.scripture_list_view);
-            lv.setAdapter(new ArrayAdapter<Scripture>(this, R.layout.list_item, R.id.listitem_text, mScriptureList));
+            lv.setAdapter(new ArrayAdapter<Scripture>(this, R.layout.list_item, R.id.item_text, mScriptureList));
             lv.setOnItemClickListener(this);
         } else {
             // Scriptures list is empty, so tell the user to add a scripture first.

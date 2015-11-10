@@ -49,7 +49,6 @@ public class ExportActivity extends AppCompatActivity implements CompoundButton.
         setContentView(R.layout.activity_export);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mScripture = getIntent().getParcelableExtra(ScriptureIntent.EXTRA_SCRIPTURE);
         boolean hasNotes = mScripture.hasNotes(this);

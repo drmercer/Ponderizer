@@ -100,7 +100,9 @@ public class ScriptureViewActivity extends AppCompatActivity {
 
         // Get the Scripture to display
         Intent intent = getIntent();
-        scripture = intent.getParcelableExtra(ScriptureIntent.EXTRA_SCRIPTURE);
+        if (intent.hasExtra(ScriptureIntent.EXTRA_SCRIPTURE)) {
+            scripture = intent.getParcelableExtra(ScriptureIntent.EXTRA_SCRIPTURE);
+        }
         if (scripture == null) {
             // If no Scripture was put into the intent, abort the Activity and report an error.
             Log.e("ScriptureViewActivity", "ScriptureViewActivity was launched without a Scripture!");
@@ -149,8 +151,6 @@ public class ScriptureViewActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_scripture_view, menu);
-        inflater.inflate(R.menu.menu_memorize, menu);
-        // Appends the "Memorize Test" button to this menu
 
         MenuItem markCompleted = menu.findItem(R.id.action_mark_completed);
         if (scripture.isCompleted()) {
@@ -170,7 +170,6 @@ public class ScriptureViewActivity extends AppCompatActivity {
                 scripture.deleteWithConfirmation(this, new Runnable() {
                     @Override
                     public void run() {
-                        setResult(RESULT_SCRIPTURE_DELETED);
                         finish();
                     }
                 });

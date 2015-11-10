@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/action_view"
-        android:title="View" />
-    <item
-        android:id="@+id/action_add_note"
-        android:title="Add Note" />
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ScriptureViewActivity">
+
     <item
         android:id="@+id/action_memorize"
-        android:title="Memorize" />
+        android:orderInCategory="1"
+        android:title="Practice Memorization" />
+    <item
+        android:id="@+id/action_add_note"
+        android:orderInCategory="2"
+        android:title="Add Note" />
+    <item
+        android:id="@+id/action_mark_completed"
+        android:orderInCategory="3"
+        android:title="Mark Completed" />
     <item
         android:id="@+id/action_delete"
-        android:title="Delete" />
+        android:orderInCategory="4"
+        android:title="Delete Scripture" />
+    <item
+        android:id="@+id/action_export"
+        android:orderInCategory="5"
+        android:title="Export / Share" />
 </menu>
