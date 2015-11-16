@@ -19,16 +19,11 @@ package net.danmercer.ponderizer;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import net.danmercer.ponderizer.memorize.MemorizeActivity;
-import net.danmercer.ponderizer.memorize.MemorizeTestActivity;
-import net.danmercer.ponderizer.scriptureview.AddNoteActivity;
-import net.danmercer.ponderizer.scriptureview.ScriptureIntent;
-import net.danmercer.ponderizer.scriptureview.ScriptureViewActivity;
+import net.danmercer.ponderizer.widget.ScriptureAppWidget;
 
 import java.io.BufferedReader;
 import java.io.EOFException;

@@ -30,6 +30,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import net.danmercer.ponderizer.AppActivity;
 import net.danmercer.ponderizer.ExportActivity;
 import net.danmercer.ponderizer.NewMainActivity;
 import net.danmercer.ponderizer.R;
@@ -37,7 +38,7 @@ import net.danmercer.ponderizer.Scripture;
 import net.danmercer.ponderizer.memorize.MemorizeActivity;
 import net.danmercer.ponderizer.memorize.MemorizeTestActivity;
 
-public class ScriptureViewActivity extends AppCompatActivity {
+public class ScriptureViewActivity extends AppActivity {
     public static final int NUM_OF_TABS = 2;
     public static final int IDX_SCRIPTURE_TAB = 0;
     public static final int IDX_NOTES_TAB = 1;
@@ -148,9 +149,9 @@ public class ScriptureViewActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         // Inflate the menu; this adds items to the action bar if it is present.
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_scripture_view, menu);
+        getMenuInflater().inflate(R.menu.menu_scripture_view, menu);
 
         MenuItem markCompleted = menu.findItem(R.id.action_mark_completed);
         if (scripture.isCompleted()) {

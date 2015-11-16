@@ -41,7 +41,7 @@ import android.view.View;
 import java.io.File;
 import java.util.Random;
 
-public class NewMainActivity extends AppCompatActivity {
+public class NewMainActivity extends AppActivity {
 
     public enum Category {
         IN_PROGRESS,
@@ -131,48 +131,11 @@ public class NewMainActivity extends AppCompatActivity {
         }
     }
 
-    // Called by the SnackBar created in onStart() (up there ^) to launch a dialog to allow the
-    // user to send a feedback email.
-    private void launchFeedbackDialog() {
-        AlertDialog.Builder db = new AlertDialog.Builder(this);
-        db.setMessage(R.string.feedback_dialog_message);
-        AlertDialog.OnClickListener l = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Log.d("onclick", "fired");
-                launchFeedbackEmailIntent();
-            }
-        };
-        db.setPositiveButton(R.string.feedback_dialog_confirm, l);
-        db.setNegativeButton(R.string.feedback_dialog_cancel, null);
-        db.show();
-    }
-
-    // Called by the feedback dialog to start an activity via an email intent.
-    private void launchFeedbackEmailIntent() {
-        String version = null;
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
-            version = info.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            // Never going to happen.
-            e.printStackTrace();
-        }
-        Intent i = new Intent(Intent.ACTION_SENDTO);
-        i.setType("text/plain");
-        i.setData(Uri.parse("mailto:"));
-        i.putExtra(Intent.EXTRA_EMAIL, new String[]{"danmercerdev@gmail.com"});
-        i.putExtra(Intent.EXTRA_SUBJECT,
-                "Feature Suggestion for Ponderizer (" + version + ")");
-        i.putExtra(Intent.EXTRA_TEXT, "Please describe the feature you would like to see. Thanks " +
-                "for supporting the Ponderizer app!\n\n");
-        startActivity(i);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        super.onCreateOptionsMenu(menu);
         return true;
     }
 
@@ -191,20 +154,6 @@ public class NewMainActivity extends AppCompatActivity {
                         refreshScriptureLists();
                     }
                 });
-                return true;
-            
-            case R.id.action_feedback:
-                launchFeedbackDialog();
-                return true;
-
-            case R.id.action_help:
-                Uri url = Uri.parse("https://github.com/drmercer/Ponderizer/wiki/User-Help-Pages");
-                Intent help = new Intent(Intent.ACTION_VIEW, url);
-                startActivity(help);
-                return true;
-
-            case R.id.action_about:
-                startActivity(new Intent(this, AboutActivity.class));
                 return true;
         }
 

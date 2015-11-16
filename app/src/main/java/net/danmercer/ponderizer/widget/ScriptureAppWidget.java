@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.danmercer.ponderizer;
+package net.danmercer.ponderizer.widget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -26,6 +26,9 @@ import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import net.danmercer.ponderizer.NewMainActivity;
+import net.danmercer.ponderizer.R;
+import net.danmercer.ponderizer.Scripture;
 import net.danmercer.ponderizer.memorize.MemorizeActivity;
 import net.danmercer.ponderizer.scriptureview.AddNoteActivity;
 import net.danmercer.ponderizer.scriptureview.ScriptureIntent;

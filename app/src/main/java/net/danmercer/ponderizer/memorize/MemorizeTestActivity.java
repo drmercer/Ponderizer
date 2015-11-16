@@ -33,6 +33,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import net.danmercer.ponderizer.AppActivity;
 import net.danmercer.ponderizer.NewMainActivity;
 import net.danmercer.ponderizer.R;
 import net.danmercer.ponderizer.Scripture;
@@ -44,7 +45,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class MemorizeTestActivity extends AppCompatActivity implements View.OnClickListener {
+public class MemorizeTestActivity extends AppActivity implements View.OnClickListener {
 
     public static final String WORD_SPLIT_REGEX = "[\\d\\s]+";
     public static final int COLOR_CORRECT = 0xFF11BB44;

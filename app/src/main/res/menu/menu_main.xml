@@ -12,19 +12,4 @@
         android:title="@string/action_settings"
         app:showAsAction="never"
         android:visible="false"/>
-    <item
-        android:id="@+id/action_help"
-        android:orderInCategory="99"
-        android:title="Help"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_feedback"
-        android:orderInCategory="100"
-        android:title="Suggest a Feature"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_about"
-        android:orderInCategory="101"
-        android:title="@string/about"
-        app:showAsAction="never" />
 </menu>

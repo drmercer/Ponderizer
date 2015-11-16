@@ -2,19 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.danmercer.ponderizer"
     android:versionCode="4"
-    android:versionName="2.0.2">
+    android:versionName="2.0.2" >
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".NewMainActivity"
             android:label="@string/app_name"
             android:launchMode="standard"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,8 +26,8 @@
         <activity
             android:name=".AddScriptureTextActivity"
             android:label="Add Scripture to Ponderize"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter android:label="Ponderize Scripture">
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter android:label="Ponderize Scripture" >
                 <action android:name="android.intent.action.SEND" />
             </intent-filter>
         </activity>
@@ -36,11 +36,11 @@
             android:name=".AddScriptureTextActivityFromAnyApp"
             android:enabled="false"
             android:label="Add Scripture to Ponderize"
-            android:targetActivity=".AddScriptureTextActivity">
+            android:targetActivity=".AddScriptureTextActivity" >
 
             <!-- This activity-alias is disabled by default, but can be enabled from settings -->
             <!-- TODO: add option to enable this in Settings -->
-            <intent-filter android:label="Ponderize Scripture">
+            <intent-filter android:label="Ponderize Scripture" >
                 <action android:name="android.intent.action.SEND" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -52,11 +52,11 @@
             android:name=".AddScriptureTextOnlyGospelLibrary"
             android:enabled="true"
             android:label="Add Scripture to Ponderize"
-            android:targetActivity=".AddScriptureTextActivity">
+            android:targetActivity=".AddScriptureTextActivity" >
 
             <!-- This activity-alias is enabled by default, but will be disabled when that^ one -->
             <!-- is enabled -->
-            <intent-filter android:label="Ponderize Scripture">
+            <intent-filter android:label="Ponderize Scripture" >
                 <action android:name="android.intent.action.SEND" />
 
                 <category android:name="org.lds.ldssa" />
@@ -66,15 +66,14 @@
         </activity-alias>
 
         <!-- Shows instructions for adding from Gospel Library -->
-        <activity
-            android:name=".AddScriptureInstructions">
+        <activity android:name=".AddScriptureInstructions" >
         </activity>
 
         <!-- Displays the text of a scripture -->
         <activity
             android:name=".scriptureview.ScriptureViewActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".NewMainActivity">
+            android:parentActivityName=".NewMainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.danmercer.ponderizer.NewMainActivity" />
@@ -90,18 +89,18 @@
         <activity
             android:name=".memorize.MemorizeActivity"
             android:label="@string/title_activity_memorize"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
 
         <!-- Test your knowledge of a scripture -->
         <activity
             android:name=".memorize.MemorizeTestActivity"
             android:label="@string/title_activity_memorize_test"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
 
         <!-- Scripture widget provider -->
-        <receiver android:name=".ScriptureAppWidget">
+        <receiver android:name=".widget.ScriptureAppWidget" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -113,11 +112,11 @@
 
         <!-- Scripture widget "context menu" -->
         <activity
-            android:name=".WidgetPopupMenuActivity"
+            android:name=".widget.WidgetPopupMenuActivity"
             android:theme="@style/AppTheme.Dialog" />
 
         <!-- Scripture widget configuration activity -->
-        <activity android:name=".ScriptureAppWidgetConfigureActivity">
+        <activity android:name=".widget.ScriptureAppWidgetConfigureActivity" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -127,12 +126,16 @@
         <activity
             android:name=".ExportActivity"
             android:label="@string/title_activity_export"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
-
         <activity
             android:name=".AboutActivity"
-            android:label="@string/about">
+            android:label="@string/about" >
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/settings"
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>
 

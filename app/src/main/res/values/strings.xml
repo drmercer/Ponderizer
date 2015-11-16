@@ -12,14 +12,18 @@
     <string name="complete_a_scripture">Mark a scripture as "Completed" to put it here.</string>
     <!-- feedback dialog -->
     <string name="popup_like_this_app">Enjoying this app?</string>
-    <string name="popup_contribute">Help me</string>
-    <string name="feedback_dialog_message">Want to suggest a feature? Tap \"OK\" to write me an email.</string>
+    <string name="popup_contribute">Contribute</string>
+    <string name="feedback_dialog_message">Want to send feedback? Tap \"OK\" to write me an email.</string>
     <string name="feedback_dialog_cancel">Never mind</string>
     <string name="feedback_dialog_confirm">OK</string>
 
     <!-- INSTRUCTIONS FOR ADDING ACTIVITY -->
     <string name="install_gospel_library">Install Gopsel Library app from Google Play</string>
     <string name="open_gospel_library">Open Gospel Library</string>
+
+    <!-- ADD SCRIPTURE ACTIVITY -->
+    <string name="scripture_title_hint">Title / Scripture Reference</string>
+    <string name="scripture_text_hint">Verses of Scripture</string>
 
     <!-- SCRIPTURE VIEW ACTIVITY -->
     <string name="tab_title_scripture">Scripture</string>
@@ -103,7 +107,8 @@
     <string name="ok">OK</string>
     <string name="share">Share</string>
     <string name="choose_share">Share with&#8230;</string>
-    <string name="scripture_title_hint">Title / Scripture Reference</string>
-    <string name="scripture_text_hint">Verses of Scripture</string>
+    <string name="send_feedback">Send Feedback</string>
+    <string name="settings">Settings</string>
+    <string name="help">Help</string>
 
 </resources>

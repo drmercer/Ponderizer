@@ -30,6 +30,7 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import net.danmercer.ponderizer.AppActivity;
 import net.danmercer.ponderizer.R;
 import net.danmercer.ponderizer.Scripture;
 import net.danmercer.ponderizer.scriptureview.ScriptureIntent;
@@ -37,7 +38,7 @@ import net.danmercer.ponderizer.scriptureview.ScriptureIntent;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MemorizeActivity extends AppCompatActivity {
+public class MemorizeActivity extends AppActivity {
     private Scripture mScripture;
     private boolean mFirstLetterVisible;
     private String mText;
@@ -108,6 +109,7 @@ public class MemorizeActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.menu_memorize, menu);
         return true;
     }

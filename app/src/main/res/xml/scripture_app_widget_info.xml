@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:configure="net.danmercer.ponderizer.ScriptureAppWidgetConfigureActivity"
+    android:configure="net.danmercer.ponderizer.widget.ScriptureAppWidgetConfigureActivity"
     android:initialKeyguardLayout="@layout/scripture_app_widget"
     android:initialLayout="@layout/scripture_app_widget"
     android:minHeight="110dp"
