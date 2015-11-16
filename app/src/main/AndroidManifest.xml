@@ -39,7 +39,6 @@
             android:targetActivity=".AddScriptureTextActivity" >
 
             <!-- This activity-alias is disabled by default, but can be enabled from settings -->
-            <!-- TODO: add option to enable this in Settings -->
             <intent-filter android:label="Ponderize Scripture" >
                 <action android:name="android.intent.action.SEND" />
 
@@ -48,6 +47,7 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity-alias>
+
         <activity-alias
             android:name=".AddScriptureTextOnlyGospelLibrary"
             android:enabled="true"
@@ -128,10 +128,14 @@
             android:label="@string/title_activity_export"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+
+        <!-- About the app -->
         <activity
             android:name=".AboutActivity"
             android:label="@string/about" >
         </activity>
+
+        <!-- App settings -->
         <activity
             android:name=".SettingsActivity"
             android:label="@string/settings"

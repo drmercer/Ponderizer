@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference android:key="import_any_app"
+        android:defaultValue="false"
+        android:title="Receive scriptures from any app."
+        android:summaryOn="Any app can share text to Ponderizer."
+        android:summaryOff="Only Gospel Library can share text to Ponderizer."/>
+
+    
+</PreferenceScreen>
