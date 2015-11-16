@@ -103,5 +103,7 @@
     <string name="ok">OK</string>
     <string name="share">Share</string>
     <string name="choose_share">Share with&#8230;</string>
+    <string name="scripture_title_hint">Title / Scripture Reference</string>
+    <string name="scripture_text_hint">Verses of Scripture</string>
 
 </resources>

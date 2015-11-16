@@ -13,13 +13,13 @@
         android:id="@+id/scripture_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Title"
+        android:hint="@string/scripture_title_hint"
         android:singleLine="true" />
 
     <EditText
         android:id="@+id/scripture_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Verses of Scripture" />
+        android:hint="@string/scripture_text_hint" />
 
 </LinearLayout>

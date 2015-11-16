@@ -26,6 +26,9 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class AddScriptureTextActivity extends AppCompatActivity {
 
     private EditText titleTextView;
@@ -44,26 +47,74 @@ public class AddScriptureTextActivity extends AppCompatActivity {
 
         // Get the text that was shared with us from the start intent
         Intent startIntent = getIntent();
-        String bodyString = startIntent.getStringExtra(Intent.EXTRA_TEXT);
-        if (bodyString == null) {
-            bodyString = startIntent.getStringExtra(Intent.EXTRA_TITLE);
+        String text = startIntent.getStringExtra(Intent.EXTRA_TEXT);
+        if (text == null) {
+            text = startIntent.getStringExtra(Intent.EXTRA_TITLE);
         } else {
             String titleString = startIntent.getStringExtra(Intent.EXTRA_TITLE);
-            if (titleTextView != null) {
+            if (titleString != null && !titleString.isEmpty()) {
                 titleTextView.setText(titleString);
             }
         }
-        bodyTextView.setText(cleanupText(bodyString));
+        if (text == null) {
+            Log.e("AddScriptureText",
+                    "AddScriptureTextActivity was started without a TEXT or TITLE extra");
+        }
+        bodyTextView.setText(cleanupText(text));
+
+        if (titleTextView.getText().toString().isEmpty()) {
+            Log.d("AddScriptureText", "1");
+            // If we didn't get a title from the intent, try to parse the scripture reference
+//            String html = startIntent.getStringExtra(Intent.EXTRA_HTML_TEXT);
+            String html = text;
+            if (html != null) {
+                Log.d("AddScriptureText", "2");
+                Matcher m = Pattern.compile(
+                        "lds.org/scriptures/\\w+/([\\w-]+)/(\\d+).(\\d+)(?:(?:,\\d+)*,(\\d+))?"
+                ).matcher(html);
+                if (m.find()) {
+                    Log.d("AddScriptureText", "3");
+                    String book = m.group(1);
+                    String chap = m.group(2);
+                    String verseStart = m.group(3);
+                    String verseEnd = m.group(4);
+
+                    // TODO: format book string
+                    // Replace all "-" characters with blank space
+                    book = book.replaceAll("-", " ");
+                    // Make all words uppercase, unless they are "of"
+                    Matcher m1 = Pattern.compile("\\b[a-z][A-z]*\\b").matcher(book);
+                    while (m1.find()) {
+                        String word = m1.group();
+                        if (word.equalsIgnoreCase("of"))
+                            continue; // We don't want to capitalize "of"
+                        Log.d("AddScriptureText", "word = " + word);
+                        char[] wordChars = word.toCharArray();
+                        wordChars[0] = Character.toUpperCase(wordChars[0]);
+                        book = book.replaceFirst(word, new String(wordChars));
+                    }
+                    Log.d("AddScriptureText", "book = " + book);
+
+                    String ref; // Will be filled with the parsed scripture reference
+                    if (verseEnd == null || verseEnd.isEmpty()) { // If the reference is just one verse, not a range
+                        ref = String.format("%s %s:%s", book, chap, verseStart);
+                    } else {
+                        ref = String.format("%s %s:%s-%s", book, chap, verseStart, verseEnd);
+                    }
+                    titleTextView.setText(ref);
+                }
+            }
+        }
     }
 
     /**
-     * Gets rid of any words in the text that contain forward slashes (i.e. URLs)
+     * Gets rid of any words in the text that contain slashes or carets
      */
     private String cleanupText(String text) {
         String[] tokens = text.split("\\s"); // Split into word-like tokens
         for (String token : tokens) {
-            // If the token has any forward or backward slashes, remove it
-            if (token.contains("/")) {
+            // If the token has any slashes or carets, remove it
+            if (token.matches(".*[\\\\/<>].*")) {
                 text = text.replace(token, "");
             }
         }
