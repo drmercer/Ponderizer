@@ -35,7 +35,6 @@ public class AddScriptureInstructions extends AppActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_scripture_instructions);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Set up Gospel Library button
         Button b = (Button) findViewById(R.id.button_open_gospel_library);
