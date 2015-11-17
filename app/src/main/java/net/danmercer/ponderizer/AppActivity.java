@@ -3,16 +3,21 @@ package net.danmercer.ponderizer;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.XmlResourceParser;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import net.danmercer.ponderizer.settings.ReminderPreference;
+import net.danmercer.ponderizer.settings.ReminderReceiver;
 import net.danmercer.ponderizer.settings.SettingsActivity;
 
 /**
@@ -26,11 +31,31 @@ import net.danmercer.ponderizer.settings.SettingsActivity;
  * Created by Dan on 11/16/2015.
  */
 public abstract class AppActivity extends AppCompatActivity {
+    private static final String KEY_VERSION = "APP_VERSION";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Sets up the default settings for the app, if they haven't already been set up.
-        PreferenceManager.setDefaultValues(this, R.xml.settings, false);
+
+        // Initialize settings
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        int prefsVersion = prefs.getInt(KEY_VERSION, 0);
+        if (prefsVersion < BuildConfig.VERSION_CODE) { // This is true after an install or update
+            // Set up default preferences for prefs that haven't been set
+            PreferenceManager.setDefaultValues(this, R.xml.settings, false);
+
+            if (prefs.getBoolean(getString(R.string.prefkey_weekly_reminder), false)) {
+                // Set weekly reminder to be on if it should be
+                String key = getString(R.string.prefkey_weekly_reminder_time);
+                String setting = prefs.getString(key,
+                        ReminderPreference.DEFAULT_VALUE);
+                ReminderPreference.Util u = new ReminderPreference.Util(this, key);
+                u.parseValue(setting);
+                u.setupAlarm();
+            }
+
+            prefs.edit().putInt(KEY_VERSION, BuildConfig.VERSION_CODE);
+        }
     }
 
     @Override

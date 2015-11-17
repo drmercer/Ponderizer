@@ -24,31 +24,100 @@ import java.util.Date;
  * Created by Dan on 11/16/2015.
  */
 public class ReminderPreference extends DialogPreference {
-    private static final String DEFAULT_VALUE = "Sunday/17:00";
+    public static final String DEFAULT_VALUE = "Sunday/17:00";
 
-    private static final DateFormat WEEKDAY_FORMATTER = new SimpleDateFormat("cccc");
+    public static class Util {
+        private static final SimpleDateFormat WEEKDAY_FORMATTER = new SimpleDateFormat("cccc");
+        private final Context mContext;
+        private final String mKey;
+        private int mWeekday;
+        private int mHour;
+        private int mMinute;
+
+        public Util(Context context, String key) {
+            this.mContext = context;
+            this.mKey = key;
+        }
+
+        public void parseValue(String value) {
+            try{
+                // Get weekday and hour from string
+                String[] parts = value.split("[/:]");
+                mWeekday = Util.getWeekday(parts[0]);
+                mHour = Integer.parseInt(parts[1]);
+                mMinute = Integer.parseInt(parts[2]);
+            } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
+                Log.e("ReminderPreference", "Error parsing value string.", e);
+            }
+        }
+
+        public int getWeekday() {
+            return mWeekday;
+        }
+
+        public int getHour() {
+            return mHour;
+        }
+
+        public int getMinute() {
+            return mMinute;
+        }
+
+        public void setupAlarm() {
+            // Get the PendingIntent that the alarm should fire
+            PendingIntent intent = getPendingIntent(mContext, mKey);
+
+            // Set up the alarm
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.HOUR_OF_DAY, mHour);
+            cal.set(Calendar.MINUTE, mMinute);
+            cal.set(Calendar.DAY_OF_WEEK, mWeekday);
+            cal.set(Calendar.SECOND, 0);
+
+            // If the time is past, add 7 days so it won't instantly fire
+            long triggerTime = cal.getTimeInMillis();
+            long currentTime = System.currentTimeMillis();
+            while (triggerTime < currentTime) {
+                triggerTime += 604800000; // 7 days in milliseconds
+            }
+
+            // DEBUG
+            DateFormat df = DateFormat.getDateTimeInstance();
+            Log.d("Util", df.format(new Date(triggerTime)));
+
+
+            AlarmManager am = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+            am.setRepeating(AlarmManager.RTC_WAKEUP, triggerTime, AlarmManager.INTERVAL_DAY * 7, intent);
+        }
+
+        public static int getWeekday(String text) {
+            try {
+                Date date = WEEKDAY_FORMATTER.parse(text);
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date);
+                return cal.get(Calendar.DAY_OF_WEEK);
+            } catch (ParseException e) {
+                Log.e("ReminderPreference", "Weekday format error", e);
+                return 0;
+            }
+        }
+
+        private static String getWeekdayString(int weekday) {
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.DAY_OF_WEEK, weekday);
+            Date date = cal.getTime();
+            return WEEKDAY_FORMATTER.format(date);
+        }
+
+        private static PendingIntent getPendingIntent(Context c, String key) {
+            Intent broadcastIntent = new Intent(c, ReminderReceiver.class);
+            broadcastIntent.putExtra(ReminderReceiver.EXTRA_KEY, key);
+            return PendingIntent.getBroadcast(c, key.hashCode(), broadcastIntent, 0);
+        }
+    }
     private Spinner mSpinner;
     private TimePicker mPicker;
     private String mValue;
-
-    private static int getWeekday(String text) {
-        try {
-            Date date = WEEKDAY_FORMATTER.parse(text);
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(date);
-            return cal.get(Calendar.DAY_OF_WEEK);
-        } catch (ParseException e) {
-            Log.e("ReminderPreference", "Weekday format error", e);
-            return 0;
-        }
-    }
-
-    private static String getWeekdayString(int weekday) {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DAY_OF_WEEK, weekday);
-        Date date = cal.getTime();
-        return WEEKDAY_FORMATTER.format(date);
-    }
 
     public ReminderPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -79,27 +148,14 @@ public class ReminderPreference extends DialogPreference {
         View view = super.onCreateDialogView();
         mPicker = (TimePicker) view.findViewById(R.id.time_picker);
         mSpinner = (Spinner) view.findViewById(R.id.weekday_spinner);
-        setCurrentValue(mValue);
+
+        // Initialize views with value
+        Util u = new Util(getContext(), getKey());
+        u.parseValue(mValue);
+        mSpinner.setSelection(u.getWeekday() - 1); // Calendar.<WEEKDAY> constants are 1-indexed
+        mPicker.setCurrentHour(u.getHour());
+        mPicker.setCurrentMinute(u.getMinute());
         return view;
-    }
-
-    private void setCurrentValue(String value) {
-        Log.d("ReminderPreference", "persistedString = " + value);
-        int weekday, hour, minute;
-        try{
-            // Get weekday and hour from string
-            String[] parts = value.split("[/:]");
-            weekday = getWeekday(parts[0]);
-            hour = Integer.parseInt(parts[1]);
-            minute = Integer.parseInt(parts[2]);
-        } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
-            Log.e("ReminderPreference", "Error parsing value string.", e);
-            return;
-        }
-
-        mSpinner.setSelection(weekday - 1); // Calendar.<WEEKDAY> constants are 1-indexed
-        mPicker.setCurrentHour(hour);
-        mPicker.setCurrentMinute(minute);
     }
 
     @Override
@@ -110,18 +166,20 @@ public class ReminderPreference extends DialogPreference {
             // These are deprecated, but the new ones are API 23 only
             int hour = mPicker.getCurrentHour();
             int minute = mPicker.getCurrentMinute();
-            String wkdayString = getWeekdayString(weekday);
+            String wkdayString = Util.getWeekdayString(weekday);
             mValue = String.format("%s/%d:%d", wkdayString, hour, minute);
             persistString(mValue);
 
             // Set up the recurring alarm
-            setupAlarm(weekday, hour, minute);
+            Util u = new Util(getContext(), getKey());
+            u.parseValue(mValue);
+            u.setupAlarm();
         }
     }
 
     public void disableAlarm() {
         // Get the PendingIntent that the alarm should fire, and cancel it in the AlarmManager
-        PendingIntent intent = getPendingIntent();
+        PendingIntent intent = Util.getPendingIntent(getContext(), getKey());
         AlarmManager am = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
         am.cancel(intent);
     }
@@ -129,38 +187,9 @@ public class ReminderPreference extends DialogPreference {
     // Called by Settings
     public void enableAlarm() {
         mValue = getPersistedString(DEFAULT_VALUE);
-        setCurrentValue(mValue);
-        int weekday = mSpinner.getSelectedItemPosition() + 1;
-        // These are deprecated, but the new ones are API 23 only
-        int hour = mPicker.getCurrentHour();
-        int minute = mPicker.getCurrentMinute();
-        setupAlarm(weekday, hour, minute);
-    }
-
-    private PendingIntent getPendingIntent() {
-        Intent broadcastIntent = new Intent(getContext(), ReminderReceiver.class);
-        String key = getKey();
-        broadcastIntent.putExtra(ReminderReceiver.EXTRA_KEY, key);
-        return PendingIntent.getBroadcast(getContext(), key.hashCode(),
-                broadcastIntent, 0);
-    }
-
-    private void setupAlarm(int weekday, int hour, int minute) {
-        // Get the PendingIntent that the alarm should fire
-        PendingIntent intent = getPendingIntent();
-
-        // Set up the alarm
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY, hour);
-        cal.set(Calendar.MINUTE, minute);
-        cal.set(Calendar.DAY_OF_WEEK, weekday);
-        if (cal.before(new Date())) { // If it's before now, add 7 days so it won't instantly fire
-            cal.add(Calendar.DAY_OF_MONTH, 7);
-        }
-        long triggerTime = cal.getTimeInMillis();
-        AlarmManager am = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
-        am.setRepeating(AlarmManager.RTC_WAKEUP, triggerTime, AlarmManager.INTERVAL_DAY * 7, intent);
-        Log.i("ReminderReceiver", "ReminderReceiver fired!");
+        Util u = new Util(getContext(), getKey());
+        u.parseValue(mValue);
+        u.setupAlarm();
     }
 
 }
