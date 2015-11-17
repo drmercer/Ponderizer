@@ -1,10 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <CheckBoxPreference android:key="import_any_app"
-        android:defaultValue="false"
-        android:title="Receive scriptures from any app."
-        android:summaryOn="Any app can share text to Ponderizer."
-        android:summaryOff="Only Gospel Library can share text to Ponderizer."/>
 
-    
+    <PreferenceCategory android:title="Reminders">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/prefkey_allow_notifs"
+            android:title="@string/allow_notifs"/>
+        <!-- Weekly reminder: -->
+        <CheckBoxPreference
+            android:dependency="@string/prefkey_allow_notifs"
+            android:defaultValue="true"
+            android:key="@string/prefkey_weekly_reminder"
+            android:summary="Remind me weekly to choose a scripture"
+            android:title="Weekly reminder" />
+        <net.danmercer.ponderizer.settings.ReminderPreference
+            android:defaultValue="sunday/17:00"
+            android:dependency="@string/prefkey_weekly_reminder"
+            android:key="@string/prefkey_weekly_reminder_time"
+            android:title="Set weekly reminder time" />
+        <!-- Notification preferences -->
+        <RingtonePreference
+            android:dependency="@string/prefkey_allow_notifs"
+            android:key="@string/prefkey_notif_sound"
+            android:title="Notification Sound"
+            android:ringtoneType="notification"
+            android:showDefault="true"
+            android:showSilent="true"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="@string/prefkey_allow_notifs"
+            android:key="@string/prefkey_notif_vibrate"
+            android:title="Vibrate" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Advanced Settings"
+        android:key="@string/prefcategory_advanced">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/prefkey_import_any_app"
+            android:summaryOff="Only Gospel Library can share text to Ponderizer."
+            android:summaryOn="Any app can share text to Ponderizer."
+            android:title="Receive scriptures from any app." />
+    </PreferenceCategory>
+
 </PreferenceScreen>

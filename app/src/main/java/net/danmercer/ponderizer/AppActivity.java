@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import net.danmercer.ponderizer.settings.SettingsActivity;
+
 /**
  * Superclass to be extended by major activities in the app. This allows all superclasses to have
  * these actions built into the App Bar:

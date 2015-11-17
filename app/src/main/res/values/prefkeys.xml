@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="prefkey_weekly_reminder_time">weekly_reminder_time</string>
+    <string name="prefkey_import_any_app">import_any_app</string>
+    <string name="prefkey_weekly_reminder">weekly_reminder</string>
+    <string name="prefcategory_advanced">prefcategory_advanced</string>
+    <string name="prefkey_allow_notifs">allow_notifs</string>
+    <string name="prefkey_notif_sound">notif_sound</string>
+    <string name="prefkey_notif_vibrate">notif_vibrate</string>
+</resources>

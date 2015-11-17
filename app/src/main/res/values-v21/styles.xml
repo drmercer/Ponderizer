@@ -1,8 +1,21 @@
-<resources>>
+<resources>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+
+        <!-- More v21-only attrs -->
+        <item name="android:datePickerDialogTheme">@style/AppTheme.Dialog</item>
+        <item name="android:timePickerDialogTheme">@style/AppTheme.Dialog</item>
+    </style>
+
+    <!-- Makes activities look like dialogs-->
+    <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog" >
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <!-- difference: doesn't set windowBackground to transparent -->
     </style>
 </resources>

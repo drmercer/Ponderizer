@@ -77,6 +77,18 @@
     <string name="remove_sm">Remove</string>
     <string name="sm_remove_prompt">This will remove %d scriptures from your list. Continue?</string>
 
+    <!-- SETTINGS ACTIVITY -->
+    <string-array name="weekdays" >
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+    </string-array>
+    <string name="allow_notifs">Notifications</string>
+
     <!-- ABOUT PAGE -->
     <string name="about">About</string>
     <string name="about_text_intro">
