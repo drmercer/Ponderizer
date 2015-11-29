@@ -51,7 +51,7 @@ public class MemorizeTestActivity extends AppActivity implements View.OnClickLis
     public static final int COLOR_CORRECT = 0xFF11BB44;
     public static final int COLOR_INCORRECT = Color.RED;
     public static final String SPLIT_REGEX = "[\\s\\d]+";
-    public static final String PLAYSTORE_URL = "https://play.google.com/store/apps/details?id=net.danmercer.ponderizer";
+    public static final String PLAYSTORE_URL = "http://bty.link/ponderizer";
     private Scripture mScripture;
     private EditText mScriptureView;
     private Button[] mAnswerButtons;
