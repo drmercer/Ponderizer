@@ -9,10 +9,11 @@ to make that easy and fun.
 
 <a href="https://play.google.com/store/apps/details?id=net.danmercer.ponderizer&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-AC-global-none-all-co-pr-py-PartBadges-Oct1515-1"><img alt="Get it on Google Play" src="https://stuff.mit.edu/afs/sipb/project/android/docs/images/brand/en_app_rgb_wo_45.png" /></a>
 
-The app icon was created using the
-[Android Asset Studio](http://romannurik.github.io/AndroidAssetStudio/index.html) by
-[Roman Nurik](https://github.com/romannurik), which generates content licensed under the
-[CC-BY 3.0](http://creativecommons.org/licenses/by/3.0/) license.
+> The app icon was created using the
+> [Android Asset Studio](http://romannurik.github.io/AndroidAssetStudio/index.html) by
+> [Roman Nurik](https://github.com/romannurik), which generates content licensed under the
+> [CC-BY 3.0](http://creativecommons.org/licenses/by/3.0/) license. Android, Google Play 
+> and the Google Play logo are trademarks of Google Inc.
 
 ### [Version 2.2](https://github.com/drmercer/Ponderizer/releases/tag/v2.2)
 - Added scrolling capability to widgets
