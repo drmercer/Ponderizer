@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.danmercer.ponderizer"
-    android:versionCode="6"
-    android:versionName="2.1.1">
+    android:versionCode="7"
+    android:versionName="2.2">
 
     <uses-permission android:name="android.permission.VIBRATE" />
 
@@ -89,13 +89,13 @@
         <activity
             android:name=".memorize.MemorizeActivity"
             android:label="@string/title_activity_memorize"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <!-- Test your knowledge of a scripture -->
         <activity
             android:name=".memorize.MemorizeTestActivity"
             android:label="@string/title_activity_memorize_test"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <!-- Scripture widget provider -->
         <receiver android:name=".widget.ScriptureAppWidget">
