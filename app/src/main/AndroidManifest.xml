@@ -108,6 +108,10 @@
                 android:resource="@xml/scripture_app_widget_info" />
         </receiver>
 
+        <!-- Scripture widget list data service -->
+        <service android:name=".widget.ScriptureAppWidget$ListPopulatorService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
         <!-- Scripture widget "context menu" -->
         <activity
             android:name=".widget.WidgetPopupMenuActivity"

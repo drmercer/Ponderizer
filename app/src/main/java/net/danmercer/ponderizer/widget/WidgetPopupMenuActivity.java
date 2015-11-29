@@ -69,13 +69,18 @@ public class WidgetPopupMenuActivity extends AppCompatActivity implements View.O
         Button buttonAddNote = (Button) findViewById(R.id.button_add_note);
 
         buttonChange.setOnClickListener(this);
-        buttonView.setOnClickListener(this);
-        buttonMemorize.setOnClickListener(this);
-        buttonAddNote.setOnClickListener(this);
 
         // If the scripture doesn't exist, only give them the option to change the scripture.
-        boolean scripFileExists = mScripture.fileExists(this);
-
+        if (!mScripture.fileExists(this)) {
+            buttonChange.setText("Choose new scripture");
+            buttonView.setVisibility(View.GONE);
+            buttonMemorize.setVisibility(View.GONE);
+            buttonAddNote.setVisibility(View.GONE);
+        } else {
+            buttonView.setOnClickListener(this);
+            buttonMemorize.setOnClickListener(this);
+            buttonAddNote.setOnClickListener(this);
+        }
     }
 
     @Override

@@ -63,37 +63,34 @@ public class AddScriptureTextActivity extends AppCompatActivity {
         bodyTextView.setText(cleanupText(text));
 
         if (titleTextView.getText().toString().isEmpty()) {
-            Log.d("AddScriptureText", "1");
             // If we didn't get a title from the intent, try to parse the scripture reference
-//            String html = startIntent.getStringExtra(Intent.EXTRA_HTML_TEXT);
-            String html = text;
-            if (html != null) {
-                Log.d("AddScriptureText", "2");
+            if (text != null) {
                 Matcher m = Pattern.compile(
-                        "lds.org/scriptures/\\w+/([\\w-]+)/(\\d+).(\\d+)(?:(?:,\\d+)*,(\\d+))?"
-                ).matcher(html);
+                        "lds.org/scriptures/[\\w-]+/([\\w-]+)/(\\d+).(\\d+)(?:(?:,\\d+)*,(\\d+))?"
+                ).matcher(text);
                 if (m.find()) {
-                    Log.d("AddScriptureText", "3");
                     String book = m.group(1);
                     String chap = m.group(2);
                     String verseStart = m.group(3);
                     String verseEnd = m.group(4);
 
-                    // TODO: format book string
-                    // Replace all "-" characters with blank space
-                    book = book.replaceAll("-", " ");
-                    // Make all words uppercase, unless they are "of"
-                    Matcher m1 = Pattern.compile("\\b[a-z][A-z]*\\b").matcher(book);
-                    while (m1.find()) {
-                        String word = m1.group();
-                        if (word.equalsIgnoreCase("of"))
-                            continue; // We don't want to capitalize "of"
-                        Log.d("AddScriptureText", "word = " + word);
-                        char[] wordChars = word.toCharArray();
-                        wordChars[0] = Character.toUpperCase(wordChars[0]);
-                        book = book.replaceFirst(word, new String(wordChars));
+                    if (book.equals("dc")) {
+                        // Special case for "dc" --> "D&C"
+                        book = "D&C";
+                    } else {
+                        // Replace all "-" characters with blank space
+                        book = book.replaceAll("-", " ");
+                        // Make all words uppercase, unless they are "of"
+                        Matcher m1 = Pattern.compile("\\b[a-z][A-z]*\\b").matcher(book);
+                        while (m1.find()) {
+                            String word = m1.group();
+                            if (word.equalsIgnoreCase("of"))
+                                continue; // We don't want to capitalize "of"
+                            char[] wordChars = word.toCharArray();
+                            wordChars[0] = Character.toUpperCase(wordChars[0]);
+                            book = book.replaceFirst(word, new String(wordChars));
+                        }
                     }
-                    Log.d("AddScriptureText", "book = " + book);
 
                     String ref; // Will be filled with the parsed scripture reference
                     if (verseEnd == null || verseEnd.isEmpty()) { // If the reference is just one verse, not a range

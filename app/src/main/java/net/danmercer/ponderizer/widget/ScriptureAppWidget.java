@@ -23,8 +23,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
+import android.widget.RemoteViewsService;
 
 import net.danmercer.ponderizer.NewMainActivity;
 import net.danmercer.ponderizer.R;
@@ -46,6 +49,76 @@ public class ScriptureAppWidget extends AppWidgetProvider {
     static final String PREF_KEY_TEXT = "body_";
     private static final String PREF_KEY_CATEGORY = "category_";
 
+    public static class ListPopulatorService extends RemoteViewsService {
+        static final String EXTRA_VIEW_INTENT =
+                "net.danmercer.ponderizer.ListPopulatorService.VIEW_INTENT";
+
+        @Override
+        public RemoteViewsFactory onGetViewFactory(Intent intent) {
+            return new ListFactory(this.getApplicationContext(), intent);
+        }
+
+        /**
+         * Currently only supports one item in the ListView. The usage of ListView is simply to
+         * allow a scrolling text view.
+         */
+        private static class ListFactory implements RemoteViewsFactory {
+            private final Context mContext;
+            private final int mAppWidgetId;
+            private final String mText;
+
+            public ListFactory(Context applicationContext, Intent intent) {
+                mContext = applicationContext;
+                mText = intent.getStringExtra(Intent.EXTRA_TEXT);
+                mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+                        AppWidgetManager.INVALID_APPWIDGET_ID);
+            }
+
+            @Override
+            public void onCreate() {
+            }
+
+            @Override
+            public void onDataSetChanged() { /* Don't care */ }
+
+            @Override
+            public void onDestroy() { /* Don't care */ }
+
+            @Override
+            public int getCount() {
+                return 1;
+            }
+
+            @Override
+            public RemoteViews getViewAt(int position) {
+                RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.scripture_app_widget_item);
+                rv.setTextViewText(R.id.widget_body, mText);
+                rv.setOnClickFillInIntent(R.id.widget_body, new Intent());
+                return rv;
+            }
+
+            @Override
+            public RemoteViews getLoadingView() {
+                return null;
+            }
+
+            @Override
+            public int getViewTypeCount() {
+                return 1;
+            }
+
+            @Override
+            public long getItemId(int position) {
+                return position;
+            }
+
+            @Override
+            public boolean hasStableIds() {
+                return false;
+            }
+        }
+    }
+
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
@@ -59,7 +132,7 @@ public class ScriptureAppWidget extends AppWidgetProvider {
     // Also called by ScriptureAppWidgetConfigureActivity.onListItemClick()
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
-        // Get scripture info from SharedPreferences
+        // Get scripture info from widget info SharedPreferences
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
         String reference = prefs.getString(PREF_KEY_REFERENCE + appWidgetId, null);
         String scriptureText = prefs.getString(PREF_KEY_TEXT + appWidgetId, null);
@@ -80,7 +153,6 @@ public class ScriptureAppWidget extends AppWidgetProvider {
 
         // Put text into views in widget
         views.setTextViewText(R.id.widget_header, reference);
-        views.setTextViewText(R.id.widget_body, scriptureText);
 
         // Set up memorize PendingIntent
         Intent memIntent = new ScriptureIntent(context, MemorizeActivity.class, s);
@@ -92,8 +164,18 @@ public class ScriptureAppWidget extends AppWidgetProvider {
         PendingIntent addNoteIntent = PendingIntent.getActivity(context, appWidgetId,
                 noteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // Set up scripture view PendingIntent
+        // Set up scripture view in the ListView
+        Intent listServiceIntent = new Intent(context, ListPopulatorService.class);
+        listServiceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        listServiceIntent.putExtra(Intent.EXTRA_TEXT, scriptureText);
+        // Prevent ignoring of extras when intents are compared:
+        listServiceIntent.setData(Uri.parse(listServiceIntent.toUri(Intent.URI_INTENT_SCHEME)));
+        views.setRemoteAdapter(R.id.list, listServiceIntent);
+
+        // Create a PendingIntent "template" for the ListView that takes the user to the ScriptureViewActivity
         Intent viewIntent = new ScriptureIntent(context, ScriptureViewActivity.class, s);
+        // Prevent ignoring of extras when intents are compared:
+        viewIntent.setData(Uri.parse(viewIntent.toUri(Intent.URI_INTENT_SCHEME)));
         PendingIntent scripViewIntent = PendingIntent.getActivity(context, appWidgetId,
                 viewIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -104,9 +186,8 @@ public class ScriptureAppWidget extends AppWidgetProvider {
             // Attach proper PendingIntent to Add Note button
             views.setOnClickPendingIntent(R.id.action_add_note, addNoteIntent);
 
-            // Attach proper PendingIntent to Scripture text (takes user to ScriptureViewActivity
-            // when clicked)
-            views.setOnClickPendingIntent(R.id.widget_body, scripViewIntent);
+            // Set pendingIntent as "template" for the ListView
+            views.setPendingIntentTemplate(R.id.list, scripViewIntent);
         } else {
             // Hide buttons, because the scripture is no longer saved
             // In the user's list.
